@@ -2,6 +2,7 @@ package edu.uwm.cs361;
 
 public class Frame {
 	private int score;
+	private boolean strike;
 
 	/**
 	 * Create a new Frame object with an initial score of 0.
@@ -37,5 +38,18 @@ public class Frame {
 	 */
 	public int getScore() {
 		return score;
+	}
+
+	/**
+	 * Mark the frame as being a strike. Only takes effect if the score for this
+	 * frame is >= 10
+	 * 
+	 * @param s
+	 *            - boolean specifying if this frame is a strike
+	 */
+	public void setStrike(boolean s) {
+		if (getScore() >= 10) {
+			strike = s;
+		}
 	}
 }
