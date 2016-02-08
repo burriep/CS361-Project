@@ -16,6 +16,9 @@ public class ScoreSheet {
 		currentFrameIndex = 0;
 		currentThrow = 1;
 		frames = new Frame[FRAME_COUNT];
+		for (int i = 0; i < FRAME_COUNT; ++i) {
+			frames[i] = new Frame();
+		}
 	}
 
 	/**
