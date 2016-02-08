@@ -47,9 +47,18 @@ public class Frame {
 	 * @param s
 	 *            - boolean specifying if this frame is a strike
 	 */
-	public void setStrike(boolean s) {
+	public void setStrike() {
 		if (getScore() >= 10) {
-			strike = s;
+			strike = true;
 		}
+	}
+
+	/**
+	 * Check if this frame is a strike.
+	 * 
+	 * @return if this frame is a strike.
+	 */
+	public boolean isStrike() {
+		return strike;
 	}
 }
