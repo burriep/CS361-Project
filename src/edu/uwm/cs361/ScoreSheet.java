@@ -39,7 +39,45 @@ public class ScoreSheet {
 	 * @throws IllegalArgumentException
 	 */
 	public void addThrow(int pinsDown) {
-		// TODO
+		//addThrow after game is over
+		if (currentFrameIndex > 9){												
+			throw new IllegalStateException();						
+			
+		}
+		//Invalid number of pins
+		else if (pinsDown > 10 || pinsDown + frames[currentFrameIndex].getScore() > 10 ){
+			throw new IllegalArgumentException();
+		}
+		//Accepted inputs
+		else {
+			//Strike case
+			/*********************************************************************************
+			 * How should we handle updating the frame scores once we have strikes and spares?
+			 * We need some way to go back and update the previous frame scores, or wait 
+			 * to calculate them until we get the later frame scores.
+			 *********************************************************************************/
+			if (pinsDown == 10 && currentThrow == 1){										
+				currentFrameIndex += 1;
+			}
+			//Spare case
+			else if (pinsDown + frames[currentFrameIndex].getScore() == 10 && currentThrow == 2) {
+				
+			}
+			//
+			else {
+				if (currentThrow == 1) {
+					gameScore += pinsDown;
+					currentThrow = 2;
+					frames[currentFrameIndex].addScore(pinsDown);
+				}
+				else {
+					gameScore += pinsDown;
+					currentThrow = 2;
+					frames[currentFrameIndex].addScore(pinsDown);
+					currentFrameIndex += 1;
+				}
+			}
+		}
 	}
 
 	/**
@@ -69,7 +107,12 @@ public class ScoreSheet {
 	 * @return the score for the given frame.
 	 */
 	public int getFrameScore(int frame) {
-		return 0; // TODO
+		if (frame <= 0 || frame > currentFrameIndex + 1){
+			 System.out.println("ERROR: Invalid frame, returning a score of 0.");
+			 return 0;
+		}
+		else
+			return frames[frame + 1].getScore();
 	}
 
 	/**
