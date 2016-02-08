@@ -1,1 +1,2 @@
-# CS361-Project
+# CS361 - Project
+## Sloth Solutions
