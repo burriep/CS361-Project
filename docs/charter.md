@@ -49,8 +49,8 @@ Wednesday 12:15 - 12:50 (EMS E384)
 
 We, the team named **Sloth Solutions** agree with the Group Charter and will try our best to uphold it.
 
-Name:
-Date:
+Name: Pierce Lindell
+Date: 2/10/16
 
 Name:
 Date:
