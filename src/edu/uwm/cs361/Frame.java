@@ -48,9 +48,7 @@ public class Frame {
 	 *            - boolean specifying if this frame is a strike
 	 */
 	public void setStrike() {
-		if (getScore() >= 10) {
-			strike = true;
-		}
+		strike = true;
 	}
 
 	/**
