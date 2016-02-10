@@ -42,96 +42,46 @@ public class ScoreSheet {
 	 * @throws IllegalArgumentException
 	 */
 	public void addThrow(int pinsDown) {
-		//addThrow after game is over
-		if (currentFrameIndex > 9){												
-			throw new IllegalStateException();						
-			
+		// addThrow after game is over
+		if (currentFrameIndex > 9) {
+			throw new IllegalStateException();
 		}
-		//Invalid number of pins
-		else if (pinsDown > 10 || pinsDown + frames[currentFrameIndex].getScore() > 10 ){
+		// Invalid number of pins
+		if (pinsDown > 10 || pinsDown + frames[currentFrameIndex].getScore() > 10) {
 			throw new IllegalArgumentException();
 		}
-		//Accepted inputs
-		else {
-			//Strike case
-			/*********************************************************************************
-			 * How should we handle updating the frame scores once we have strikes and spares?
-			 * We need some way to go back and update the previous frame scores, or wait 
-			 * to calculate them until we get the later frame scores.
-			 *********************************************************************************/
-			if (pinsDown == 10 && currentThrow == 1){										
-				frames[currentFrameIndex].setStrike();
-				gameScore += pinsDown;
-				frames[currentFrameIndex].addScore(pinsDown);
-				if (currentFrameIndex > 0 && frames[currentFrameIndex - 1].getScore() >= 10 
-						&& frames[currentFrameIndex - 1].isStrike() == false){
-					frames[currentFrameIndex - 1].addScore(pinsDown);
-					gameScore += pinsDown;
-				}
-				else if (currentFrameIndex > 0 && frames[currentFrameIndex - 1].isStrike() == true) {
-					frames[currentFrameIndex - 1].addScore(pinsDown);
-					gameScore += pinsDown;
-					if (currentFrameIndex > 1 && frames[currentFrameIndex - 2].isStrike() == true) {
-						frames[currentFrameIndex - 2].addScore(pinsDown);
-						gameScore += pinsDown;
-					}
-				}
-				currentFrameIndex += 1;
-			}
-			//Spare case
-			else if (pinsDown + frames[currentFrameIndex].getScore() == 10 && currentThrow == 2) {
-				gameScore += pinsDown;
+		// Accepted inputs
+
+		// check previous frames for strikes and spares
+		if (currentFrameIndex > 0 && frames[currentFrameIndex - 1].getScore() >= 10
+				&& frames[currentFrameIndex - 1].isStrike() == false) {
+			// previous frame is spare
+			frames[currentFrameIndex - 1].addScore(pinsDown);
+			gameScore += pinsDown;
+		} else if (currentFrameIndex > 0 && frames[currentFrameIndex - 1].isStrike() == true) {
+			// previous frame is strike
+			frames[currentFrameIndex - 1].addScore(pinsDown);
+			gameScore += pinsDown;
+		}
+		if (currentFrameIndex > 1 && frames[currentFrameIndex - 2].isStrike() == true) {
+			// 2 frames back is a strike
+			frames[currentFrameIndex - 2].addScore(pinsDown);
+			gameScore += pinsDown;
+		}
+
+		gameScore += pinsDown;
+		frames[currentFrameIndex].addScore(pinsDown);
+		if (pinsDown == 10 && currentThrow == 1) {
+			// Strike case
+			frames[currentFrameIndex].setStrike();
+			++currentFrameIndex;
+		} else {
+			// not strike
+			if (currentThrow == 1) {
+				++currentThrow;
+			} else {
 				currentThrow = 1;
-				frames[currentFrameIndex].addScore(pinsDown);
-				if (currentFrameIndex > 0 && frames[currentFrameIndex - 1].getScore() >= 10 
-						&& frames[currentFrameIndex - 1].isStrike() == false){
-					frames[currentFrameIndex - 1].addScore(pinsDown);
-					gameScore += pinsDown;
-				}
-				else if (currentFrameIndex > 0 && frames[currentFrameIndex - 1].isStrike() == true) {
-					frames[currentFrameIndex - 1].addScore(pinsDown);
-					gameScore += pinsDown;
-					if (frames[currentFrameIndex - 2].isStrike() == true && currentFrameIndex > 1) {
-						frames[currentFrameIndex - 2].addScore(pinsDown);
-						gameScore += pinsDown;
-					}
-				}
-				currentFrameIndex += 1;
-			}
-			//
-			else {
-				if (currentThrow == 1) {
-					gameScore += pinsDown;
-					currentThrow = 2;
-					frames[currentFrameIndex].addScore(pinsDown);
-					if (currentFrameIndex > 0 && frames[currentFrameIndex - 1].getScore() >= 10 
-							&& frames[currentFrameIndex - 1].isStrike() == false){
-						frames[currentFrameIndex - 1].addScore(pinsDown);
-						gameScore += pinsDown;
-					}
-					else if (currentFrameIndex > 0 && frames[currentFrameIndex - 1].isStrike() == true ) {
-						frames[currentFrameIndex - 1].addScore(pinsDown);
-						gameScore += pinsDown;
-						if (currentFrameIndex > 1 && frames[currentFrameIndex - 2].isStrike() == true ) {
-							frames[currentFrameIndex - 2].addScore(pinsDown);
-							gameScore += pinsDown;
-						}
-					}
-				}
-				else {
-					gameScore += pinsDown;
-					currentThrow = 1;
-					frames[currentFrameIndex].addScore(pinsDown);
-					if (currentFrameIndex > 0 && frames[currentFrameIndex - 1].isStrike() == true ) {
-						frames[currentFrameIndex - 1].addScore(pinsDown);
-						gameScore += pinsDown;
-						if (currentFrameIndex > 1 && frames[currentFrameIndex - 2].isStrike() == true ) {
-							frames[currentFrameIndex - 2].addScore(pinsDown);
-							gameScore += pinsDown;
-						}
-					}
-					currentFrameIndex += 1;
-				}
+				++currentFrameIndex;
 			}
 		}
 	}
@@ -163,11 +113,10 @@ public class ScoreSheet {
 	 * @return the score for the given frame.
 	 */
 	public int getFrameScore(int frame) {
-		if (frame <= 0 || frame > currentFrameIndex + 1){
-			 System.out.println("ERROR: Invalid frame, returning a score of 0.");
-			 return 0;
-		}
-		else
+		if (frame <= 0 || frame > currentFrameIndex + 1) {
+			System.out.println("ERROR: Invalid frame, returning a score of 0.");
+			return 0;
+		} else
 			return frames[frame - 1].getScore();
 	}
 
@@ -180,4 +129,3 @@ public class ScoreSheet {
 		return gameScore;
 	}
 }
-
