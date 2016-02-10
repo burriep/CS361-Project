@@ -3,8 +3,15 @@
 Wednesday 12:15 - 12:50 (EMS E384)
 
 ## Group Contacts:
+- Paul Burrie - pwburrie@uwm.edu - (414) 313-3941
+- Pierce Lindell - plindell@uwm.edu - (262) 349-7319
+- Morgan Nager - menager@uwm.edu - (414) 795-8913
+- David Faber - dcfaber@uwm.edu - (414) 208-8431
 
 ## Goals:
+1. To work well together in a professional manner and to follow this charter.
+2. To develop a quality project worthy of an 'A'.
+3. Gain a solid understanding of software engineering in a group setting and of the software life cycle.
 
 ## Work Norms:
 1. Time commitment required by each group member: Waiting to see more of the project before we set hard times that people should be working on the project.
@@ -21,12 +28,12 @@ Wednesday 12:15 - 12:50 (EMS E384)
 ### Group communication and interaction:
 1. Regular communication: Members should communicate the status of their tasks at the meeting, before/after a lecture, and at least once sometime during the weekend between Thursday and Tuesday.
 2. Group communication on tardiness/missed meetings and meeting information: If a group member will be late or miss a meeting, they are responsible to communicate as soon as possible to a group member that they will not be able to attend at the designated time.
-3. Communication ethics: Messaging at the last possible moment should be avoided, but is better than no communication at all. 
-4. Group structure: All group members have equal pull in the project, with no one member in charge of the others. 
-5. Decision making:
+3. Communication ethics: Messaging at the last possible moment should be avoided, but is better than no communication at all.
+4. Group structure: All group members have equal pull in the project, with no one member in charge of the others.
+5. Decision making: Any decision about the project will be discussed between the group and decided with a majority vote.
 
 ### Group participation and work quality
-1. Group participation: 
+1. Group participation: Each group member is expected to contribute an approximately equal amount and participate in group decisions and discussions. If other group members feel that one member is not contributing or participating, the situation will be discussed and disiplinary procedures will be considered by the group if the problem continues.
 2. Work not up to standard: If work is inadequate, the member who did it should talk to the other members and ask for help to see if the problems can be resolved. Otherwise, we will go to the TA or professor.
 3. Group members unprepared: If group members are repeatedly unprepared for scheduled deadlines, they will be reported to the TA.
 4. Workload too heavy: If the workload is too heavy and causes quality or quantity to suffer, the workload should be redistributed amongst the team, or in extreme situations, we will go to the TA and ask for extensions. 
@@ -41,9 +48,6 @@ Wednesday 12:15 - 12:50 (EMS E384)
 ---
 
 We, the team named **Sloth Solutions** agree with the Group Charter and will try our best to uphold it.
-
-Name: 
-Date:
 
 Name:
 Date:
