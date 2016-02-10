@@ -10,7 +10,7 @@ public class TestNextFrame {
 			s1.addThrow(7);
 			s1.addThrow(3);
 			s1.addThrow(5);
-			assertEquals(s1.getFrameScore(0) , 17);
+			assertEquals(s1.getFrameScore(1) , 17);
 			assertEquals(s1.getGameScore(), 24);
 		}
 		
@@ -28,7 +28,7 @@ public class TestNextFrame {
 			s1.addThrow(10);
 			s1.addThrow(6);
 			s1.addThrow(3);
-			assertEquals(s1.getFrameScore(0), 19);
+			assertEquals(s1.getFrameScore(1), 19);
 			assertEquals(s1.getGameScore(), 28);
 		}
 		

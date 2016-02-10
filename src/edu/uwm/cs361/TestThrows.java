@@ -10,7 +10,7 @@ public class TestThrows {
 	public void testOneThrow(){
 		ScoreSheet s1 = new ScoreSheet();
 		s1.addThrow(3);
-		assertEquals(s1.getFrameScore(0),3);
+		assertEquals(s1.getFrameScore(1), 3);
 		assertEquals(s1.getGameScore(), 3);
 	}
 	
@@ -19,7 +19,7 @@ public class TestThrows {
 		ScoreSheet s1 = new ScoreSheet();
 		s1.addThrow(3);
 		s1.addThrow(6);
-		assertEquals(s1.getFrameScore(0), 9);
+		assertEquals(s1.getFrameScore(1), 9);
 		assertEquals(s1.getGameScore(), 9);
 	}
 	@Test
@@ -28,8 +28,8 @@ public class TestThrows {
 		s1.addThrow(3);
 		s1.addThrow(6);
 		s1.addThrow(7);
-		assertEquals(s1.getFrameScore(0), 9);
-		assertEquals(s1.getFrameScore(1), 7);
+		assertEquals(s1.getFrameScore(1), 9);
+		assertEquals(s1.getFrameScore(2), 7);
 		assertEquals(s1.getGameScore(), 16);
 	}
 }

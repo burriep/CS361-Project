@@ -13,7 +13,7 @@ public class TestLastFrame {
 	@Test
 	public void testSpareOnLastFrame(){
 		ScoreSheet s1 = new ScoreSheet();
-		for(int i = 0; i<9; i++ ){
+		for(int i = 1; i < 10; i++ ){
 			s1.addThrow(8);
 			s1.addThrow(1);
 		}
@@ -25,7 +25,7 @@ public class TestLastFrame {
 	@Test
 	public void testStrikeOnLastFrame(){
 		ScoreSheet s1 = new ScoreSheet();
-		for(int i = 0; i<7; i++ ){
+		for(int i = 1; i < 8; i++ ){
 			s1.addThrow(8);
 			s1.addThrow(1);
 		}
@@ -39,7 +39,7 @@ public class TestLastFrame {
 	@Test(expected = IllegalStateException.class)
 	public void testThrowOn11thFrame(){
 		ScoreSheet s1 = new ScoreSheet();
-		for(int i = 0; i<9; i++ ){
+		for(int i = 1; i < 10; i++ ){
 			s1.addThrow(8);
 			s1.addThrow(1);
 		}
