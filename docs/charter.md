@@ -52,8 +52,8 @@ We, the team named **Sloth Solutions** agree with the Group Charter and will try
 Name: Pierce Lindell
 Date: 2/10/16
 
-Name:
-Date:
+Name: David Faber
+Date: 02/10/2016
 
 Name:
 Date:
