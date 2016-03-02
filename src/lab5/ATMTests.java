@@ -33,14 +33,37 @@ public class ATMTests {
 		// withdraw 80 from 1234
 	}
 
+	@Test
 	public void TestAcctValidation() {
 		// test failed validation on account 6789
 		assertTrue(bank.validate(account1));
-		//myATM.withdraw();
-		//myATM.enterPIN();
 	}
 
+	@Test
 	public void TestDeposit() {
-		// test successful deposit of $20 to account 6789
+		// test successful deposit of $20 to account 1234
+		account1.deposit(20);
+		assertEquals(account1.getBalance(), 100);
+		// test successful deposit of $0 to account 6789
+		account2.deposit(0);
+		assertEquals(account2.getBalance(), 60);
+		// test unsuccessful deposit of -$20 to account 1234
+		account1.deposit(-20);
+		assertEquals(account2.getBalance(), 60);
+	}
+	
+	@Test
+	public void TestWithdraw() {
+		account1.setBalance(80);
+		account2.setBalance(60);
+		// test successful withdraw of $20 to account 1234
+		account1.withdraw(20);
+		assertEquals(account1.getBalance(), 100);
+		// test successful deposit of $0 to account 6789
+		account2.withdraw(0);
+		assertEquals(account2.getBalance(), 60);
+		// test unsuccessful deposit of -$20 to account 1234
+		account1.withdraw(-20);
+		assertEquals(account2.getBalance(), 60);
 	}
 }

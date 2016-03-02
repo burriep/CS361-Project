@@ -8,6 +8,8 @@ public class ATMAction {
 	
 	public ATMAction() {
 		// STUB
+		atmBank.createAccount(1234, 6789, 80);
+		atmBank.createAccount(6789, 4321, 60);
 	}
 
 	public void execute() {
@@ -21,24 +23,27 @@ public class ATMAction {
 		testCustomer.addCustomerCard(testCard);
 		Account testAccount = new Account(cardNumber);
 		System.out.println(testCustomer.getCustomerCard());
-		if (!testAccount.validate()) {
+		if (!atmBank.validate(testAccount)) {
 			System.out.println("Invalid account entered: " + cardNumber);
 		} else {
+			testAccount = atmBank.getAccount(cardNumber);
 			do {
 				System.out.print("Do you want to (W)ithdrawl or (D)eposit? ");
 				choice = stdIn.next();
 			} while (!choice.toLowerCase().equals("w") && !choice.toLowerCase().equals("d"));
 			// ASK FOR PIN THEN VALIDATE
-			System.out.print("Input PIN number: ");
-			int pinNum = stdIn.nextInt();
-			testAccount.setPIN(pinNum);
-			atmBank.createAccount(testAccount.getAccountNumber(), testAccount.getPIN(), 0);
-			if (!atmBank.validate(testAccount)) {
-				System.out.println("Invalid PIN entered: " + pinNum);
+			if (!testAccount.validate()) {
+				System.out.println("Invalid PIN entered.");
 			} else {
 				// ASK FOR AMOUNT
-				System.out.print("Enter amount: $");
-				int amount = stdIn.nextInt();
+				int amount;
+				do {
+					System.out.print("Enter amount: $");
+					amount = stdIn.nextInt();
+					if (amount < 0) {
+						System.out.println("Invalid amount entered.");
+					}
+				} while(amount < 0);
 				// EITHER DEPOSIT OR WITHDRAWL
 				if (choice.toLowerCase().equals("w")) {
 					atmBank.getAccount(cardNumber).withdraw(amount);
@@ -46,6 +51,7 @@ public class ATMAction {
 					atmBank.getAccount(cardNumber).deposit(amount);
 				}
 				// PRINT
+				System.out.println(testAccount.getBalance());
 			}
 		}
 	}
