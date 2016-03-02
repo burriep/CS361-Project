@@ -1,17 +1,19 @@
 package chronotimer;
 
 public class Printer {
+	
+	private boolean powerState;					//true for on, false for off
+	
 	public void powerOn() {
-		// TODO
+		powerState = true;
 	}
 
 	public void powerOff() {
-		// TODO
+		powerState = false;
 	}
 
 	public boolean isOn() {
-		// TODO
-		return false;
+		return powerState;
 	}
 
 	public void print(String s) {
