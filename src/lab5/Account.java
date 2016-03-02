@@ -12,7 +12,7 @@ public class Account {
 	public Account(int accountNumber) {
 		this.accountNumber = accountNumber;
 	}
-
+	
 	public Account(int accountNumber, int pinCode, int balance) {
 		this.accountNumber = accountNumber;
 		this.pinCode = pinCode;
@@ -20,8 +20,16 @@ public class Account {
 	}
 
 	public boolean validate() {
-		// STUB
-		return false;
+		int length = (int)(Math.log10(accountNumber)+1);
+		return length == 4 ? true : false;
+	}
+	
+	public void setPIN(int pin) {
+		pinCode = pin;
+	}
+	
+	public int getPIN() {
+		return pinCode;
 	}
 
 	public int getAccountNumber() {
@@ -32,7 +40,11 @@ public class Account {
 		balance += amount;
 	}
 
-	public void withdrawl(int amount) {
+	public void withdraw(int amount) {
 		balance -= amount;
+	}
+	
+	public int getBalance() {
+		return balance;
 	}
 }
