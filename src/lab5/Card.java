@@ -1,4 +1,5 @@
 package lab5;
+
 public class Card {
 
 	private int accountNumber;
@@ -10,7 +11,7 @@ public class Card {
 	public Card(int acctNum) {
 		accountNumber = acctNum;
 	}
-	
+
 	public int getCardNumber() {
 		return accountNumber;
 	}

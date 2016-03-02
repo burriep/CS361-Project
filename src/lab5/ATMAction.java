@@ -1,11 +1,12 @@
 package lab5;
+
 import java.util.*;
 
 public class ATMAction {
 
 	Bank atmBank = new Bank();
 	Customer newCustomer;
-	
+
 	public ATMAction() {
 		// STUB
 		atmBank.createAccount(1234, 6789, 80);
@@ -43,7 +44,7 @@ public class ATMAction {
 					if (amount < 0) {
 						System.out.println("Invalid amount entered.");
 					}
-				} while(amount < 0);
+				} while (amount < 0);
 				// EITHER DEPOSIT OR WITHDRAWL
 				if (choice.toLowerCase().equals("w")) {
 					atmBank.getAccount(cardNumber).withdraw(amount);

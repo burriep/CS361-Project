@@ -1,4 +1,5 @@
 package lab5;
+
 import java.util.*;
 
 public class Account {
@@ -14,7 +15,7 @@ public class Account {
 	public Account(int accountNumber) {
 		this.accountNumber = accountNumber;
 	}
-	
+
 	public Account(int accountNumber, int pinCode, int balance) {
 		this.accountNumber = accountNumber;
 		this.pinCode = pinCode;
@@ -23,7 +24,7 @@ public class Account {
 
 	public boolean validate() {
 		boolean valid = false;
-		int length = (int)(Math.log10(accountNumber)+1);
+		int length = (int) (Math.log10(accountNumber) + 1);
 		valid = length == 4;
 		System.out.print("Input PIN number: ");
 		Scanner stdIn = new Scanner(System.in);
@@ -34,11 +35,11 @@ public class Account {
 			return false;
 		}
 	}
-	
+
 	public void setPIN(int pin) {
 		pinCode = pin;
 	}
-	
+
 	public int getPIN() {
 		return pinCode;
 	}
@@ -56,17 +57,17 @@ public class Account {
 	public void withdraw(int amount) {
 		if (amount > 0) {
 			if (balance - amount > 0) {
-				balance -=amount;
+				balance -= amount;
 			} else {
 				System.out.println("Insufficient funds to withdraw: $" + amount);
 			}
 		}
 	}
-	
+
 	public int getBalance() {
 		return balance;
 	}
-	
+
 	public void setBalance(int balance) {
 		this.balance = balance;
 	}

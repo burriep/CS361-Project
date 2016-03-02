@@ -1,12 +1,13 @@
 package lab5;
+
 public class ATM {
-	
+
 	String name;
 
 	public ATM() {
 
 	}
-		
+
 	public ATM(String name) {
 		this.name = name;
 	}
