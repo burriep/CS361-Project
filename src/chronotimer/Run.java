@@ -1,8 +1,12 @@
 package chronotimer;
+import java.util.*;
 
 public class Run {
+	
+	private ArrayList<Racer> racers = new ArrayList<Racer>();
+	
 	public void addRacer(Racer r) {
-		// TODO
+		racers.add(r);
 	}
 
 	public void swapRacer() {
@@ -10,10 +14,11 @@ public class Run {
 	}
 
 	public void clearRacer(Racer r) {
-		// TODO
+		racers.remove(0);
 	}
 
 	public void didNotFinishRacer(Racer r) {
 		// TODO
+		
 	}
 }

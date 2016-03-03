@@ -7,13 +7,13 @@ public class Event {
 	private ArrayList<Run> runs = new ArrayList<Run>();
 	
 	public void newRun() {
-		// TODO
+		runs.add(new Run());
 	}
 
 	public void endRun() {
-		// TODO
+		runs.remove(0);
 	}
 	public void setType(EventType t){
-		// TODO
+		type = t;
 	}
 }
