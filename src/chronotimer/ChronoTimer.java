@@ -5,11 +5,20 @@ import java.util.*;
 public class ChronoTimer {
 	
 	private boolean powerState;  //true for on, false for off
-	private ArrayList<Event> events = new ArrayList<Event>();
-	private Printer printer= new Printer();
-	private Timer timer = new Timer();
-	private ArrayList<Channel> channels = new ArrayList<Channel>(8);
-	private IndEventController indEventController = new IndEventController();
+	private Printer printer;
+	private Timer timer;
+	private ArrayList<Event> events;
+	private ArrayList<Channel> channels;
+	private IndEventController indEventController;
+	
+	
+	public ChronoTimer () {
+		printer= new Printer();
+		timer = new Timer();
+		events = new ArrayList<Event>();
+		channels = new ArrayList<Channel>(8);
+		indEventController = new IndEventController();
+	}
 	
 	public void powerOn() {
 		powerState = true;

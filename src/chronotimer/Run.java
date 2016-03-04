@@ -3,7 +3,11 @@ import java.util.*;
 
 public class Run {
 	
-	private ArrayList<Racer> racers = new ArrayList<Racer>();
+	private ArrayList<Racer> racers;
+	
+	public Run () {
+		racers = new ArrayList<Racer>();
+	}
 	
 	public void addRacer(Racer r) {
 		racers.add(r);
