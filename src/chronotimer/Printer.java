@@ -1,9 +1,8 @@
 package chronotimer;
 
 public class Printer {
-	
-	private boolean powerState;					//true for on, false for off
-	
+	private boolean powerState; // true for on, false for off
+
 	public void powerOn() {
 		powerState = true;
 	}
@@ -17,6 +16,6 @@ public class Printer {
 	}
 
 	public void print(String s) {
-		// TODO
+		System.out.println(s);
 	}
 }
