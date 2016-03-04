@@ -1,5 +1,11 @@
 package chronotimer;
 
+/**
+ * A RacerRun is the association of a Racer to a start and end time. Only one
+ * racer can be in a single RacerRun, however a Racer can be in more than one
+ * RacerRun. See the Race and Event classes for details on that.
+ *
+ */
 public class RacerRun {
 	private String startTime;
 	private String endTime;
@@ -30,7 +36,9 @@ public class RacerRun {
 	 *            - the start time. Must be in the format HH:MM:SS.ss
 	 */
 	public void setStartTime(String time) {
-		startTime = time;
+		if (Timer.validateTime(time)) {
+			startTime = time;
+		}
 	}
 
 	/**
@@ -51,7 +59,9 @@ public class RacerRun {
 	 *            - the end time. Must be in the format HH:MM:SS.ss
 	 */
 	public void setEndTime(String time) {
-		endTime = time;
+		if (Timer.validateTime(time)) {
+			endTime = time;
+		}
 	}
 
 	public String getEndTime() {
