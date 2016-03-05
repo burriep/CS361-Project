@@ -21,4 +21,8 @@ public class Event {
 	public void setType(EventType t){
 		type = t;
 	}
+	
+	public ArrayList<Run> getRuns() {
+		return runs;
+	}
 }

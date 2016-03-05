@@ -29,11 +29,7 @@ public class Simulator {
 					} else if (connArgs[1].contains("EYE")) {
 						connSens = new Sensor(SensorType.EYE);
 					}
-					testChronoTimer.connectSensor(connSens, Integer.parseInt(connArgs[2]));
-					/*
-					 * 
-					 * NEED TO SELECT CHANNEL
-					 */
+					testChronoTimer.connectSensor(connSens, (Integer.parseInt(connArgs[2])));
 				} else if (singleLineCommand[1].contains("ON")) {
 					testChronoTimer.powerOn();
 				} else if (singleLineCommand[1].contains("OFF")) {
@@ -64,11 +60,7 @@ public class Simulator {
 					 */
 
 				} else if (singleLineCommand[1].contains("PRINT")) {
-					/*
-					 * 
-					 * HAVE CHRONOTIMER PRINT ALL STORED DATA FOR EVENT
-					 */
-
+					testChronoTimer.printData();
 				} else if (singleLineCommand[1].contains("ENDRUN")) {
 					/*
 					 * 
@@ -82,6 +74,8 @@ public class Simulator {
 					 * START A NEW RUN IN EVENT
 					 */
 
+				} else if (singleLineCommand[1].contains("RESET")) {
+					testChronoTimer.reset();
 				} else if (singleLineCommand[1].contains("EXIT")) {
 					System.out.println("Exiting simulator...");
 
