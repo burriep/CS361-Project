@@ -20,6 +20,11 @@ public class RacerRun {
 		racer = r;
 	}
 
+	public RacerRun(Racer r, String start) {
+		racer = r;
+		startTime = start;
+	}
+
 	/**
 	 * Return the racer associated with this RacerRun.
 	 * 
@@ -70,5 +75,10 @@ public class RacerRun {
 
 	public double getElapsedTime() {
 		return Timer.getDifference(startTime, endTime);
+	}
+
+	@Override
+	public String toString() {
+		return racer + " " + startTime + " - " + endTime;
 	}
 }
