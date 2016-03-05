@@ -24,12 +24,11 @@ public class Simulator {
 			InputStream inStream = new FileInputStream(new File(INPUTFILE));
 			BufferedReader fileReader = new BufferedReader(new InputStreamReader(inStream));
 			StringBuilder out = new StringBuilder();
-			Timer systemTime = new Timer();
 			String singleLine;
 			while ((singleLine = fileReader.readLine()) != null) {
 				String[] singleLineCommand = singleLine.split("\t");
 				if (singleLineCommand[1].contains("TIME")) {
-					systemTime.setTime(singleLineCommand[0]);
+					testChronoTimer.setTime(singleLineCommand[0]);
 				} else if (singleLineCommand[1].contains("CONN")) {
 					if (testChronoTimer.getPowerState()) {
 						String[] connArgs = singleLineCommand[1].split(" ");
