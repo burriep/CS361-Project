@@ -79,6 +79,6 @@ public class RacerRun {
 
 	@Override
 	public String toString() {
-		return racer + " " + startTime + " - " + endTime;
+		return racer + " " + startTime + " - " + endTime + " : " + Timer.getDifference(startTime, endTime) + "s";
 	}
 }
