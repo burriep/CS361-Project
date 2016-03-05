@@ -8,7 +8,7 @@ public class ChronoTimer {
 	private Printer printer;
 	private Timer timer;
 	private ArrayList<Event> events;
-	private ArrayList<Channel> channels;
+	private Channel[] channels;
 	private IndEventController indEventController;
 	
 	
@@ -16,7 +16,8 @@ public class ChronoTimer {
 		printer= new Printer();
 		timer = new Timer();
 		events = new ArrayList<Event>();
-		channels = new ArrayList<Channel>(8);
+		this.newEvent(new Event(EventType.IND));
+		channels = new Channel[8];
 		indEventController = new IndEventController();
 	}
 	
@@ -31,4 +32,21 @@ public class ChronoTimer {
 	public void reset() {
 		
 	}
+	
+	public void connectSensor(Sensor connectSens, int channelNumber) {
+		channels[channelNumber].connect(connectSens);
+	}
+	
+	public void toggleChannel(int channelNumber) {
+		channels[channelNumber].toggleState();
+	}
+	
+	public void triggerChannel(int channelNumber) {
+		channels[channelNumber].trigger();
+	}
+	
+	public void newEvent(Event newEvent) {
+		events.add(newEvent);
+	}
+	
 }

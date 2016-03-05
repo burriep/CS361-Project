@@ -21,7 +21,7 @@ public class Simulator {
 				String[] singleLineCommand = singleLine.split("\t");
 				if (singleLineCommand[1].contains("TIME")) {
 					systemTime.setTime(singleLineCommand[0]);
-				} else if(singleLineCommand[1].contains("CONN")) {
+				} else if (singleLineCommand[1].contains("CONN")) {
 					String[] connArgs = singleLineCommand[1].split(" ");
 					Sensor connSens = null;
 					if (connArgs[1].contains("GATE")) {
@@ -29,78 +29,62 @@ public class Simulator {
 					} else if (connArgs[1].contains("EYE")) {
 						connSens = new Sensor(SensorType.EYE);
 					}
-					Channel newChannel = new Channel();
-					newChannel.connect(connSens);
+					testChronoTimer.connectSensor(connSens, Integer.parseInt(connArgs[2]));
 					/*
 					 * 
-					 *  NEED TO SELECT CHANNEL
-					 * 
+					 * NEED TO SELECT CHANNEL
 					 */
-				} else if(singleLineCommand[1].contains("ON")) {
+				} else if (singleLineCommand[1].contains("ON")) {
 					testChronoTimer.powerOn();
-				} else if(singleLineCommand[1].contains("OFF")) {
+				} else if (singleLineCommand[1].contains("OFF")) {
 					testChronoTimer.powerOff();
-				} else if(singleLineCommand[1].contains("EVENT")) {
+				} else if (singleLineCommand[1].contains("EVENT")) {
 					String[] eventArgs = singleLineCommand[1].split(" ");
 					if (eventArgs[1] == "IND") {
-						Event newEvent = new Event();
-						newEvent.setType(EventType.IND);
+						Event newEvent = new Event(EventType.IND);
+						testChronoTimer.newEvent(newEvent);
 					}
-					/*
-					 * 
-					 * POSSIBLY SET NEW EVENT IN CHRONOTIMER?
-					 * 
-					 */
-				} else if(singleLineCommand[1].contains("TOGGLE")) {
+				} else if (singleLineCommand[1].contains("TOGGLE")) {
 					String[] toggleArgs = singleLineCommand[1].split(" ");
-					/*
-					 * 
-					 * TOGGLE CHANNEL BASED ON NUMBER IN CHRONOTIMER
-					 * 
-					 */
-					
-				} else if(singleLineCommand[1].contains("NUM")) {
+					testChronoTimer.toggleChannel(Integer.parseInt(toggleArgs[1]));
+
+				} else if (singleLineCommand[1].contains("NUM")) {
 					String[] racerArgs = singleLineCommand[1].split(" ");
 					Racer newRacer = new Racer(Integer.parseInt(racerArgs[1]));
 					/*
 					 * 
 					 * ADD RACER TO QUEUE IN EVENT/CHRONOTIMER
-					 * 
 					 */
-					
-				} else if(singleLineCommand[1].contains("TRIG")) {
+
+				} else if (singleLineCommand[1].contains("TRIG")) {
 					String[] trigArgs = singleLineCommand[1].split(" ");
 					/*
 					 * 
 					 * TRIGGER CHANNEL BASED ON NUMBER
-					 * 
 					 */
-					
-				} else if(singleLineCommand[1].contains("PRINT")) {
+
+				} else if (singleLineCommand[1].contains("PRINT")) {
 					/*
 					 * 
 					 * HAVE CHRONOTIMER PRINT ALL STORED DATA FOR EVENT
-					 * 
 					 */
-					
-				} else if(singleLineCommand[1].contains("ENDRUN")) {
+
+				} else if (singleLineCommand[1].contains("ENDRUN")) {
 					/*
 					 * 
 					 * HAVE RUN END
-					 * 
 					 */
-					
-				} else if(singleLineCommand[1].contains("NEWRUN")) {
+
+				} else if (singleLineCommand[1].contains("NEWRUN")) {
 					Run newRun = new Run();
 					/*
 					 * 
 					 * START A NEW RUN IN EVENT
-					 * 
 					 */
-					
-				} else if(singleLineCommand[1].contains("EXIT")) {
+
+				} else if (singleLineCommand[1].contains("EXIT")) {
 					System.out.println("Exiting simulator...");
-					
+
 				} else {
 					System.out.println("Unknown command: " + singleLineCommand[1]);
 				}
