@@ -16,13 +16,12 @@ import chronotimer.*;
 
 public class Simulator {
 
-	public static String inputFile = "src/simulator/sprint1_chrono_test_data.txt";
-	public static ChronoTimer testChronoTimer = new ChronoTimer();
+	public static final String INPUTFILE = "src/simulator/sprint1_chrono_test_data.txt";
 
 	public static void main(String[] args) {
 		try {
-			String inputFile = "src/simulator/sprint1_chrono_test_data.txt";
-			InputStream inStream = new FileInputStream(new File(inputFile));
+			ChronoTimer testChronoTimer = new ChronoTimer();
+			InputStream inStream = new FileInputStream(new File(INPUTFILE));
 			BufferedReader fileReader = new BufferedReader(new InputStreamReader(inStream));
 			StringBuilder out = new StringBuilder();
 			Timer systemTime = new Timer();
@@ -99,9 +98,9 @@ public class Simulator {
 
 			fileReader.close();
 		} catch (FileNotFoundException ex) {
-			System.out.println("Unable to open file '" + inputFile + "'");
+			System.out.println("Unable to open file '" + INPUTFILE + "'");
 		} catch (IOException ex) {
-			System.out.println("Error reading file '" + inputFile + "'");
+			System.out.println("Error reading file '" + INPUTFILE + "'");
 		}
 
 	}
