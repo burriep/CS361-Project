@@ -3,11 +3,10 @@ package chronotimer;
 public class Printer {
 	private boolean powerState; // true for on, false for off
 
-	
 	public Printer() {
 		powerState = false;
 	}
-	
+
 	public void powerOn() {
 		powerState = true;
 	}

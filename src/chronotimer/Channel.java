@@ -1,11 +1,10 @@
 package chronotimer;
 
 public class Channel {
-	
-	
-	private boolean channelState;			//true for on, false for off
+
+	private boolean channelState; // true for on, false for off
 	private Sensor mySens;
-	
+
 	public void connect(Sensor s) {
 		mySens = s;
 	}
@@ -15,12 +14,14 @@ public class Channel {
 	}
 
 	public void trigger() {
-		
+
 	}
 
 	public void toggleState() {
-		if(channelState == true) channelState = false;
-		else channelState = true;
+		if (channelState == true)
+			channelState = false;
+		else
+			channelState = true;
 	}
 
 	public boolean getState() {

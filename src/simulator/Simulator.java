@@ -1,7 +1,17 @@
 package simulator;
 
-import java.io.*;
+/**
+ * The Simulator is the class that reads in data from a text file whose name is specified
+ * in the "inputFile" string and whose commands are in the format:
+ * <TIMESTAMP>	<CMD> <ARGUMENT LIST> <EOL>
+ * Where <TIMESTAMP> is in the format HH:MM:SS.Hundredth
+ * 
+ * The Simulator reads in the text file line by line through a BufferedReader, parses the time, parses the command
+ * and its arguments, and then executes the appropriate action 
+ *
+ */
 
+import java.io.*;
 import chronotimer.*;
 
 public class Simulator {
@@ -29,7 +39,8 @@ public class Simulator {
 					} else if (connArgs[1].contains("EYE")) {
 						connSens = new Sensor(SensorType.EYE);
 					}
-					//testChronoTimer.connectSensor(connSens, (Integer.parseInt(connArgs[2])));
+					// testChronoTimer.connectSensor(connSens,
+					// (Integer.parseInt(connArgs[2])));
 				} else if (singleLineCommand[1].contains("ON")) {
 					testChronoTimer.powerOn();
 				} else if (singleLineCommand[1].contains("OFF")) {
@@ -42,23 +53,16 @@ public class Simulator {
 					}
 				} else if (singleLineCommand[1].contains("TOGGLE")) {
 					String[] toggleArgs = singleLineCommand[1].split(" ");
-					//testChronoTimer.toggleChannel(Integer.parseInt(toggleArgs[1]));
+					// testChronoTimer.toggleChannel(Integer.parseInt(toggleArgs[1]));
 
 				} else if (singleLineCommand[1].contains("NUM")) {
 					String[] racerArgs = singleLineCommand[1].split(" ");
 					Racer newRacer = new Racer(Integer.parseInt(racerArgs[1]));
-					/*
-					 * 
-					 * ADD RACER TO QUEUE IN EVENT/CHRONOTIMER
-					 */
+					testChronoTimer.addRacerToCurrentRun(newRacer);
 
 				} else if (singleLineCommand[1].contains("TRIG")) {
 					String[] trigArgs = singleLineCommand[1].split(" ");
-					/*
-					 * 
-					 * TRIGGER CHANNEL BASED ON NUMBER
-					 */
-
+					testChronoTimer.triggerChannel(Integer.parseInt(trigArgs[1]));
 				} else if (singleLineCommand[1].contains("PRINT")) {
 					testChronoTimer.printData();
 				} else if (singleLineCommand[1].contains("ENDRUN")) {
