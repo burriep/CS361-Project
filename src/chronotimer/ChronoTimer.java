@@ -13,6 +13,7 @@ public class ChronoTimer {
 
 	public ChronoTimer() {
 		printer = new Printer();
+		printer.powerOn();
 		timer = new Timer();
 		events = new ArrayList<Event>();
 		channels = new Channel[8];
