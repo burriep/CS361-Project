@@ -16,9 +16,9 @@ public class ChronoTimer {
 		printer= new Printer();
 		timer = new Timer();
 		events = new ArrayList<Event>();
-		newEvent(new Event(EventType.IND));
 		channels = new Channel[8];
 		indEventController = new IndEventController();
+		this.newEvent(new Event(EventType.IND));
 	}
 	
 	public void powerOn() {
@@ -30,14 +30,14 @@ public class ChronoTimer {
 	}
 	
 	public void reset() {
-		timer = new Timer();
-		printer = new Printer();
-		events.clear();
-		this.newEvent(new Event(EventType.IND));
-		for (int i = 0; i <= channels.length - 1; i++) {
-			channels[i] = null;
-		}
-		indEventController = new IndEventController();
+		//timer = new Timer();
+		//printer = new Printer();
+		//events.clear();
+		//this.newEvent(new Event(EventType.IND));
+		//for (int i = 0; i <= channels.length - 1; i++) {
+		//	channels[i] = null;
+		//}
+		//indEventController = new IndEventController();
 	}
 	
 	public void connectSensor(Sensor connectSens, int channelNumber) {
@@ -52,16 +52,16 @@ public class ChronoTimer {
 		channels[channelNumber-1].trigger();
 	}
 	
-	public void newEvent(Event newEvent) {
-		events.add(newEvent);
+	public void newEvent(Event addEvent) {
+		this.events.add(addEvent);
 	}
 	
 	public void printData() {
 		for (int i = 0; i < events.size(); i++) {
-			printer.print("Event #" + Integer.toString(i));
+			printer.print("Event #" + Integer.toString(i+1));
 			ArrayList<Run> printRuns = events.get(i).getRuns();
 			for (int j = 0; j < printRuns.size(); j++) {
-				
+				//STUB
 			}
 		}
 	}

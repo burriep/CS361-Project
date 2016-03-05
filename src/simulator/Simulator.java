@@ -29,7 +29,7 @@ public class Simulator {
 					} else if (connArgs[1].contains("EYE")) {
 						connSens = new Sensor(SensorType.EYE);
 					}
-					testChronoTimer.connectSensor(connSens, (Integer.parseInt(connArgs[2])));
+					//testChronoTimer.connectSensor(connSens, (Integer.parseInt(connArgs[2])));
 				} else if (singleLineCommand[1].contains("ON")) {
 					testChronoTimer.powerOn();
 				} else if (singleLineCommand[1].contains("OFF")) {
@@ -42,7 +42,7 @@ public class Simulator {
 					}
 				} else if (singleLineCommand[1].contains("TOGGLE")) {
 					String[] toggleArgs = singleLineCommand[1].split(" ");
-					testChronoTimer.toggleChannel(Integer.parseInt(toggleArgs[1]));
+					//testChronoTimer.toggleChannel(Integer.parseInt(toggleArgs[1]));
 
 				} else if (singleLineCommand[1].contains("NUM")) {
 					String[] racerArgs = singleLineCommand[1].split(" ");
