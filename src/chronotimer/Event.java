@@ -31,6 +31,10 @@ public class Event {
 		return type;
 	}
 
+	public int getCurrentRunNumber() {
+		return runs.size();
+	}
+
 	public Run getCurrentRun() {
 		return runs.get(runs.size() - 1);
 	}
