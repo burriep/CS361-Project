@@ -16,11 +16,11 @@ public class TestRun {
 		Run run = new Run();
 		run.addRacer(r1);
 		run.addRacer(r2);
-		// assertEquals(2, run.getRacers().size());
+		assertEquals(2, run.getRacers().size());
 		run.clearRacer(r1);
-		// assertEquals(1, run.getRacers().size());
-		// assertEquals(r2, run.getRacers().get(0));
-		// assertEquals(r2.getNumber(), run.getRacers().get(0).getNumber());
+		assertEquals(1, run.getRacers().size());
+		//assertEquals(r2, run.getRacers().getRacer(0));
+		//assertEquals(r2.getNumber(), run.getRacers().get(0).getNumber());
 	}
 
 	@Test(expected = Exception.class)

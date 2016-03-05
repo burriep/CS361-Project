@@ -14,6 +14,10 @@ public class Run {
 		startedQueue = new LinkedList<Racer>();
 	}
 
+	public Queue<Racer> getRacers() {
+		return notStartedQueue;
+	}
+	
 	public void addRacer(Racer r) {
 		notStartedQueue.add(r);
 	}
