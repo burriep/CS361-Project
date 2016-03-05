@@ -81,7 +81,12 @@ public class ChronoTimer {
 	 * @param channelNumber
 	 */
 	public void triggerChannel(int channelNumber) {
-		channels[channelNumber - 1].trigger();
+		channels[channelNumber - 1].trigger(); // doesn't do anything
+		if (channelNumber == 1){
+			events.get(events.size()-1).getCurrentRun().addRacerStartTime(timer.getTime());
+		} else if (channelNumber == 2) {
+			events.get(events.size()-1).getCurrentRun().addRacerEndTime(timer.getTime());
+		}
 	}
 
 	/**
