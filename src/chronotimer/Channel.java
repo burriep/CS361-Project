@@ -13,6 +13,16 @@ public class Channel {
 		mySens = null;
 	}
 
+	/**
+	 * Returns true if a sensor is connected and false if a sensor is not
+	 * connected
+	 * 
+	 * @return
+	 */
+	public boolean isConnected() {
+		return mySens == null;
+	}
+
 	public void trigger() {
 
 	}

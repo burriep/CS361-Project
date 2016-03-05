@@ -28,6 +28,14 @@ public class ChronoTimer {
 		powerState = false;
 	}
 
+	public boolean getPowerState() {
+		return powerState;
+	}
+
+	public boolean getPrinterState() {
+		return printer.isOn();
+	}
+
 	/**
 	 * Remove all data and reset the ChronoTimer to its initial state
 	 */
@@ -58,7 +66,9 @@ public class ChronoTimer {
 	 * @param channelNumber
 	 */
 	public void toggleChannel(int channelNumber) {
-		channels[channelNumber - 1].toggleState();
+		if (channels[channelNumber - 1].isConnected()) {
+			channels[channelNumber - 1].toggleState();
+		}
 	}
 
 	/**
