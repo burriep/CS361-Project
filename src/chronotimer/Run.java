@@ -44,4 +44,8 @@ public class Run {
 			racerData.get(r).setEndTime(t);
 		}
 	}
+
+	public Collection<RacerRun> getData() {
+		return racerData.values();
+	}
 }

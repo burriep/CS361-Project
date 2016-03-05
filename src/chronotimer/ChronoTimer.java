@@ -16,6 +16,9 @@ public class ChronoTimer {
 		timer = new Timer();
 		events = new ArrayList<Event>();
 		channels = new Channel[8];
+		for (int i = 0; i < channels.length; i++) {
+			channels[i] = new Channel();
+		}
 		indEventController = new IndEventController();
 		this.newEvent(new Event(EventType.IND));
 	}
@@ -36,8 +39,8 @@ public class ChronoTimer {
 		printer = new Printer();
 		events.clear();
 		this.newEvent(new Event(EventType.IND));
-		for (int i = 0; i <= channels.length - 1; i++) {
-			channels[i] = null;
+		for (int i = 0; i < channels.length; i++) {
+			channels[i] = new Channel();
 		}
 		indEventController = new IndEventController();
 	}
@@ -83,12 +86,11 @@ public class ChronoTimer {
 	 * Print each event's run information
 	 */
 	public void printData() {
-		for (int i = 0; i < events.size(); i++) {
-			printer.print("Event #" + Integer.toString(i + 1));
-			ArrayList<Run> printRuns = events.get(i).getRuns();
-			for (int j = 0; j < printRuns.size(); j++) {
-				// STUB
-			}
+		Run cR = events.get(events.size() - 1).getCurrentRun();
+		printer.print("Run " + events.get(events.size() - 1).getCurrentRunNumber());
+		Collection<RacerRun> data = cR.getData();
+		for (RacerRun rr : data) {
+			printer.print(rr.toString());
 		}
 	}
 
