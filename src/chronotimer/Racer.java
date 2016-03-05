@@ -10,4 +10,8 @@ public class Racer {
 	public int getNumber() {
 		return id;
 	}
+
+	public String toString() {
+		return "" + id;
+	}
 }
