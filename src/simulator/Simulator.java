@@ -76,19 +76,13 @@ public class Simulator {
 					}
 				} else if (singleLineCommand[1].contains("ENDRUN")) {
 					if (testChronoTimer.getPowerState()) {
-						/*
-						 * 
-						 * HAVE RUN END
-						 */
+						testChronoTimer.endCurrentEventCurrentRun();
 					}
 
 				} else if (singleLineCommand[1].contains("NEWRUN")) {
 					if (testChronoTimer.getPowerState()) {
 						Run newRun = new Run();
-						/*
-						 * 
-						 * START A NEW RUN IN EVENT
-						 */
+						testChronoTimer.addRunToCurrentEvent(newRun);
 					}
 
 				} else if (singleLineCommand[1].contains("RESET")) {

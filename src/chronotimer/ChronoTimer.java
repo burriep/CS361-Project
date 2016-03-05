@@ -111,4 +111,18 @@ public class ChronoTimer {
 		events.get(events.size() - 1).getCurrentRun().addRacer(r);
 	}
 
+	/**
+	 * Add a run to the current event
+	 */
+	public void addRunToCurrentEvent(Run newRun) {
+		events.get(events.size() - 1).newRun();
+	}
+
+	/**
+	 * End current run of the current event
+	 */
+	public void endCurrentEventCurrentRun() {
+		events.get(events.size() - 1).endRun();
+	}
+
 }
