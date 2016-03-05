@@ -125,5 +125,19 @@ public class ChronoTimer {
 	public void endCurrentEventCurrentRun() {
 		events.get(events.size() - 1).endRun();
 	}
+	/**
+	 * Set the system time
+	 * @param t - time
+	 */
+	public void setTime(String t) {
+		timer.setTime(t);
+	}
 
+	/**
+	 * Get the system time
+	 * @return time
+	 */
+	public String getTime() {
+		return timer.getTime();
+	}
 }
