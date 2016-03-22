@@ -3,13 +3,12 @@ package chronotimer;
 import java.util.*;
 
 public class Run {
-
-	private Map<Racer, RacerRun> racerData;
+	private ArrayList<RacerRun> racerData;
 	private Queue<Racer> notStartedQueue;
 	private Queue<Racer> startedQueue;
 
 	public Run() {
-		racerData = new HashMap<Racer, RacerRun>();
+		racerData = new ArrayList<RacerRun>();
 		notStartedQueue = new LinkedList<Racer>();
 		startedQueue = new LinkedList<Racer>();
 	}
@@ -17,7 +16,7 @@ public class Run {
 	public Queue<Racer> getRacers() {
 		return notStartedQueue;
 	}
-	
+
 	public void addRacer(Racer r) {
 		notStartedQueue.add(r);
 	}
@@ -38,18 +37,30 @@ public class Run {
 		if (!notStartedQueue.isEmpty()) {
 			Racer r = notStartedQueue.remove();
 			startedQueue.add(r);
-			racerData.put(r, new RacerRun(r, t));
+			racerData.add(new RacerRun(r, t));
 		}
 	}
 
 	public void addRacerEndTime(String t) {
 		if (!startedQueue.isEmpty()) {
 			Racer r = startedQueue.remove();
-			racerData.get(r).setEndTime(t);
+			RacerRun rr = findRacerRun(r);
+			if (rr != null) {
+				rr.setEndTime(t);
+			}
 		}
 	}
 
+	private RacerRun findRacerRun(Racer r) {
+		for (RacerRun rr : racerData) {
+			if (rr.getRacer().equals(r)) {
+				return rr;
+			}
+		}
+		return null;
+	}
+
 	public Collection<RacerRun> getData() {
-		return racerData.values();
+		return racerData;
 	}
 }
