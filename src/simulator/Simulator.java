@@ -91,6 +91,14 @@ public class Simulator {
 					testChronoTimer.endRunCurrentEvent();
 				} else if (singleLineCommand[1].contains("NEWRUN")) {
 					testChronoTimer.newRunCurrentEvent();
+				} else if (singleLineCommand[1].contains("EXPORT")) {
+					String[] exportArgs = singleLineCommand[1].split(" ");
+					if (exportArgs.length > 1) {
+						int num = Integer.parseInt(exportArgs[1]);
+						testChronoTimer.exportRun(num);
+					} else {
+						testChronoTimer.exportCurrentRun();
+					}
 				} else if (singleLineCommand[1].contains("RESET")) {
 					testChronoTimer.reset();
 				} else if (singleLineCommand[1].contains("EXIT")) {

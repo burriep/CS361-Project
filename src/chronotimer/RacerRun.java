@@ -7,9 +7,9 @@ package chronotimer;
  *
  */
 public class RacerRun {
+	private Racer racer;
 	private String startTime;
 	private String endTime;
-	private Racer racer;
 
 	/**
 	 * Create a new RacerRun for Racer r with no start or end time.

@@ -1,6 +1,8 @@
 package chronotimer;
 
 import java.util.*;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
 public class Run {
 	private ArrayList<RacerRun> racerData;
@@ -83,6 +85,7 @@ public class Run {
 	}
 
 	public String toJSON() {
-		return null; // TODO
+		Gson gson = new Gson();
+		return gson.toJson(racerData);
 	}
 }

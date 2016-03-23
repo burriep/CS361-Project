@@ -1,5 +1,7 @@
 package chronotimer;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.*;
 
 public class ChronoTimer implements Observer {
@@ -163,19 +165,21 @@ public class ChronoTimer implements Observer {
 	}
 
 	public void exportCurrentRun() {
-		if (isOn()) {
-			Event cE = events.get(events.size() - 1);
-			String runJSON = cE.getCurrentRun().toJSON();
-			// TODO
-		}
+		exportRun(events.get(events.size() - 1).getCurrentRunNumber());
 	}
 
 	public void exportRun(int id) {
-		{
+		if (isOn()) {
 			Event cE = events.get(events.size() - 1);
 			if (id > 0 && id <= cE.getCurrentRunNumber()) {
 				String runJSON = cE.getRun(id).toJSON();
-				// TODO
+				try {
+					FileWriter fw = new FileWriter("Run" + cE.getCurrentRunNumber() + ".json");
+					fw.write(runJSON);
+					fw.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 	}

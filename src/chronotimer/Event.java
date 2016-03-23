@@ -54,8 +54,8 @@ public class Event {
 	 * @return the specified run or NULL.
 	 */
 	public Run getRun(int runNumber) {
-		if (runNumber < runs.size()) {
-			return runs.get(runNumber);
+		if (runNumber > 0 && runNumber <= runs.size()) {
+			return runs.get(runNumber - 1);
 		} else {
 			return null;
 		}
