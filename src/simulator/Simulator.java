@@ -61,10 +61,17 @@ public class Simulator {
 					testChronoTimer.powerOff();
 				} else if (singleLineCommand[1].contains("EVENT")) {
 					String[] eventArgs = singleLineCommand[1].split(" ");
-					if (eventArgs[1] == "IND") {
-						Event newEvent = new Event(EventType.IND);
-						testChronoTimer.newEvent(newEvent);
+					Event e = null;
+					if (eventArgs[1] == "PARGRP") {
+						e = new Event(EventType.PARGRP);
+					} else if (eventArgs[1] == "GRP") {
+						e = new Event(EventType.GRP);
+					} else if (eventArgs[1] == "PARIND") {
+						e = new Event(EventType.PARIND);
+					} else {
+						e = new Event(EventType.IND);
 					}
+					testChronoTimer.newEvent(e);
 				} else if (singleLineCommand[1].contains("TOGGLE")) {
 					String[] toggleArgs = singleLineCommand[1].split(" ");
 					testChronoTimer.toggleChannel(Integer.parseInt(toggleArgs[1]));
