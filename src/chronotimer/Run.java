@@ -5,12 +5,12 @@ import java.util.*;
 public class Run {
 	private ArrayList<RacerRun> racerData;
 	private Queue<Racer> notStartedQueue;
-	private Queue<Racer> startedQueue;
+	private ArrayList<Racer> startedQueue;
 
 	public Run() {
 		racerData = new ArrayList<RacerRun>();
 		notStartedQueue = new LinkedList<Racer>();
-		startedQueue = new LinkedList<Racer>();
+		startedQueue = new ArrayList<Racer>();
 	}
 
 	public Queue<Racer> getRacers() {
@@ -43,7 +43,17 @@ public class Run {
 
 	public void addRacerEndTime(String t) {
 		if (!startedQueue.isEmpty()) {
-			Racer r = startedQueue.remove();
+			Racer r = startedQueue.remove(0);
+			RacerRun rr = findRacerRun(r);
+			if (rr != null) {
+				rr.setEndTime(t);
+			}
+		}
+	}
+
+	public void addRacerEndTime(Racer r, String t) {
+		if (!startedQueue.isEmpty()) {
+			startedQueue.remove(r);
 			RacerRun rr = findRacerRun(r);
 			if (rr != null) {
 				rr.setEndTime(t);
@@ -62,6 +72,14 @@ public class Run {
 
 	public Collection<RacerRun> getData() {
 		return racerData;
+	}
+
+	public Collection<Racer> getStartedRacers() {
+		return startedQueue;
+	}
+
+	public Collection<Racer> getQueuedRacers() {
+		return notStartedQueue;
 	}
 
 	public String toJSON() {

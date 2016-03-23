@@ -9,4 +9,8 @@ public class IndEventController implements EventController {
 			r.addRacerEndTime(time);
 		}
 	}
+
+	@Override
+	public void newEvent() {
+	}
 }
