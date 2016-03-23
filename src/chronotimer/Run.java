@@ -29,7 +29,7 @@ public class Run {
 		notStartedQueue.remove(r);
 	}
 
-	public void didNotFinishRacer(Racer r) {
+	public void didNotFinishRacer() {
 		// TODO
 	}
 
@@ -62,5 +62,9 @@ public class Run {
 
 	public Collection<RacerRun> getData() {
 		return racerData;
+	}
+
+	public String toJSON() {
+		return null; // TODO
 	}
 }

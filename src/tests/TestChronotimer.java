@@ -10,11 +10,11 @@ public class TestChronotimer {
 	@Test
 	public void testPower() {
 		ChronoTimer ct = new ChronoTimer();
-		assertEquals(false, ct.getPowerState());
+		assertEquals(false, ct.isOn());
 		ct.powerOn();
-		assertEquals(true, ct.getPowerState());
+		assertEquals(true, ct.isOn());
 		ct.powerOff();
-		assertEquals(false, ct.getPowerState());
+		assertEquals(false, ct.isOn());
 	}
 
 	@Test

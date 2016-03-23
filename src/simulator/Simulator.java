@@ -21,6 +21,7 @@ public class Simulator {
 	public static void main(String[] args) {
 		try {
 			ChronoTimer testChronoTimer = new ChronoTimer();
+			Sensor[] sensors = new Sensor[ChronoTimer.DEFAULT_CHANNEL_COUNT];
 			InputStream inStream = new FileInputStream(new File(INPUTFILE));
 			BufferedReader fileReader = new BufferedReader(new InputStreamReader(inStream));
 			String singleLine;
@@ -32,66 +33,62 @@ public class Simulator {
 					String[] timeArgs = singleLineCommand[1].split(" ");
 					testChronoTimer.setTime(timeArgs[1]);
 				} else if (singleLineCommand[1].contains("CONN")) {
-					if (testChronoTimer.getPowerState()) {
-						String[] connArgs = singleLineCommand[1].split(" ");
-						Sensor connSens = null;
+					String[] connArgs = singleLineCommand[1].split(" ");
+					int num = Integer.parseInt(connArgs[2]);
+					if (num > 0 && num <= sensors.length && sensors[num - 1] == null) {
+						// no sensor is connected on channel "num" right now so
+						// we can connect a new Sensor to that channel
 						if (connArgs[1].contains("GATE")) {
-							connSens = new Sensor(SensorType.GATE);
+							sensors[num - 1] = new Sensor(SensorType.GATE);
 						} else if (connArgs[1].contains("EYE")) {
-							connSens = new Sensor(SensorType.EYE);
+							sensors[num - 1] = new Sensor(SensorType.EYE);
+						} else if (connArgs[1].contains("PAD")) {
+							sensors[num - 1] = new Sensor(SensorType.PAD);
 						}
-						testChronoTimer.connectSensor(connSens, (Integer.parseInt(connArgs[2])));
+
+						if (sensors[num - 1] != null) {
+							testChronoTimer.connectSensor(sensors[num - 1], num);
+						}
 					}
+				} else if (singleLineCommand[1].contains("DISC")) {
+					String[] discArgs = singleLineCommand[1].split(" ");
+					int num = Integer.parseInt(discArgs[1]);
+					testChronoTimer.disconnectSensor(num);
+					sensors[num - 1] = null;
 				} else if (singleLineCommand[1].contains("ON")) {
 					testChronoTimer.powerOn();
 				} else if (singleLineCommand[1].contains("OFF")) {
 					testChronoTimer.powerOff();
 				} else if (singleLineCommand[1].contains("EVENT")) {
-					if (testChronoTimer.getPowerState()) {
-						String[] eventArgs = singleLineCommand[1].split(" ");
-						if (eventArgs[1] == "IND") {
-							Event newEvent = new Event(EventType.IND);
-							testChronoTimer.newEvent(newEvent);
-						}
+					String[] eventArgs = singleLineCommand[1].split(" ");
+					if (eventArgs[1] == "IND") {
+						Event newEvent = new Event(EventType.IND);
+						testChronoTimer.newEvent(newEvent);
 					}
 				} else if (singleLineCommand[1].contains("TOGGLE")) {
-					if (testChronoTimer.getPowerState()) {
-						String[] toggleArgs = singleLineCommand[1].split(" ");
-						testChronoTimer.toggleChannel(Integer.parseInt(toggleArgs[1]));
-					}
+					String[] toggleArgs = singleLineCommand[1].split(" ");
+					testChronoTimer.toggleChannel(Integer.parseInt(toggleArgs[1]));
 				} else if (singleLineCommand[1].contains("NUM")) {
-					if (testChronoTimer.getPowerState()) {
-						String[] racerArgs = singleLineCommand[1].split(" ");
-						Racer newRacer = new Racer(Integer.parseInt(racerArgs[1]));
-						testChronoTimer.addRacerToCurrentRun(newRacer);
-					}
+					String[] racerArgs = singleLineCommand[1].split(" ");
+					Racer newRacer = new Racer(Integer.parseInt(racerArgs[1]));
+					testChronoTimer.addRacerToCurrentRun(newRacer);
 				} else if (singleLineCommand[1].contains("TRIG")) {
-					if (testChronoTimer.getPowerState()) {
-						String[] trigArgs = singleLineCommand[1].split(" ");
-						testChronoTimer.triggerChannel(Integer.parseInt(trigArgs[1]));
+					String[] trigArgs = singleLineCommand[1].split(" ");
+					int num = Integer.parseInt(trigArgs[1]);
+					if (num > 0 && num <= sensors.length) {
+						sensors[num - 1].trigger();
 					}
 				} else if (singleLineCommand[1].contains("PRINT")) {
-					if (testChronoTimer.getPowerState() && testChronoTimer.getPrinterState()) {
-						testChronoTimer.printData();
-					}
+					testChronoTimer.printCurrentRun();
 				} else if (singleLineCommand[1].contains("ENDRUN")) {
-					if (testChronoTimer.getPowerState()) {
-						testChronoTimer.endCurrentEventCurrentRun();
-					}
-
+					testChronoTimer.endRunCurrentEvent();
 				} else if (singleLineCommand[1].contains("NEWRUN")) {
-					if (testChronoTimer.getPowerState()) {
-						Run newRun = new Run();
-						testChronoTimer.addRunToCurrentEvent(newRun);
-					}
-
+					testChronoTimer.newRunCurrentEvent();
 				} else if (singleLineCommand[1].contains("RESET")) {
-					if (testChronoTimer.getPowerState()) {
-						testChronoTimer.reset();
-					}
+					testChronoTimer.reset();
 				} else if (singleLineCommand[1].contains("EXIT")) {
 					System.out.println("Exiting simulator...");
-
+					break;
 				} else {
 					System.out.println("Unknown command: " + singleLineCommand[1]);
 				}

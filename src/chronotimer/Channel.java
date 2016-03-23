@@ -2,7 +2,7 @@ package chronotimer;
 
 public class Channel {
 
-	private boolean channelState; // true for on, false for off
+	private boolean enabled;
 	private Sensor mySens;
 
 	public void connect(Sensor s) {
@@ -13,6 +13,10 @@ public class Channel {
 		mySens = null;
 	}
 
+	public Sensor getSensor() {
+		return mySens;
+	}
+
 	/**
 	 * Returns true if a sensor is connected and false if a sensor is not
 	 * connected
@@ -20,21 +24,14 @@ public class Channel {
 	 * @return
 	 */
 	public boolean isConnected() {
-		return mySens == null;
-	}
-
-	public void trigger() {
-
+		return mySens != null;
 	}
 
 	public void toggleState() {
-		if (channelState == true)
-			channelState = false;
-		else
-			channelState = true;
+		enabled = !enabled;
 	}
 
-	public boolean getState() {
-		return channelState;
+	public boolean isEnabled() {
+		return enabled;
 	}
 }

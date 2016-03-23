@@ -11,16 +11,23 @@ public class Event {
 	public Event(EventType t) {
 		type = t;
 		runs = new ArrayList<Run>();
+		runIsActive = false;
 		newRun();
 	}
 
 	public void newRun() {
-		runs.add(new Run());
-		runIsActive = true;
+		if (!isActive()) {
+			runs.add(new Run());
+			runIsActive = true;
+		}
 	}
 
 	public void endRun() {
 		runIsActive = false;
+	}
+
+	public boolean isActive() {
+		return runIsActive;
 	}
 
 	public void setType(EventType t) {

@@ -11,7 +11,16 @@ public class Racer {
 		return id;
 	}
 
+	@Override
 	public String toString() {
 		return "" + id;
+	}
+
+	@Override
+	public boolean equals(Object o) {
+		if (o != null && o instanceof Racer) {
+			return ((Racer) o).id == id;
+		}
+		return false;
 	}
 }

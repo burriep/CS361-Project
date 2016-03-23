@@ -1,6 +1,8 @@
 package chronotimer;
 
-public class Sensor {
+import java.util.*;
+
+public class Sensor extends Observable {
 	private SensorType type;
 
 	public Sensor(SensorType type) {
@@ -9,5 +11,11 @@ public class Sensor {
 
 	public SensorType getSensorType() {
 		return type;
+	}
+
+	public void trigger() {
+		setChanged();
+		notifyObservers();
+		clearChanged();
 	}
 }
