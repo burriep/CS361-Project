@@ -15,9 +15,9 @@ public class ParIndEventController implements EventController {
 			Collection<Racer> queue = r.getQueuedRacers();
 			if (!queue.isEmpty()) {
 				r.addRacerStartTime(time);
-				channelMap.put(queue.iterator().next(), channelNumber);
+				int finishChannel = (channelNumber == 1) ? 2 : 4;
+				channelMap.put(queue.iterator().next(), finishChannel);
 			}
-
 		} else if (channelNumber == 2 || channelNumber == 4) {
 			Collection<Racer> racers = r.getStartedRacers();
 			for (Racer cr : racers) {
@@ -31,7 +31,9 @@ public class ParIndEventController implements EventController {
 	}
 
 	@Override
-	public void newEvent() {
-		channelMap.clear();
+	public void newRun(Event e) {
+		if (!e.isActive()) {
+			channelMap.clear();
+		}
 	}
 }

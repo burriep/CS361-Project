@@ -219,7 +219,9 @@ public class ChronoTimer implements Observer {
 	 */
 	public void newRunCurrentEvent() {
 		if (isOn()) {
-			events.get(events.size() - 1).newRun();
+			Event cE = events.get(events.size() - 1);
+			cE.newRun();
+			ec.newRun(cE);
 		}
 	}
 
