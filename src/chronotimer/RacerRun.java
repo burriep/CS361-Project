@@ -32,7 +32,9 @@ public class RacerRun {
 	 */
 	public RacerRun(Racer r, String start) {
 		racer = r;
-		startTime = start;
+		if (Timer.validateTime(start)) {
+			startTime = start;
+		}
 	}
 
 	/**
