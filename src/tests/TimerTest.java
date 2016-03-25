@@ -5,12 +5,30 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 import chronotimer.Timer;
 
-public class TestTimer {
+public class TimerTest {
+	@Test
+	public void test0ArgumentConstructor() {
+		Timer t = new Timer();
+		assertFalse(t.getTime() == null);
+	}
+
+	@Test
+	public void test1ArgumentConstructor() {
+		Timer t = new Timer(null);
+		assertFalse(t.getTime() == null);
+		t = new Timer("11:00");
+		assertFalse(t.getTime() == null);
+		assertFalse(t.getTime() == "11:00");
+		assertFalse(t.getTime() == "11:00:00.0");
+		t = new Timer("11:00:00.0");
+		assertEquals(t.getTime(), "11:00:00.0");
+	}
 
 	@Test
 	public void testGetTime() {
 		Timer t = new Timer("11:00:00.0");
 		assertEquals(t.getTime(), "11:00:00.0");
+		// make sure that getTime didin't change the time
 		assertEquals(t.getTime(), "11:00:00.0");
 	}
 
@@ -21,6 +39,10 @@ public class TestTimer {
 		t.setTime("12:00:01.0");
 		assertEquals(t.getTime(), "12:00:01.0");
 		t.setTime("12:00:02.0");
+		assertEquals(t.getTime(), "12:00:02.0");
+		t.setTime(null);
+		assertEquals(t.getTime(), "12:00:02.0");
+		t.setTime("12:00");
 		assertEquals(t.getTime(), "12:00:02.0");
 	}
 
@@ -35,16 +57,20 @@ public class TestTimer {
 		assertTrue(Timer.getDifference(t1, t2) == 840);
 		t2 = "13:01:02.0";
 		assertTrue(Timer.getDifference(t1, t2) == 360);
-		t2 = "13:01"; // not a valid time
+		t2 = "13:01"; // invalid time
 		assertTrue(Timer.getDifference(t1, t2) == 0);
+		assertTrue(Timer.getDifference(null, null) == 0);
+		assertTrue(Timer.getDifference(null, t1) == 0);
+		assertTrue(Timer.getDifference(t1, null) == 0);
 	}
 
 	@Test
 	public void testValidateTime() {
+		assertFalse(Timer.validateTime(null));
 		assertFalse(Timer.validateTime("10:00"));
 		assertFalse(Timer.validateTime("10:00:0"));
 		assertFalse(Timer.validateTime("10:00:00 AM"));
-		assertFalse(Timer.validateTime("IO:OO:OO"));
+		assertFalse(Timer.validateTime("IO:OO:OO")); // letters
 		assertFalse(Timer.validateTime("ten"));
 
 		assertFalse(Timer.validateTime("-1:-1:-1.00"));
