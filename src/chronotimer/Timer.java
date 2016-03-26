@@ -1,22 +1,46 @@
 package chronotimer;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
  * Timer stores and manages the current time and includes utilities for working
- * with times.
- *
+ * with time.
  */
 public class Timer {
-	private String currentTime;
-	private SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm:ss.SS");
+	private Date startTime; // stores the time when real-time mode was started
+	private Date offset; // stores the client-facing start time
+	private SimpleDateFormat format;
+	private boolean running;
+	public static final String TIME_FORMAT = "HH:mm:ss.SS";
 
 	/**
-	 * Creates a new Timer with the set to the current time.
+	 * Create a new Timer set to the current time. Real-time mode is off:
+	 * getTime() will return the same time until start() is called or the time
+	 * is changed with setTime().
 	 */
 	public Timer() {
-		currentTime = (timeFormat.format(new Date())).substring(0, 11);
+		startTime = new Date();
+		offset = (Date) startTime.clone();
+		format = new SimpleDateFormat(TIME_FORMAT);
+		format.setLenient(false);
+	}
+
+	/**
+	 * Create a new Timer set to the current time. If running == false,
+	 * real-time mode is off: getTime() will return the same time until start()
+	 * is called or the time is changed with setTime(). If running == true,
+	 * real-time mode is on: getTime() will return a time >= the time at which
+	 * this Timer was allocated or was set with setTime().
+	 * 
+	 * @param running
+	 *            - set whether this timer is running in real-time mode or in
+	 *            stopped mode.
+	 */
+	public Timer(boolean running) {
+		this();
+		this.running = running;
 	}
 
 	/**
@@ -25,34 +49,90 @@ public class Timer {
 	 * the current time is used.
 	 * 
 	 * @param t
-	 *            the time to initialize this timer to.
+	 *            - the time to initialize this timer to.
 	 */
 	public Timer(String t) {
-		if (validateTime(t)) {
-			currentTime = t;
+		startTime = new Date();
+		format = new SimpleDateFormat(TIME_FORMAT);
+		format.setLenient(false);
+		if (t != null) {
+			try {
+				offset = format.parse(t);
+			} catch (ParseException e) {
+				offset = (Date) startTime.clone();
+			}
 		} else {
-			currentTime = (timeFormat.format(new Date())).substring(0, 11);
+			offset = (Date) startTime.clone();
 		}
+	}
+
+	/**
+	 * Creates a new Timer with the current time set to <code>t</code> if
+	 * <code>t</code> is a valid time string. If <code>t</code> is not valid,
+	 * the current time is used.<br>
+	 * If running == false, real-time mode is off: getTime() will return the
+	 * same time until start() is called or the time is changed with setTime().
+	 * If running == true, real-time mode is on: getTime() will return a time >=
+	 * the time at which this Timer was allocated or was set with setTime().
+	 * 
+	 * @param t
+	 *            - the time to initialize this timer to.
+	 * @param running
+	 *            - set whether this timer is running in real-time mode or in
+	 *            stopped mode.
+	 */
+	public Timer(String t, boolean running) {
+		this(t);
+		this.running = running;
+	}
+
+	/**
+	 * Starts this timer running in real-time mode.
+	 */
+	public void start() {
+		startTime = new Date();
+		running = true;
+	}
+
+	/**
+	 * Stops this timer at the current time and takes it out of real-time mode.
+	 */
+	public void stop() {
+		offset = getAdjustedTime();
+		running = false;
 	}
 
 	/**
 	 * Returns the current time from this Timer
 	 * 
-	 * @return current time as a string in the format HH:MM:SS.ss
+	 * @return current time formated as {@link #TIME_FORMAT TIME_FORMAT}
 	 */
 	public String getTime() {
-		return currentTime;
+		if (running) {
+			return (format.format(getAdjustedTime())).substring(0, 11);
+		} else {
+			return (format.format(offset)).substring(0, 11);
+		}
+	}
+
+	private Date getAdjustedTime() {
+		return new Date(offset.getTime() + ((new Date()).getTime() - startTime.getTime()));
 	}
 
 	/**
-	 * Set the current time for this Timer
+	 * Set the current time for this Timer. If not a valid time, the time is not
+	 * changed.
 	 * 
 	 * @param time
-	 *            - the current time. Must be in the format HH:MM:SS.ss
+	 *            - the current time formated as {@link #TIME_FORMAT
+	 *            TIME_FORMAT}
 	 */
 	public void setTime(String time) {
-		if (validateTime(time)) {
-			currentTime = time;
+		if (time != null) {
+			try {
+				offset = format.parse(time);
+			} catch (ParseException e) {
+			}
 		}
 	}
 
@@ -60,26 +140,25 @@ public class Timer {
 	 * Get the difference between 2 time strings.
 	 * 
 	 * @param start
-	 *            - the start time. Must not be null. Must be in the format
-	 *            HH:MM:SS.ss
+	 *            - the start time. Must not be null. Must be formated as
+	 *            {@link #TIME_FORMAT TIME_FORMAT}
 	 * @param end
-	 *            - the end time. Must not be null. Must be in the format
-	 *            HH:MM:SS.ss
+	 *            - the end time. Must not be null. Must be formated as
+	 *            {@link #TIME_FORMAT TIME_FORMAT}
 	 * @return (end - start) in seconds, or 0 if there is an error.
 	 */
 	public static double getDifference(String start, String end) {
-		if (validateTime(start) && validateTime(end)) {
-			String[] startS = start.split(":");
-			String[] endS = end.split(":");
-			// hours + minutes + seconds
-			double startT = Integer.parseInt(startS[0]) * 360 + Integer.parseInt(startS[1]) * 60
-					+ Double.parseDouble(startS[2]);
-			double endT = Integer.parseInt(endS[0]) * 360 + Integer.parseInt(endS[1]) * 60
-					+ Double.parseDouble(endS[2]);
-			double result = endT - startT;
-			if (result >= 0) {
-				return result;
-			} else {
+		if (start != null && end != null) {
+			start = getFullLengthTime(start);
+			end = getFullLengthTime(end);
+			SimpleDateFormat f = new SimpleDateFormat(TIME_FORMAT);
+			f.setLenient(false);
+			try {
+				Date t1 = f.parse(start);
+				Date t2 = f.parse(end);
+				double diff = (t2.getTime() - t1.getTime()) / 1000.0;
+				return (diff > 0) ? diff : 0;
+			} catch (ParseException e) {
 				return 0;
 			}
 		}
@@ -87,8 +166,23 @@ public class Timer {
 	}
 
 	/**
-	 * Validates a string to determine if it follows the time format of
-	 * HH:MM:SS.ss and is a valid time between 00:00:00.00 - 23:59:59.99
+	 * Add trailing zeros to the seconds to turn tenths of a second or hundredth
+	 * of a second into milliseconds
+	 * 
+	 * @param t
+	 * @return
+	 */
+	private static String getFullLengthTime(String t) {
+		int width = 12;
+		if (t != null && t.length() < width) {
+			t = t + new String(new char[width - t.length()]).replace('\0', '0');
+		}
+		return t;
+	}
+
+	/**
+	 * Validates a string to determine if it is formated as {@link #TIME_FORMAT
+	 * TIME_FORMAT} and is a valid time between 00:00:00.00 - 23:59:59.99
 	 * 
 	 * @param t
 	 *            the String to validate
@@ -98,29 +192,14 @@ public class Timer {
 		if (t == null) {
 			return false;
 		}
-		if (t.length() < 10 || t.length() > 11) {
-			return false;
-		}
-		String[] parts = t.split(":");
-		if (parts.length != 3) {
-			return false;
-		}
+		t = getFullLengthTime(t);
+		SimpleDateFormat f = new SimpleDateFormat(TIME_FORMAT);
+		f.setLenient(false);
 		try {
-			int h = Integer.parseInt(parts[0]);
-			if (h < 0 || h >= 24) {
-				return false;
-			}
-			int m = Integer.parseInt(parts[1]);
-			if (m < 0 || m >= 60) {
-				return false;
-			}
-			double s = Double.parseDouble(parts[2]);
-			if (s < 0 || s >= 60) {
-				return false;
-			}
-		} catch (NumberFormatException e) {
+			f.parse(t);
+			return true;
+		} catch (ParseException e) {
 			return false;
 		}
-		return true;
 	}
 }
