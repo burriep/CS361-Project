@@ -1,7 +1,6 @@
 package tests;
 
 import static org.junit.Assert.*;
-
 import org.junit.Test;
 import chronotimer.Timer;
 
@@ -98,5 +97,67 @@ public class TimerTest {
 		assertFalse(Timer.validateTime("24:00:01.00"));
 		assertFalse(Timer.validateTime("24:01:00.00"));
 		assertFalse(Timer.validateTime("25:00:00.00"));
+	}
+
+	@Test
+	public void testRealTime() throws InterruptedException {
+		String ts0 = "11:00:00.00", ts1;
+		Timer t = new Timer(ts0, true);
+		// wait a second
+		Thread.sleep(1000);
+		ts1 = t.getTime();
+		assertFalse(ts0.equals(ts1));
+		// might be a few milliseconds off
+		assertEquals(1, Timer.getDifference(ts0, ts1), 0.1);
+	}
+
+	@Test
+	public void testRealTimeStartStop() throws InterruptedException {
+		String st0 = "02:00:00.00", st1, st2;
+		// start a timer with real-time off
+		Timer t = new Timer(st0, false);
+		assertEquals(st0, t.getTime());
+		Thread.sleep(500);
+		assertEquals(st0, t.getTime());
+		t.start();
+		Thread.sleep(1000);
+		st1 = t.getTime();
+		assertFalse(st0.equals(st1));
+		// might be a few milliseconds off
+		assertEquals(1, Timer.getDifference(st0, st1), 0.1);
+		// test double start
+		st1 = t.getTime();
+		t.start();
+		Thread.sleep(1000);
+		st2 = t.getTime();
+		assertFalse(st2.equals(st1));
+		// might be a few milliseconds off
+		assertEquals(1, Timer.getDifference(st1, st2), 0.1);
+
+		// test stop
+		t.stop();
+		st1 = t.getTime();
+		Thread.sleep(1000);
+		st2 = t.getTime();
+		assertEquals(st1, st2);
+		// test double stop
+		t.stop();
+		assertEquals(t.getTime(), st2);
+	}
+
+	@Test
+	public void testRealTimeSetTime() throws InterruptedException {
+		String st0 = "18:00:00.00", st1, st2;
+		// start a timer with real-time off
+		Timer t = new Timer(true);
+		Thread.sleep(500);
+		t.setTime(st0);
+		st1 = t.getTime();
+		// might be a few milliseconds off
+		assertEquals(0, Timer.getDifference(st0, st1), 0.1);
+		Thread.sleep(500);
+		st2 = t.getTime();
+		// might be a few milliseconds off
+		assertEquals(0.5, Timer.getDifference(st1, st2), 0.1);
 	}
 }

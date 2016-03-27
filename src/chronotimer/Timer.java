@@ -87,19 +87,24 @@ public class Timer {
 	}
 
 	/**
-	 * Starts this timer running in real-time mode.
+	 * Starts this timer running in real-time mode if it was not running.
 	 */
 	public void start() {
-		startTime = new Date();
-		running = true;
+		if (!running) {
+			startTime = new Date();
+			running = true;
+		}
 	}
 
 	/**
-	 * Stops this timer at the current time and takes it out of real-time mode.
+	 * Stops this timer at the current time and takes it out of real-time mode
+	 * if it was running.
 	 */
 	public void stop() {
-		offset = getAdjustedTime();
-		running = false;
+		if (running) {
+			offset = getAdjustedTime();
+			running = false;
+		}
 	}
 
 	/**
@@ -131,6 +136,7 @@ public class Timer {
 		if (time != null) {
 			try {
 				offset = format.parse(time);
+				startTime = new Date();
 			} catch (ParseException e) {
 			}
 		}
