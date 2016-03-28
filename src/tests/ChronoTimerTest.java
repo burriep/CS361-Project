@@ -34,7 +34,10 @@ public class ChronoTimerTest {
 		Racer r1 = new Racer(234);
 		ct.newEvent(EventType.IND);
 		ct.newRunCurrentEvent();
-		ct.addRacerToCurrentRun(r1);		
+		ct.addRacerToCurrentRun(r1);
+		ct.endRunCurrentEvent();
+		ct.newEvent(EventType.IND);
+
 	}
 	
 }

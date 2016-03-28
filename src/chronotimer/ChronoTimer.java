@@ -78,7 +78,9 @@ public class ChronoTimer implements Observer {
 		events.clear();
 		newEvent(EventType.IND);
 		for (int i = 0; i < channels.length; i++) {
-			channels[i].getSensor().deleteObservers();
+			if(channels[i].getSensor() != null) {
+				channels[i].getSensor().deleteObservers();
+			}
 			channels[i] = new Channel();
 		}
 		if (!bakPower) {
