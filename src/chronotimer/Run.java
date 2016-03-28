@@ -119,6 +119,11 @@ public class Run {
 		}
 	}
 
+	public void clearQueue() {
+		notStartedQueue.clear();
+		startedQueue.clear();
+	}
+
 	private RacerRun findRacerRun(Racer r) {
 		for (RacerRun rr : racerData) {
 			if (rr.getRacer().equals(r)) {

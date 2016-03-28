@@ -11,6 +11,6 @@ public class IndEventController implements EventController {
 	}
 
 	@Override
-	public void newRun(Event e) {
+	public void endRun() {
 	}
 }

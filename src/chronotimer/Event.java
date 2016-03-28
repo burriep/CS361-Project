@@ -24,6 +24,7 @@ public class Event {
 
 	public void endRun() {
 		runIsActive = false;
+		getCurrentRun().clearQueue();
 	}
 
 	public boolean isActive() {
@@ -63,9 +64,5 @@ public class Event {
 
 	public ArrayList<Run> getRuns() {
 		return runs;
-	}
-
-	public boolean isEmpty() {
-		return runs.isEmpty();
 	}
 }

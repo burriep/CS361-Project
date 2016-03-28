@@ -1,6 +1,10 @@
+Please select [1] to enter data file or [2] to enter commands: 1
+Enter file name: src/simulator/sprint2_chrono_test_data.txt
 Run 1
-234 12:02:50.0 - 12:03:35.0 : 45.0s
+234 12:02:50.00 - 12:03:35.00 : 45.0s
+315 12:02:52.00 - 12:03:55.00 : 63.0s
 Run 2
-166 13:05:00.0 - 13:05:15.0 : 15.0s
-167 13:04:30.0 - 13:05:02.0 : 32.0s
+167 13:04:30.00 - 13:05:02.00 : 32.0s
+166 13:04:30.10 - 13:05:05.00 : 34.9s
+Run 3
 Exiting simulator...

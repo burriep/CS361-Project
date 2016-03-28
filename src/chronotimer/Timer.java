@@ -57,7 +57,7 @@ public class Timer {
 		format.setLenient(false);
 		if (t != null) {
 			try {
-				offset = format.parse(t);
+				offset = format.parse(getFullLengthTime(t));
 			} catch (ParseException e) {
 				offset = (Date) startTime.clone();
 			}
@@ -135,7 +135,7 @@ public class Timer {
 	public void setTime(String time) {
 		if (time != null) {
 			try {
-				offset = format.parse(time);
+				offset = format.parse(getFullLengthTime(time));
 				startTime = new Date();
 			} catch (ParseException e) {
 			}
@@ -155,13 +155,11 @@ public class Timer {
 	 */
 	public static double getDifference(String start, String end) {
 		if (start != null && end != null) {
-			start = getFullLengthTime(start);
-			end = getFullLengthTime(end);
 			SimpleDateFormat f = new SimpleDateFormat(TIME_FORMAT);
 			f.setLenient(false);
 			try {
-				Date t1 = f.parse(start);
-				Date t2 = f.parse(end);
+				Date t1 = f.parse(getFullLengthTime(start));
+				Date t2 = f.parse(getFullLengthTime(end));
 				double diff = (t2.getTime() - t1.getTime()) / 1000.0;
 				return (diff > 0) ? diff : 0;
 			} catch (ParseException e) {
@@ -198,11 +196,10 @@ public class Timer {
 		if (t == null) {
 			return false;
 		}
-		t = getFullLengthTime(t);
 		SimpleDateFormat f = new SimpleDateFormat(TIME_FORMAT);
 		f.setLenient(false);
 		try {
-			f.parse(t);
+			f.parse(getFullLengthTime(t));
 			return true;
 		} catch (ParseException e) {
 			return false;

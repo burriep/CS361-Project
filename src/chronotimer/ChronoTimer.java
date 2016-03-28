@@ -141,13 +141,20 @@ public class ChronoTimer implements Observer {
 	 */
 	public void newEvent(EventType e) {
 		if (isOn()) {
-			if (e != null) {
+			if (e == null) {
+				e = EventType.IND;
+			}
+			if (getCurrentEvent() == null) {
 				events.add(new Event(e));
+			} else if (e != getCurrentEvent().getType()) {
+				getCurrentEvent().setType(e);
 				switch (e) {
 				case PARGRP:
+					// TODO: Sprint 4
 					// ec = new ParGrpEventController();
 					break;
 				case GRP:
+					// TODO: Sprint 3
 					// ec = new GrpEventController();
 					break;
 				case PARIND:
@@ -166,7 +173,7 @@ public class ChronoTimer implements Observer {
 	 */
 	public void printCurrentRun() {
 		if (isOn()) {
-			Event cE = events.get(events.size() - 1);
+			Event cE = getCurrentEvent();
 			Collection<RacerRun> data = cE.getCurrentRun().getData();
 			printer.print("Run " + cE.getCurrentRunNumber());
 			for (RacerRun rr : data) {
@@ -183,7 +190,7 @@ public class ChronoTimer implements Observer {
 	 */
 	public void printRun(int id) {
 		if (isOn()) {
-			Event cE = events.get(events.size() - 1);
+			Event cE = getCurrentEvent();
 			if (id > 0 && id <= cE.getCurrentRunNumber()) {
 				Collection<RacerRun> data = cE.getRun(id).getData();
 				printer.print("Run " + cE.getCurrentRunNumber());
@@ -195,12 +202,12 @@ public class ChronoTimer implements Observer {
 	}
 
 	public void exportCurrentRun() {
-		exportRun(events.get(events.size() - 1).getCurrentRunNumber());
+		exportRun(getCurrentEvent().getCurrentRunNumber());
 	}
 
 	public void exportRun(int id) {
 		if (isOn()) {
-			Event cE = events.get(events.size() - 1);
+			Event cE = getCurrentEvent();
 			if (id > 0 && id <= cE.getCurrentRunNumber()) {
 				String runJSON = cE.getRun(id).toJSON();
 				try {
@@ -219,28 +226,28 @@ public class ChronoTimer implements Observer {
 	 */
 	public void addRacerToCurrentRun(Racer r) {
 		if (isOn()) {
-			events.get(events.size() - 1).getCurrentRun().addRacer(r);
+			getCurrentEvent().getCurrentRun().addRacer(r);
 		}
 	}
 
 	public void clearRacer(int racerID) {
 		if (isOn()) {
 			// TODO: check if this is right for PARIND and other race types
-			events.get(events.size() - 1).getCurrentRun().clearRacer(new Racer(racerID));
+			getCurrentEvent().getCurrentRun().clearRacer(new Racer(racerID));
 		}
 	}
 
 	public void swapRacer() {
 		if (isOn()) {
 			// TODO: check if this is right for PARIND and other race types
-			events.get(events.size() - 1).getCurrentRun().swapRacer();
+			getCurrentEvent().getCurrentRun().swapRacer();
 		}
 	}
 
 	public void dnfRacer() {
 		if (isOn()) {
 			// TODO: check if this is right for PARIND and other race types
-			events.get(events.size() - 1).getCurrentRun().didNotFinishRacer();
+			getCurrentEvent().getCurrentRun().didNotFinishRacer();
 		}
 	}
 
@@ -249,9 +256,8 @@ public class ChronoTimer implements Observer {
 	 */
 	public void newRunCurrentEvent() {
 		if (isOn()) {
-			Event cE = events.get(events.size() - 1);
+			Event cE = getCurrentEvent();
 			cE.newRun();
-			ec.newRun(cE);
 		}
 	}
 
@@ -260,7 +266,8 @@ public class ChronoTimer implements Observer {
 	 */
 	public void endRunCurrentEvent() {
 		if (isOn()) {
-			events.get(events.size() - 1).endRun();
+			getCurrentEvent().endRun();
+			ec.endRun();
 		}
 	}
 
@@ -304,12 +311,19 @@ public class ChronoTimer implements Observer {
 					// find which channel the sensor is connected to
 					if (o.equals(channels[i].getSensor())) {
 						if (channels[i].isEnabled()) {
-							ec.channelTriggered(i + 1, events.get(events.size() - 1).getCurrentRun(), timer.getTime());
+							ec.channelTriggered(i + 1, getCurrentEvent().getCurrentRun(), timer.getTime());
 						}
 						break;
 					}
 				}
 			}
 		}
+	}
+
+	private Event getCurrentEvent() {
+		if (events.size() > 0) {
+			return events.get(events.size() - 1);
+		}
+		return null;
 	}
 }
