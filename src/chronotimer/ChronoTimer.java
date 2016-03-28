@@ -14,11 +14,32 @@ public class ChronoTimer implements Observer {
 	private EventController ec;
 	public static final int DEFAULT_CHANNEL_COUNT = 12;
 
+	/**
+	 * Create a new ChronoTimer to be used when timing races. This ChronoTimer
+	 * will operate in real-time.
+	 */
 	public ChronoTimer() {
+		this(false);
+	}
+
+	/**
+	 * Create a new ChronoTimer to be used when timing races. If
+	 * <code>testMode</code> is true, this ChronoTimer will not run its internal
+	 * timer. Any changes to the time must be made through
+	 * {@link #setTime(String) setTime()} and any calls to {@link #getTime()
+	 * getTime()} will return the same time until the time is manually changed.
+	 * <br>
+	 * If <code>testMode</code> is false, this ChronoTimer will operate in
+	 * real-time mode with the timer running.
+	 * 
+	 * @param testMode
+	 *            - true = test mode on, false = test mode off.
+	 */
+	public ChronoTimer(boolean testMode) {
 		powerOn();
 		printer = new Printer();
 		printer.powerOn();
-		timer = new Timer();
+		timer = new Timer(!testMode);
 		events = new ArrayList<Event>();
 		newEvent(new Event(EventType.IND));
 		channels = new Channel[DEFAULT_CHANNEL_COUNT];
