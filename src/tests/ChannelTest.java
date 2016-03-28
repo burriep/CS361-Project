@@ -43,7 +43,18 @@ public class ChannelTest {
 
 	@Test
 	public void testZeroChannels() {
-
+		ArrayList<Channel> channels = new ArrayList<Channel>(12);
+		for (int i = 0; i < channels.size(); i++) {
+			assertEquals(false, channels.get(i).isEnabled());
+		}
+	}
+	
+	@Test
+	public void testSensorConnection() {
+		ArrayList<Channel> channels = new ArrayList<Channel>(12);
+		assertEquals(false, channels.get(0).isConnected());
+		channels.get(0).connect(new Sensor(SensorType.EYE));
+		assertEquals(true, channels.get(0).isConnected());
 	}
 
 }

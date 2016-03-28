@@ -254,6 +254,15 @@ public class ChronoTimer implements Observer {
 			events.get(events.size() - 1).endRun();
 		}
 	}
+	
+	/**
+	 * Get the list of events
+	 * 
+	 * @return events
+	 */
+	public ArrayList<Event> getEvents(){
+		return events;
+	}
 
 	/**
 	 * Set the system time
