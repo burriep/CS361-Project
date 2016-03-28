@@ -64,4 +64,8 @@ public class Event {
 	public ArrayList<Run> getRuns() {
 		return runs;
 	}
+
+	public boolean isEmpty() {
+		return runs.isEmpty();
+	}
 }

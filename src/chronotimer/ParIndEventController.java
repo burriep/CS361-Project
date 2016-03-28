@@ -16,12 +16,16 @@ public class ParIndEventController implements EventController {
 			if (!queue.isEmpty()) {
 				r.addRacerStartTime(time);
 				int finishChannel = (channelNumber == 1) ? 2 : 4;
-				channelMap.put(queue.iterator().next(), finishChannel);
+				Iterator<Racer> qi = queue.iterator();
+				if (qi.hasNext()) {
+					channelMap.put(qi.next(), finishChannel);
+				}
 			}
 		} else if (channelNumber == 2 || channelNumber == 4) {
 			Collection<Racer> racers = r.getStartedRacers();
 			for (Racer cr : racers) {
-				if (channelMap.get(cr) == channelNumber) {
+				int finishChannel = channelMap.get(cr);
+				if (finishChannel == channelNumber) {
 					r.addRacerEndTime(cr, time);
 					channelMap.remove(cr);
 					break;

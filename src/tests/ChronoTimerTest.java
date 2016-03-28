@@ -31,10 +31,8 @@ public class ChronoTimerTest {
 	@Test
 	public void testEventChangeAfterRun(){
 		ChronoTimer ct = new ChronoTimer();
-		Event e1 = new Event(EventType.IND);
-		Event e2 = new Event(EventType.PARIND);
 		Racer r1 = new Racer(234);
-		ct.newEvent(e1);
+		ct.newEvent(EventType.IND);
 		ct.newRunCurrentEvent();
 		ct.addRacerToCurrentRun(r1);		
 	}

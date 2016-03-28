@@ -41,7 +41,7 @@ public class ChronoTimer implements Observer {
 		printer.powerOn();
 		timer = new Timer(!testMode);
 		events = new ArrayList<Event>();
-		newEvent(new Event(EventType.IND));
+		newEvent(EventType.IND);
 		channels = new Channel[DEFAULT_CHANNEL_COUNT];
 		for (int i = 0; i < channels.length; i++) {
 			channels[i] = new Channel();
@@ -76,7 +76,7 @@ public class ChronoTimer implements Observer {
 		timer = new Timer();
 		printer.powerOff();
 		events.clear();
-		newEvent(new Event(EventType.IND));
+		newEvent(EventType.IND);
 		for (int i = 0; i < channels.length; i++) {
 			channels[i].getSensor().deleteObservers();
 			channels[i] = new Channel();
@@ -139,14 +139,23 @@ public class ChronoTimer implements Observer {
 	 * 
 	 * @param e
 	 */
-	public void newEvent(Event e) {
+	public void newEvent(EventType e) {
 		if (isOn()) {
 			if (e != null) {
-				events.add(e);
-				if (e.getType() == EventType.IND) {
-					ec = new IndEventController();
-				} else if (e.getType() == EventType.PARIND) {
+				events.add(new Event(e));
+				switch (e) {
+				case PARGRP:
+					// ec = new ParGrpEventController();
+					break;
+				case GRP:
+					// ec = new GrpEventController();
+					break;
+				case PARIND:
 					ec = new ParIndEventController();
+					break;
+				default:
+					ec = new IndEventController();
+					break;
 				}
 			}
 		}
@@ -254,13 +263,13 @@ public class ChronoTimer implements Observer {
 			events.get(events.size() - 1).endRun();
 		}
 	}
-	
+
 	/**
 	 * Get the list of events
 	 * 
 	 * @return events
 	 */
-	public ArrayList<Event> getEvents(){
+	public ArrayList<Event> getEvents() {
 		return events;
 	}
 
@@ -271,9 +280,9 @@ public class ChronoTimer implements Observer {
 	 *            - time
 	 */
 	public void setTime(String t) {
-		if (isOn()) {
-			timer.setTime(t);
-		}
+		// if (isOn()) {}
+		// TODO: verify if ChronoTimer can be off for this command
+		timer.setTime(t);
 	}
 
 	/**
@@ -282,10 +291,9 @@ public class ChronoTimer implements Observer {
 	 * @return time
 	 */
 	public String getTime() {
-		if (isOn()) {
-			return timer.getTime();
-		}
-		return null;
+		// if (isOn()) {}
+		// TODO: verify if ChronoTimer can be off for this command
+		return timer.getTime();
 	}
 
 	@Override
