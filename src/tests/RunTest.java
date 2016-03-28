@@ -19,8 +19,9 @@ public class RunTest {
 		assertEquals(2, run.getQueuedRacers().size());
 		run.clearRacer(r1);
 		assertEquals(1, run.getQueuedRacers().size());
-		//assertEquals(r2, run.getRacers().getRacer(0));
-		//assertEquals(r2.getNumber(), run.getRacers().get(0).getNumber());
+		Racer r3 = run.getQueuedRacers().iterator().next();
+		assertEquals(r2, r3);
+		assertEquals(r2.getNumber(), r3.getNumber());
 	}
 
 	@Test(expected = Exception.class)
