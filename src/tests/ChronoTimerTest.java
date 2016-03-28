@@ -40,4 +40,16 @@ public class ChronoTimerTest {
 
 	}
 	
+	@Test
+	public void testWhileOff() {
+		ChronoTimer ct = new ChronoTimer();
+		ct.powerOff();
+		Racer r1 = new Racer(234);
+		ct.newEvent(EventType.IND);
+		ct.newRunCurrentEvent();
+		ct.addRacerToCurrentRun(r1);
+		ct.endRunCurrentEvent();
+		ct.newEvent(EventType.IND);
+		assertEquals(null, ct.getEvents());
+	}
 }

@@ -279,7 +279,10 @@ public class ChronoTimer implements Observer {
 	 * @return events
 	 */
 	public ArrayList<Event> getEvents() {
-		return events;
+		if (isOn()) {
+			return events;
+		}
+		return null;
 	}
 
 	/**
