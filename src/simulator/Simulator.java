@@ -19,7 +19,7 @@ import chronotimer.*;
 public class Simulator {
 
 	public static String INPUTFILE = "";
-	static ChronoTimer testChronoTimer = new ChronoTimer();
+	static ChronoTimer testChronoTimer;
 	static Sensor[] sensors = new Sensor[ChronoTimer.DEFAULT_CHANNEL_COUNT];
 
 	public static void main(String[] args) {
@@ -31,6 +31,7 @@ public class Simulator {
 			selectOption = stdIn.nextInt();
 		}
 		if (selectOption == 1) {
+			testChronoTimer = new ChronoTimer(true);
 			System.out.print("Enter file name: ");
 			INPUTFILE = stdIn.next();
 			try {
@@ -51,11 +52,11 @@ public class Simulator {
 			}
 		} else {
 			singleLine = stdIn.nextLine();
-			Timer commandTimer = new Timer(true);
+			testChronoTimer = new ChronoTimer();
 			do {
 				System.out.print("Enter command (type EXIT to quit): ");
 				singleLine = stdIn.nextLine();
-				parseLine(commandTimer.getTime(), singleLine);
+				parseLine(testChronoTimer.getTime(), singleLine);
 			} while (!singleLine.contains("EXIT"));
 		}
 	}
