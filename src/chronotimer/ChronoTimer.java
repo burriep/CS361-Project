@@ -78,7 +78,7 @@ public class ChronoTimer implements Observer {
 		events.clear();
 		newEvent(EventType.IND);
 		for (int i = 0; i < channels.length; i++) {
-			if(channels[i].getSensor() != null) {
+			if (channels[i].getSensor() != null) {
 				channels[i].getSensor().deleteObservers();
 			}
 			channels[i] = new Channel();
@@ -152,12 +152,10 @@ public class ChronoTimer implements Observer {
 				getCurrentEvent().setType(e);
 				switch (e) {
 				case PARGRP:
-					// TODO: Sprint 4
-					// ec = new ParGrpEventController();
+					ec = new ParGrpEventController();
 					break;
 				case GRP:
-					// TODO: Sprint 3
-					// ec = new GrpEventController();
+					ec = new GrpEventController();
 					break;
 				case PARIND:
 					ec = new ParIndEventController();
@@ -226,7 +224,7 @@ public class ChronoTimer implements Observer {
 	/**
 	 * Add a racer to the current run of the current event
 	 */
-	public void addRacerToCurrentRun(Racer r) {
+	public void addRacerToCurrentRun(int r) {
 		if (isOn()) {
 			getCurrentEvent().getCurrentRun().addRacer(r);
 		}
@@ -235,7 +233,7 @@ public class ChronoTimer implements Observer {
 	public void clearRacer(int racerID) {
 		if (isOn()) {
 			// TODO: check if this is right for PARIND and other race types
-			getCurrentEvent().getCurrentRun().clearRacer(new Racer(racerID));
+			getCurrentEvent().getCurrentRun().clearRacer(racerID);
 		}
 	}
 

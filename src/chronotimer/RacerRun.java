@@ -6,45 +6,45 @@ package chronotimer;
  * RacerRun. See the Race and Event classes for details on that.
  */
 public class RacerRun {
-	private Racer racer;
+	private int racerID;
 	private String startTime;
 	private String endTime;
 
 	/**
-	 * Create a new RacerRun for Racer r with no start or end time.
+	 * Create a new RacerRun for racer with ID racerID with no start or end
+	 * time.
 	 * 
-	 * @param r
-	 *            - the racer. Should not be NULL.
+	 * @param racerID
+	 *            - the ID associated with this RacerRun
 	 */
-	public RacerRun(Racer r) {
-		racer = r;
+	public RacerRun(int racerID) {
+		this.racerID = racerID;
 	}
 
 	/**
-	 * Create a new RacerRun for Racer r with start time <code>start</code> and
-	 * no end time.
+	 * Create a new RacerRun for racer with ID <code>racerID</code> and start
+	 * time <code>start</code> and no end time.
 	 * 
-	 * @param r
-	 *            - the racer. Should not be NULL.
+	 * @param racerID
+	 *            - the ID associated with this RacerRun
 	 * @param start
 	 *            - the start time for this Racer's run. Must be in the format
 	 *            HH:MM:SS.ss
 	 */
-	public RacerRun(Racer r, String start) {
-		racer = r;
+	public RacerRun(int racerID, String start) {
+		this.racerID = racerID;
 		if (Timer.validateTime(start)) {
 			startTime = start;
 		}
 	}
 
 	/**
-	 * Return the racer associated with this RacerRun.
+	 * Return the racer ID associated with this RacerRun.
 	 * 
-	 * @return the racer associated with this RacerRun. Could be NULL if the
-	 *         racer was null when creating this RacerRun.
+	 * @return the racer ID associated with this RacerRun.
 	 */
-	public Racer getRacer() {
-		return racer;
+	public int getRacer() {
+		return racerID;
 	}
 
 	/**
@@ -108,6 +108,6 @@ public class RacerRun {
 
 	@Override
 	public String toString() {
-		return racer + " " + startTime + " - " + endTime + " : " + Timer.getDifference(startTime, endTime) + "s";
+		return racerID + " " + startTime + " - " + endTime + " : " + Timer.getDifference(startTime, endTime) + "s";
 	}
 }

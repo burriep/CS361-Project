@@ -27,27 +27,25 @@ public class ChronoTimerTest {
 		assertEquals(EventType.IND, ct.getEvents().get(0).getType());
 		ct.powerOff();
 	}
-	
+
 	@Test
-	public void testEventChangeAfterRun(){
+	public void testEventChangeAfterRun() {
 		ChronoTimer ct = new ChronoTimer();
-		Racer r1 = new Racer(234);
 		ct.newEvent(EventType.IND);
 		ct.newRunCurrentEvent();
-		ct.addRacerToCurrentRun(r1);
+		ct.addRacerToCurrentRun(234);
 		ct.endRunCurrentEvent();
 		ct.newEvent(EventType.IND);
 
 	}
-	
+
 	@Test
 	public void testWhileOff() {
 		ChronoTimer ct = new ChronoTimer();
 		ct.powerOff();
-		Racer r1 = new Racer(234);
 		ct.newEvent(EventType.IND);
 		ct.newRunCurrentEvent();
-		ct.addRacerToCurrentRun(r1);
+		ct.addRacerToCurrentRun(234);
 		ct.endRunCurrentEvent();
 		ct.newEvent(EventType.IND);
 		assertEquals(null, ct.getEvents());

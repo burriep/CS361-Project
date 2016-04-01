@@ -116,8 +116,7 @@ public class Simulator {
 			testChronoTimer.toggleChannel(Integer.parseInt(toggleArgs[1]));
 		} else if (singleCommand.contains("NUM")) {
 			String[] racerArgs = singleCommand.split(" ");
-			Racer newRacer = new Racer(Integer.parseInt(racerArgs[1]));
-			testChronoTimer.addRacerToCurrentRun(newRacer);
+			testChronoTimer.addRacerToCurrentRun(Integer.parseInt(racerArgs[1]));
 		} else if (singleCommand.contains("TRIG")) {
 			String[] trigArgs = singleCommand.split(" ");
 			int num = Integer.parseInt(trigArgs[1]);

@@ -5,27 +5,28 @@ import com.google.gson.Gson;
 
 public class Run {
 	private ArrayList<RacerRun> racerData;
-	private Queue<Racer> notStartedQueue;
-	private ArrayList<Racer> startedQueue;
+	private Queue<Integer> notStartedQueue;
+	private ArrayList<Integer> startedQueue;
 
 	/**
 	 * Create a new Run with no data.
 	 */
 	public Run() {
 		racerData = new ArrayList<RacerRun>();
-		notStartedQueue = new LinkedList<Racer>();
-		startedQueue = new ArrayList<Racer>();
+		notStartedQueue = new LinkedList<Integer>();
+		startedQueue = new ArrayList<Integer>();
 	}
 
 	/**
 	 * Add a racer to the queue of racers waiting to start. <code>r</code> must
-	 * not be NULL. If <code>r</code> is NULL, nothing will be added or changed.
+	 * be within the range [0, 99999]. If it is outside the valid range, no
+	 * racer will be added.
 	 * 
 	 * @param r
-	 *            - the racer to add, must not be NULL.
+	 *            - the racer to add. Must be within the range [0, 99999].
 	 */
-	public void addRacer(Racer r) {
-		if (r != null) {
+	public void addRacer(int r) {
+		if (r >= 0 && r <= 99999) {
 			notStartedQueue.add(r);
 		}
 	}
@@ -36,21 +37,22 @@ public class Run {
 	 */
 	public void swapRacer() {
 		if (startedQueue.size() >= 2) {
-			Racer r0 = startedQueue.get(0);
+			int r0 = startedQueue.get(0);
 			startedQueue.set(0, startedQueue.get(1));
 			startedQueue.set(1, r0);
 		}
 	}
 
 	/**
-	 * Removes Racer <code>r</code> from the queue of racers that have not yet
-	 * started. If <code>r</code> is NULL, no racers will be removed or changed.
+	 * Removes racer <code>r</code> from the queue of racers that have not yet
+	 * started. <code>r</code> must be within the range [0, 99999]. If it is
+	 * outside the valid range, no racer will be cleared.
 	 * 
 	 * @param r
-	 *            - the Racer to remove. Should not be NULL.
+	 *            - the racer to remove. Must be within the range [0, 99999].
 	 */
-	public void clearRacer(Racer r) {
-		if (r != null) {
+	public void clearRacer(int r) {
+		if (r >= 0 && r <= 99999) {
 			notStartedQueue.remove(r);
 		}
 	}
@@ -73,7 +75,7 @@ public class Run {
 	 */
 	public void addRacerStartTime(String t) {
 		if (!notStartedQueue.isEmpty()) {
-			Racer r = notStartedQueue.remove();
+			int r = notStartedQueue.remove();
 			startedQueue.add(r);
 			racerData.add(new RacerRun(r, t));
 		}
@@ -90,7 +92,7 @@ public class Run {
 	 */
 	public void addRacerEndTime(String t) {
 		if (!startedQueue.isEmpty()) {
-			Racer r = startedQueue.remove(0);
+			int r = startedQueue.remove(0);
 			RacerRun rr = findRacerRun(r);
 			if (rr != null) {
 				rr.setEndTime(t);
@@ -102,16 +104,16 @@ public class Run {
 	 * Add an end time for a specific racer which has started.
 	 * 
 	 * @param r
-	 *            - the racer which to add the start time for. If NULL, no
-	 *            changes will be made.
+	 *            - the racer which to add the start time for. Must be within
+	 *            the range [0, 99999].
 	 * @param t
-	 *            - the end time for Racer r. Must be in the format HH:MM:SS.ss.
+	 *            - the end time for racer r. Must be in the format HH:MM:SS.ss.
 	 *            If the time is invalid, no end time will be recorded for that
 	 *            racer but that racer will no longer be active in this Run.
 	 */
-	public void addRacerEndTime(Racer r, String t) {
-		if (!startedQueue.isEmpty() && r != null) {
-			startedQueue.remove(r);
+	public void addRacerEndTime(int r, String t) {
+		if (!startedQueue.isEmpty() && r >= 0 && r <= 99999) {
+			startedQueue.remove(Integer.valueOf(r));
 			RacerRun rr = findRacerRun(r);
 			if (rr != null) {
 				rr.setEndTime(t);
@@ -124,9 +126,9 @@ public class Run {
 		startedQueue.clear();
 	}
 
-	private RacerRun findRacerRun(Racer r) {
+	private RacerRun findRacerRun(int r) {
 		for (RacerRun rr : racerData) {
-			if (rr.getRacer().equals(r)) {
+			if (rr.getRacer() == r) {
 				return rr;
 			}
 		}
@@ -139,7 +141,7 @@ public class Run {
 	 * 
 	 * @return Collection of not started racers.
 	 */
-	public Collection<Racer> getQueuedRacers() {
+	public Collection<Integer> getQueuedRacers() {
 		return notStartedQueue;
 	}
 
@@ -149,7 +151,7 @@ public class Run {
 	 * 
 	 * @return Collection of started racers.
 	 */
-	public Collection<Racer> getStartedRacers() {
+	public Collection<Integer> getStartedRacers() {
 		return startedQueue;
 	}
 
