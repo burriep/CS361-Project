@@ -10,7 +10,7 @@ public class ParIndEventController implements EventController {
 	}
 
 	@Override
-	public void channelTriggered(int channelNumber, Run r, String time) {
+	public void channelTriggered(int channelNumber, Run r, Time time) {
 		if (channelNumber == 1 || channelNumber == 3) {
 			Collection<Integer> queue = r.getQueuedRacers();
 			if (!queue.isEmpty()) {

@@ -69,11 +69,11 @@ public class Run {
 	 * to start.
 	 * 
 	 * @param t
-	 *            - the start time for the next racer. Must be in the format
-	 *            HH:MM:SS.ss. If the time is invalid, no start time will be
-	 *            recorded for that racer but will be marked as started.
+	 *            - the start time for the next racer. If NULL, no start time
+	 *            will be recorded for that racer but will be removed from the
+	 *            queue of racers to start.
 	 */
-	public void addRacerStartTime(String t) {
+	public void addRacerStartTime(Time t) {
 		if (!notStartedQueue.isEmpty()) {
 			int r = notStartedQueue.remove();
 			startedQueue.add(r);
@@ -85,12 +85,11 @@ public class Run {
 	 * Add an end time for the next racer to finish.
 	 * 
 	 * @param t
-	 *            - the end time for the next racer. Must be in the format
-	 *            HH:MM:SS.ss. If the time is invalid, no end time will be
-	 *            recorded for that racer but that racer will no longer be
+	 *            - the end time for the next racer. If NULL, no end time will
+	 *            be recorded for that racer but that racer will no longer be
 	 *            active in this Run.
 	 */
-	public void addRacerEndTime(String t) {
+	public void addRacerEndTime(Time t) {
 		if (!startedQueue.isEmpty()) {
 			int r = startedQueue.remove(0);
 			RacerRun rr = findRacerRun(r);
@@ -107,11 +106,11 @@ public class Run {
 	 *            - the racer which to add the start time for. Must be within
 	 *            the range [0, 99999].
 	 * @param t
-	 *            - the end time for racer r. Must be in the format HH:MM:SS.ss.
-	 *            If the time is invalid, no end time will be recorded for that
-	 *            racer but that racer will no longer be active in this Run.
+	 *            - the end time for racer r. If NULL, no end time will be
+	 *            recorded for that racer but that racer will no longer be
+	 *            active in this Run.
 	 */
-	public void addRacerEndTime(int r, String t) {
+	public void addRacerEndTime(int r, Time t) {
 		if (!startedQueue.isEmpty() && r >= 0 && r <= 99999) {
 			startedQueue.remove(Integer.valueOf(r));
 			RacerRun rr = findRacerRun(r);
@@ -121,6 +120,9 @@ public class Run {
 		}
 	}
 
+	/**
+	 * Removes all racers from the queue.
+	 */
 	public void clearQueue() {
 		notStartedQueue.clear();
 		startedQueue.clear();

@@ -303,7 +303,7 @@ public class ChronoTimer implements Observer {
 	public String getTime() {
 		// if (isOn()) {}
 		// TODO: verify if ChronoTimer can be off for this command
-		return timer.getTime();
+		return timer.getTimeString();
 	}
 
 	@Override

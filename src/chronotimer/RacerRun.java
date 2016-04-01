@@ -7,8 +7,8 @@ package chronotimer;
  */
 public class RacerRun {
 	private int racerID;
-	private String startTime;
-	private String endTime;
+	private Time startTime;
+	private Time endTime;
 
 	/**
 	 * Create a new RacerRun for racer with ID racerID with no start or end
@@ -26,16 +26,13 @@ public class RacerRun {
 	 * time <code>start</code> and no end time.
 	 * 
 	 * @param racerID
-	 *            - the ID associated with this RacerRun
+	 *            - the ID associated with this RacerRun.
 	 * @param start
-	 *            - the start time for this Racer's run. Must be in the format
-	 *            HH:MM:SS.ss
+	 *            - the start time for this RacerRun.
 	 */
-	public RacerRun(int racerID, String start) {
+	public RacerRun(int racerID, Time start) {
 		this.racerID = racerID;
-		if (Timer.validateTime(start)) {
-			startTime = start;
-		}
+		startTime = start;
 	}
 
 	/**
@@ -48,14 +45,13 @@ public class RacerRun {
 	}
 
 	/**
-	 * Set the start time for this RacerRun. If <code>time</code> is not a valid
-	 * time, the start time will not be changed.
+	 * Set the start time for this RacerRun.
 	 * 
 	 * @param time
-	 *            - the start time. Must be in the format HH:MM:SS.ss
+	 *            - start time. If NULL, no change is made to the start time.
 	 */
-	public void setStartTime(String time) {
-		if (Timer.validateTime(time)) {
+	public void setStartTime(Time time) {
+		if (time != null) {
 			startTime = time;
 		}
 	}
@@ -64,34 +60,31 @@ public class RacerRun {
 	 * Return the start time associated with this RacerRun or NULL if the start
 	 * time has not been set.
 	 * 
-	 * @return the start time (in the format HH:MM:SS.ss) or NULL if the start
-	 *         time has not been added.
+	 * @return the start time
 	 */
-	public String getStartTime() {
+	public Time getStartTime() {
 		return startTime;
 	}
 
 	/**
-	 * Set the end time for this RacerRun. If <code>time</code> is not a valid
-	 * time, the end time will not be changed.
+	 * Set the end time for this RacerRun.
 	 * 
 	 * @param time
-	 *            - the end time. Must be in the format HH:MM:SS.ss
+	 *            - end time. If NULL, no change is made to the start time.
 	 */
-	public void setEndTime(String time) {
-		if (Timer.validateTime(time)) {
+	public void setEndTime(Time time) {
+		if (time != null) {
 			endTime = time;
 		}
 	}
 
 	/**
-	 * Return the end time associated with this RacerRun or NULL if the start
-	 * time has not been set.
+	 * Return the end time associated with this RacerRun or NULL if the end time
+	 * has not been set.
 	 * 
-	 * @return the end time (in the format HH:MM:SS.ss) or NULL if the end time
-	 *         has not been added.
+	 * @return the end time
 	 */
-	public String getEndTime() {
+	public Time getEndTime() {
 		return endTime;
 	}
 
@@ -99,8 +92,7 @@ public class RacerRun {
 	 * Get the elapsed time (end - start) for this RacerRun in seconds. If
 	 * either time is not set, this will return 0.
 	 * 
-	 * @return the elapsed time for this RacerRun or 0 if either start or end
-	 *         time is not set.
+	 * @return the elapsed time for this RacerRun.
 	 */
 	public double getElapsedTime() {
 		return Timer.getDifference(startTime, endTime);
@@ -108,6 +100,7 @@ public class RacerRun {
 
 	@Override
 	public String toString() {
-		return racerID + " " + startTime + " - " + endTime + " : " + Timer.getDifference(startTime, endTime) + "s";
+		return racerID + " " + Timer.convertToTimeString(startTime) + " - " + Timer.convertToTimeString(endTime) + " : "
+				+ getElapsedTime() + "s";
 	}
 }

@@ -2,15 +2,14 @@ package chronotimer;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 /**
  * Timer stores and manages the current time and includes utilities for working
  * with time.
  */
 public class Timer {
-	private Date startTime; // stores the time when real-time mode was started
-	private Date offset; // stores the client-facing start time
+	private Time startTime; // stores the time when real-time mode was started
+	private Time offset; // stores the client-facing start time
 	private SimpleDateFormat format;
 	private boolean running;
 	public static final String TIME_FORMAT = "HH:mm:ss.SS";
@@ -21,8 +20,8 @@ public class Timer {
 	 * is changed with setTime().
 	 */
 	public Timer() {
-		startTime = new Date();
-		offset = (Date) startTime.clone();
+		startTime = new Time();
+		offset = (Time) startTime.clone();
 		format = new SimpleDateFormat(TIME_FORMAT);
 		format.setLenient(false);
 	}
@@ -52,17 +51,17 @@ public class Timer {
 	 *            - the time to initialize this timer to.
 	 */
 	public Timer(String t) {
-		startTime = new Date();
+		startTime = new Time();
 		format = new SimpleDateFormat(TIME_FORMAT);
 		format.setLenient(false);
 		if (t != null) {
 			try {
-				offset = format.parse(getFullLengthTime(t));
+				offset = new Time(format.parse(getFullLengthTime(t)).getTime());
 			} catch (ParseException e) {
-				offset = (Date) startTime.clone();
+				offset = (Time) startTime.clone();
 			}
 		} else {
-			offset = (Date) startTime.clone();
+			offset = (Time) startTime.clone();
 		}
 	}
 
@@ -91,7 +90,7 @@ public class Timer {
 	 */
 	public void start() {
 		if (!running) {
-			startTime = new Date();
+			startTime = new Time();
 			running = true;
 		}
 	}
@@ -108,20 +107,25 @@ public class Timer {
 	}
 
 	/**
-	 * Returns the current time from this Timer
+	 * Returns the current time from this Timer as a String.
 	 * 
 	 * @return current time formated as {@link #TIME_FORMAT TIME_FORMAT}
 	 */
-	public String getTime() {
-		if (running) {
-			return (format.format(getAdjustedTime())).substring(0, 11);
-		} else {
-			return (format.format(offset)).substring(0, 11);
-		}
+	public String getTimeString() {
+		return format.format(getTime()).substring(0, 11);
 	}
 
-	private Date getAdjustedTime() {
-		return new Date(offset.getTime() + ((new Date()).getTime() - startTime.getTime()));
+	/**
+	 * Returns the current time from this Timer as a Time.
+	 * 
+	 * @return current time
+	 */
+	public Time getTime() {
+		return running ? getAdjustedTime() : offset;
+	}
+
+	private Time getAdjustedTime() {
+		return new Time(offset.getTime() + ((new Time()).getTime() - startTime.getTime()));
 	}
 
 	/**
@@ -131,14 +135,18 @@ public class Timer {
 	 * @param time
 	 *            - the current time formated as {@link #TIME_FORMAT
 	 *            TIME_FORMAT}
+	 * @return true if the time was successfully set, false otherwise
 	 */
-	public void setTime(String time) {
-		if (time != null) {
-			try {
-				offset = format.parse(getFullLengthTime(time));
-				startTime = new Date();
-			} catch (ParseException e) {
-			}
+	public boolean setTime(String time) {
+		if (time == null) {
+			return false;
+		}
+		try {
+			offset = new Time(format.parse(getFullLengthTime(time)).getTime());
+			startTime = new Time();
+			return true;
+		} catch (ParseException e) {
+			return false;
 		}
 	}
 
@@ -154,19 +162,34 @@ public class Timer {
 	 * @return (end - start) in seconds, or 0 if there is an error.
 	 */
 	public static double getDifference(String start, String end) {
-		if (start != null && end != null) {
-			SimpleDateFormat f = new SimpleDateFormat(TIME_FORMAT);
-			f.setLenient(false);
-			try {
-				Date t1 = f.parse(getFullLengthTime(start));
-				Date t2 = f.parse(getFullLengthTime(end));
-				double diff = (t2.getTime() - t1.getTime()) / 1000.0;
-				return (diff > 0) ? diff : 0;
-			} catch (ParseException e) {
-				return 0;
-			}
+		if (start == null || end == null) {
+			return 0;
 		}
-		return 0;
+		SimpleDateFormat f = new SimpleDateFormat(TIME_FORMAT);
+		f.setLenient(false);
+		try {
+			return getDifference(new Time(f.parse(getFullLengthTime(start)).getTime()),
+					new Time(f.parse(getFullLengthTime(end)).getTime()));
+		} catch (ParseException e) {
+			return 0;
+		}
+	}
+
+	/**
+	 * Get the difference between 2 Time objects in seconds.
+	 * 
+	 * @param start
+	 *            - the start time. Must not be null.
+	 * @param end
+	 *            - the end time. Must not be null.
+	 * @return (end - start) in seconds, or 0 if there is an error.
+	 */
+	public static double getDifference(Time start, Time end) {
+		if (start == null || end == null) {
+			return 0;
+		}
+		double diff = (end.getTime() - start.getTime()) / 1000.0;
+		return (diff > 0) ? diff : 0;
 	}
 
 	/**
@@ -203,6 +226,35 @@ public class Timer {
 			return true;
 		} catch (ParseException e) {
 			return false;
+		}
+	}
+
+	/**
+	 * Convert a Time to a time string in the format {@link #TIME_FORMAT
+	 * TIME_FORMAT}.
+	 * 
+	 * @param time
+	 *            - A Time object. If NULL, an empty string will be returned.
+	 * @return A string representing <code>time</code> as a time.
+	 */
+	public static String convertToTimeString(Time time) {
+		if (time == null) {
+			return "";
+		}
+		SimpleDateFormat f = new SimpleDateFormat(TIME_FORMAT);
+		return f.format(time).substring(0, 11);
+	}
+
+	public static Time convertToTime(String t) {
+		if (t == null) {
+			return null;
+		}
+		SimpleDateFormat f = new SimpleDateFormat(TIME_FORMAT);
+		f.setLenient(false);
+		try {
+			return new Time(f.parse(getFullLengthTime(t)).getTime());
+		} catch (ParseException e) {
+			return null;
 		}
 	}
 }
