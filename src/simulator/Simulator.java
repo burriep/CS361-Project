@@ -100,23 +100,23 @@ public class Simulator {
 			testChronoTimer.powerOff();
 		} else if (singleCommand.contains("EVENT")) {
 			String[] eventArgs = singleCommand.split(" ");
-			EventType et = EventType.IND;
+			RunType et = RunType.IND;
 			if (eventArgs.length >= 2) {
 				if (eventArgs[1].equals("PARGRP")) {
-					et = EventType.PARGRP;
+					et = RunType.PARGRP;
 				} else if (eventArgs[1].equals("GRP")) {
-					et = EventType.GRP;
+					et = RunType.GRP;
 				} else if (eventArgs[1].equals("PARIND")) {
-					et = EventType.PARIND;
+					et = RunType.PARIND;
 				}
 			}
-			testChronoTimer.newEvent(et);
+			testChronoTimer.setEventType(et);
 		} else if (singleCommand.contains("TOGGLE")) {
 			String[] toggleArgs = singleCommand.split(" ");
 			testChronoTimer.toggleChannel(Integer.parseInt(toggleArgs[1]));
 		} else if (singleCommand.contains("NUM")) {
 			String[] racerArgs = singleCommand.split(" ");
-			testChronoTimer.addRacerToCurrentRun(Integer.parseInt(racerArgs[1]));
+			testChronoTimer.addRacer(Integer.parseInt(racerArgs[1]));
 		} else if (singleCommand.contains("TRIG")) {
 			String[] trigArgs = singleCommand.split(" ");
 			int num = Integer.parseInt(trigArgs[1]);
@@ -126,9 +126,9 @@ public class Simulator {
 		} else if (singleCommand.contains("PRINT")) {
 			testChronoTimer.printCurrentRun();
 		} else if (singleCommand.contains("ENDRUN")) {
-			testChronoTimer.endRunCurrentEvent();
+			testChronoTimer.endRun();
 		} else if (singleCommand.contains("NEWRUN")) {
-			testChronoTimer.newRunCurrentEvent();
+			testChronoTimer.newRun();
 		} else if (singleCommand.contains("EXPORT")) {
 			String[] exportArgs = singleCommand.split(" ");
 			if (exportArgs.length > 1) {

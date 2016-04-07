@@ -36,6 +36,23 @@ public class RacerRun {
 	}
 
 	/**
+	 * Create a new RacerRun for racer with ID <code>racerID</code> and start
+	 * time <code>start</code> and end time <code>end</code>.
+	 * 
+	 * @param racerID
+	 *            - the ID associated with this RacerRun.
+	 * @param start
+	 *            - the start time for this RacerRun.
+	 * @param end
+	 *            - the end time for this RacerRun
+	 */
+	public RacerRun(int racerID, Time start, Time end) {
+		this.racerID = racerID;
+		startTime = start;
+		endTime = end;
+	}
+
+	/**
 	 * Return the racer ID associated with this RacerRun.
 	 * 
 	 * @return the racer ID associated with this RacerRun.

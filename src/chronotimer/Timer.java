@@ -151,6 +151,14 @@ public class Timer {
 	}
 
 	/**
+	 * Resets this Timer
+	 */
+	public void reset() {
+		startTime = new Time();
+		offset = (Time) startTime.clone();
+	}
+
+	/**
 	 * Get the difference between 2 time strings.
 	 * 
 	 * @param start

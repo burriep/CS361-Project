@@ -7,6 +7,7 @@ public class Run {
 	private ArrayList<RacerRun> racerData;
 	private Queue<Integer> notStartedQueue;
 	private ArrayList<Integer> startedQueue;
+	private boolean active;
 
 	/**
 	 * Create a new Run with no data.
@@ -15,6 +16,7 @@ public class Run {
 		racerData = new ArrayList<RacerRun>();
 		notStartedQueue = new LinkedList<Integer>();
 		startedQueue = new ArrayList<Integer>();
+		active = true;
 	}
 
 	/**
@@ -28,6 +30,12 @@ public class Run {
 	public void addRacer(int r) {
 		if (r >= 0 && r <= 99999) {
 			notStartedQueue.add(r);
+		}
+	}
+
+	public void addRacer(int racerID, Time start, Time end) {
+		if (racerID >= 0 && racerID <= 99999) {
+			racerData.add(new RacerRun(racerID, start, end));
 		}
 	}
 
@@ -126,6 +134,25 @@ public class Run {
 	public void clearQueue() {
 		notStartedQueue.clear();
 		startedQueue.clear();
+	}
+
+	/**
+	 * Sets if this Run is active or not
+	 * 
+	 * @param s
+	 *            - true if this run is active, false if run is not active.
+	 */
+	public void setActive(boolean s) {
+		active = s;
+	}
+
+	/**
+	 * Return if this race is active.
+	 * 
+	 * @return if this race is active.
+	 */
+	public boolean isActive() {
+		return active;
 	}
 
 	private RacerRun findRacerRun(int r) {

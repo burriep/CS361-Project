@@ -24,18 +24,17 @@ public class ChronoTimerTest {
 		ct.powerOn();
 		ct.reset();
 		assertEquals(false, ct.printerIsOn());
-		assertEquals(EventType.IND, ct.getEvents().get(0).getType());
 		ct.powerOff();
 	}
 
 	@Test
 	public void testEventChangeAfterRun() {
 		ChronoTimer ct = new ChronoTimer();
-		ct.newEvent(EventType.IND);
-		ct.newRunCurrentEvent();
-		ct.addRacerToCurrentRun(234);
-		ct.endRunCurrentEvent();
-		ct.newEvent(EventType.IND);
+		ct.setEventType(RunType.IND);
+		ct.newRun();
+		ct.addRacer(234);
+		ct.endRun();
+		ct.setEventType(RunType.IND);
 
 	}
 
@@ -43,11 +42,10 @@ public class ChronoTimerTest {
 	public void testWhileOff() {
 		ChronoTimer ct = new ChronoTimer();
 		ct.powerOff();
-		ct.newEvent(EventType.IND);
-		ct.newRunCurrentEvent();
-		ct.addRacerToCurrentRun(234);
-		ct.endRunCurrentEvent();
-		ct.newEvent(EventType.IND);
-		assertEquals(null, ct.getEvents());
+		ct.setEventType(RunType.IND);
+		ct.newRun();
+		ct.addRacer(234);
+		ct.endRun();
+		ct.setEventType(RunType.IND);
 	}
 }

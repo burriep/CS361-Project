@@ -1,12 +1,16 @@
 package chronotimer;
 
-public class IndEventController implements EventController {
+public class IndEventController extends EventController {
+	public IndEventController(Timer t, Run currentRun) {
+		super(t, currentRun);
+	}
+
 	@Override
-	public void channelTriggered(int channelNumber, Run r, Time time) {
+	public void channelTriggered(int channelNumber) {
 		if (channelNumber == 1) {
-			r.addRacerStartTime(time);
+			run.addRacerStartTime(timer.getTime());
 		} else if (channelNumber == 2) {
-			r.addRacerEndTime(time);
+			run.addRacerEndTime(timer.getTime());
 		}
 	}
 

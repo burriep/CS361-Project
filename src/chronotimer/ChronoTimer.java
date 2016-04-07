@@ -9,9 +9,10 @@ public class ChronoTimer implements Observer {
 	private boolean powerState;
 	private Printer printer;
 	private Timer timer;
-	private ArrayList<Event> events;
 	private Channel[] channels;
+	private ArrayList<Run> runs;
 	private EventController ec;
+	private RunType runType;
 	public static final int DEFAULT_CHANNEL_COUNT = 12;
 
 	/**
@@ -40,13 +41,14 @@ public class ChronoTimer implements Observer {
 		printer = new Printer();
 		printer.powerOn();
 		timer = new Timer(!testMode);
-		events = new ArrayList<Event>();
-		newEvent(EventType.IND);
+		runs = new ArrayList<Run>();
+		runs.add(new Run());
+		setEventType(RunType.IND);
 		channels = new Channel[DEFAULT_CHANNEL_COUNT];
 		for (int i = 0; i < channels.length; i++) {
 			channels[i] = new Channel();
 		}
-		ec = new IndEventController();
+		ec = new IndEventController(timer, runs.get(runs.size() - 1));
 		powerOff(); // must be explicitly turned on by client
 	}
 
@@ -73,16 +75,18 @@ public class ChronoTimer implements Observer {
 		// ? Can we reset when the ChronoTimer is powered off?
 		boolean bakPower = isOn();
 		powerOn();
-		timer = new Timer();
-		printer.powerOff();
-		events.clear();
-		newEvent(EventType.IND);
+		timer.reset();
+		printer.powerOn();
+		runs.clear();
+		runs.add(new Run());
+		setEventType(RunType.IND);
 		for (int i = 0; i < channels.length; i++) {
 			if (channels[i].getSensor() != null) {
 				channels[i].getSensor().deleteObservers();
 			}
 			channels[i] = new Channel();
 		}
+		ec = new IndEventController(timer, runs.get(runs.size() - 1));
 		if (!bakPower) {
 			powerOff();
 		}
@@ -98,6 +102,24 @@ public class ChronoTimer implements Observer {
 		if (isOn()) {
 			if (channelNumber > 0 && channelNumber <= channels.length) {
 				channels[channelNumber - 1].connect(s);
+				s.addObserver(this);
+			}
+		}
+	}
+
+	/**
+	 * Connect a manual push button to this channel.
+	 * 
+	 * @param s
+	 *            - the push button sensor
+	 * @param channelNumber
+	 *            - the channel number to connect the sensor to. Must be within
+	 *            range [1, DEFAULT_CHANNEL_COUNT].
+	 */
+	public void connectButton(Sensor s, int channelNumber) {
+		if (isOn()) {
+			if (channelNumber > 0 && channelNumber <= channels.length) {
+				channels[channelNumber - 1].connectButton(s);
 				s.addObserver(this);
 			}
 		}
@@ -136,32 +158,48 @@ public class ChronoTimer implements Observer {
 		}
 	}
 
+	// trigger channel
+	@Override
+	public void update(Observable o, Object arg) {
+		if (isOn()) {
+			if (o instanceof Sensor) {
+				for (int i = 0; i < channels.length; ++i) {
+					// find which channel the sensor is connected to
+					if (o.equals(channels[i].getSensor()) || o.equals(channels[i].getButton())) {
+						if (channels[i].isEnabled()) {
+							ec.channelTriggered(i + 1);
+						}
+						break;
+					}
+				}
+			}
+		}
+	}
+
 	/**
 	 * Add a new event to the ChronoTimer
 	 * 
 	 * @param e
 	 */
-	public void newEvent(EventType e) {
+	public void setEventType(RunType e) {
 		if (isOn()) {
 			if (e == null) {
-				e = EventType.IND;
+				e = RunType.IND;
 			}
-			if (getCurrentEvent() == null) {
-				events.add(new Event(e));
-			} else if (e != getCurrentEvent().getType()) {
-				getCurrentEvent().setType(e);
-				switch (e) {
+			if (runType != e) {
+				runType = e;
+				switch (runType) {
 				case PARGRP:
-					ec = new ParGrpEventController();
+					ec = new ParGrpEventController(timer, runs.get(runs.size() - 1));
 					break;
 				case GRP:
-					ec = new GrpEventController();
+					ec = new GrpEventController(timer, runs.get(runs.size() - 1));
 					break;
 				case PARIND:
-					ec = new ParIndEventController();
+					ec = new ParIndEventController(timer, runs.get(runs.size() - 1));
 					break;
 				default:
-					ec = new IndEventController();
+					ec = new IndEventController(timer, runs.get(runs.size() - 1));
 					break;
 				}
 			}
@@ -173,9 +211,8 @@ public class ChronoTimer implements Observer {
 	 */
 	public void printCurrentRun() {
 		if (isOn()) {
-			Event cE = getCurrentEvent();
-			Collection<RacerRun> data = cE.getCurrentRun().getData();
-			printer.print("Run " + cE.getCurrentRunNumber());
+			Collection<RacerRun> data = runs.get(runs.size() - 1).getData();
+			printer.print("Run " + runs.size());
 			for (RacerRun rr : data) {
 				printer.print(rr.toString());
 			}
@@ -190,10 +227,9 @@ public class ChronoTimer implements Observer {
 	 */
 	public void printRun(int id) {
 		if (isOn()) {
-			Event cE = getCurrentEvent();
-			if (id > 0 && id <= cE.getCurrentRunNumber()) {
-				Collection<RacerRun> data = cE.getRun(id).getData();
-				printer.print("Run " + cE.getCurrentRunNumber());
+			if (id > 0 && id <= runs.size()) {
+				Collection<RacerRun> data = runs.get(id - 1).getData();
+				printer.print("Run " + runs.size());
 				for (RacerRun rr : data) {
 					printer.print(rr.toString());
 				}
@@ -202,16 +238,15 @@ public class ChronoTimer implements Observer {
 	}
 
 	public void exportCurrentRun() {
-		exportRun(getCurrentEvent().getCurrentRunNumber());
+		exportRun(runs.size());
 	}
 
 	public void exportRun(int id) {
 		if (isOn()) {
-			Event cE = getCurrentEvent();
-			if (id > 0 && id <= cE.getCurrentRunNumber()) {
-				String runJSON = cE.getRun(id).toJSON();
+			if (id > 0 && id <= runs.size()) {
+				String runJSON = runs.get(id - 1).toJSON();
 				try {
-					FileWriter fw = new FileWriter("Run" + cE.getCurrentRunNumber() + ".json");
+					FileWriter fw = new FileWriter("Run" + runs.size() + ".json");
 					fw.write(runJSON);
 					fw.close();
 				} catch (IOException e) {
@@ -224,63 +259,64 @@ public class ChronoTimer implements Observer {
 	/**
 	 * Add a racer to the current run of the current event
 	 */
-	public void addRacerToCurrentRun(int r) {
+	public void addRacer(int r) {
 		if (isOn()) {
-			getCurrentEvent().getCurrentRun().addRacer(r);
+			ec.addRacer(r);
 		}
 	}
 
 	public void clearRacer(int racerID) {
 		if (isOn()) {
 			// TODO: check if this is right for PARIND and other race types
-			getCurrentEvent().getCurrentRun().clearRacer(racerID);
+			runs.get(runs.size() - 1).clearRacer(racerID);
 		}
 	}
 
 	public void swapRacer() {
-		if (isOn()) {
-			// TODO: check if this is right for PARIND and other race types
-			getCurrentEvent().getCurrentRun().swapRacer();
+		if (isOn() && runType == RunType.IND) {
+			runs.get(runs.size() - 1).swapRacer();
 		}
 	}
 
 	public void dnfRacer() {
 		if (isOn()) {
 			// TODO: check if this is right for PARIND and other race types
-			getCurrentEvent().getCurrentRun().didNotFinishRacer();
+			runs.get(runs.size() - 1).didNotFinishRacer();
 		}
 	}
 
 	/**
 	 * Add a run to the current event. Must end the current run first.
 	 */
-	public void newRunCurrentEvent() {
-		if (isOn()) {
-			Event cE = getCurrentEvent();
-			cE.newRun();
+	public void newRun() {
+		if (isOn() && !runs.get(runs.size() - 1).isActive()) {
+			runs.add(new Run());
+			// assign new event controller for new Run
+			switch (runType) {
+			case PARGRP:
+				ec = new ParGrpEventController(timer, runs.get(runs.size() - 1));
+				break;
+			case GRP:
+				ec = new GrpEventController(timer, runs.get(runs.size() - 1));
+				break;
+			case PARIND:
+				ec = new ParIndEventController(timer, runs.get(runs.size() - 1));
+				break;
+			default:
+				ec = new IndEventController(timer, runs.get(runs.size() - 1));
+				break;
+			}
 		}
 	}
 
 	/**
 	 * End current run of the current event
 	 */
-	public void endRunCurrentEvent() {
+	public void endRun() {
 		if (isOn()) {
-			getCurrentEvent().endRun();
+			runs.get(runs.size() - 1).setActive(false);
 			ec.endRun();
 		}
-	}
-
-	/**
-	 * Get the list of events
-	 * 
-	 * @return events
-	 */
-	public ArrayList<Event> getEvents() {
-		if (isOn()) {
-			return events;
-		}
-		return null;
 	}
 
 	/**
@@ -304,29 +340,5 @@ public class ChronoTimer implements Observer {
 		// if (isOn()) {}
 		// TODO: verify if ChronoTimer can be off for this command
 		return timer.getTimeString();
-	}
-
-	@Override
-	public void update(Observable o, Object arg) {
-		if (isOn()) {
-			if (o instanceof Sensor) {
-				for (int i = 0; i < channels.length; ++i) {
-					// find which channel the sensor is connected to
-					if (o.equals(channels[i].getSensor())) {
-						if (channels[i].isEnabled()) {
-							ec.channelTriggered(i + 1, getCurrentEvent().getCurrentRun(), timer.getTime());
-						}
-						break;
-					}
-				}
-			}
-		}
-	}
-
-	private Event getCurrentEvent() {
-		if (events.size() > 0) {
-			return events.get(events.size() - 1);
-		}
-		return null;
 	}
 }

@@ -3,18 +3,31 @@ package chronotimer;
 public class Channel {
 
 	private boolean enabled;
+	private Sensor button;
 	private Sensor mySens;
 
 	public void connect(Sensor s) {
 		mySens = s;
 	}
 
+	public void connectButton(Sensor s) {
+		button = s;
+	}
+
 	public void disconnect() {
 		mySens = null;
 	}
 
+	public void disconnectButton() {
+		button = null;
+	}
+
 	public Sensor getSensor() {
 		return mySens;
+	}
+
+	public Sensor getButton() {
+		return button;
 	}
 
 	/**

@@ -1,5 +1,5 @@
 package chronotimer;
 
-public enum EventType {
+public enum RunType {
 	IND, PARIND, GRP, PARGRP;
 }
