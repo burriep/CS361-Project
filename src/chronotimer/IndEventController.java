@@ -15,6 +15,7 @@ public class IndEventController extends EventController {
 	}
 
 	@Override
-	public void endRun() {
+	public void swapRacer() {
+		run.swapRacer();
 	}
 }

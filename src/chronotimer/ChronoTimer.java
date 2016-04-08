@@ -10,7 +10,7 @@ public class ChronoTimer implements Observer {
 	private Printer printer;
 	private Timer timer;
 	private Channel[] channels;
-	private ArrayList<Run> runs;
+	private List<Run> runs;
 	private EventController ec;
 	private RunType runType;
 	public static final int DEFAULT_CHANNEL_COUNT = 12;
@@ -48,7 +48,6 @@ public class ChronoTimer implements Observer {
 		for (int i = 0; i < channels.length; i++) {
 			channels[i] = new Channel();
 		}
-		ec = new IndEventController(timer, runs.get(runs.size() - 1));
 		powerOff(); // must be explicitly turned on by client
 	}
 
@@ -72,7 +71,6 @@ public class ChronoTimer implements Observer {
 	 * Remove all data and reset the ChronoTimer to its initial state
 	 */
 	public void reset() {
-		// ? Can we reset when the ChronoTimer is powered off?
 		boolean bakPower = isOn();
 		powerOn();
 		timer.reset();
@@ -83,10 +81,9 @@ public class ChronoTimer implements Observer {
 		for (int i = 0; i < channels.length; i++) {
 			if (channels[i].getSensor() != null) {
 				channels[i].getSensor().deleteObservers();
+				channels[i].disconnect();
 			}
-			channels[i] = new Channel();
 		}
-		ec = new IndEventController(timer, runs.get(runs.size() - 1));
 		if (!bakPower) {
 			powerOff();
 		}
@@ -177,7 +174,7 @@ public class ChronoTimer implements Observer {
 	}
 
 	/**
-	 * Add a new event to the ChronoTimer
+	 * Set the RunType to be used.
 	 * 
 	 * @param e
 	 */
@@ -188,18 +185,19 @@ public class ChronoTimer implements Observer {
 			}
 			if (runType != e) {
 				runType = e;
+				Run cr = runs.get(runs.size() - 1);
 				switch (runType) {
 				case PARGRP:
-					ec = new ParGrpEventController(timer, runs.get(runs.size() - 1));
+					ec = new ParGrpEventController(timer, cr);
 					break;
 				case GRP:
-					ec = new GrpEventController(timer, runs.get(runs.size() - 1));
+					ec = new GrpEventController(timer, cr);
 					break;
 				case PARIND:
-					ec = new ParIndEventController(timer, runs.get(runs.size() - 1));
+					ec = new ParIndEventController(timer, cr);
 					break;
 				default:
-					ec = new IndEventController(timer, runs.get(runs.size() - 1));
+					ec = new IndEventController(timer, cr);
 					break;
 				}
 			}
@@ -210,29 +208,20 @@ public class ChronoTimer implements Observer {
 	 * Print run data for the current run.
 	 */
 	public void printCurrentRun() {
-		if (isOn()) {
-			Collection<RacerRun> data = runs.get(runs.size() - 1).getData();
-			printer.print("Run " + runs.size());
-			for (RacerRun rr : data) {
-				printer.print(rr.toString());
-			}
-		}
+		printRun(runs.size());
 	}
 
 	/**
 	 * Print run data for run #<code>id</code>.
 	 * 
 	 * @param id
-	 *            must be a valid run number for the current event.
+	 *            must be a valid run number.
 	 */
 	public void printRun(int id) {
 		if (isOn()) {
 			if (id > 0 && id <= runs.size()) {
-				Collection<RacerRun> data = runs.get(id - 1).getData();
-				printer.print("Run " + runs.size());
-				for (RacerRun rr : data) {
-					printer.print(rr.toString());
-				}
+				printer.print("Run " + id);
+				printer.print(runs.get(id - 1).toString());
 			}
 		}
 	}
@@ -246,7 +235,7 @@ public class ChronoTimer implements Observer {
 			if (id > 0 && id <= runs.size()) {
 				String runJSON = runs.get(id - 1).toJSON();
 				try {
-					FileWriter fw = new FileWriter("Run" + runs.size() + ".json");
+					FileWriter fw = new FileWriter("Run" + id + ".json");
 					fw.write(runJSON);
 					fw.close();
 				} catch (IOException e) {
@@ -259,29 +248,27 @@ public class ChronoTimer implements Observer {
 	/**
 	 * Add a racer to the current run of the current event
 	 */
-	public void addRacer(int r) {
+	public void addRacer(int racer) {
 		if (isOn()) {
-			ec.addRacer(r);
+			ec.addRacer(racer);
 		}
 	}
 
-	public void clearRacer(int racerID) {
+	public void clearRacer(int racer) {
 		if (isOn()) {
-			// TODO: check if this is right for PARIND and other race types
-			runs.get(runs.size() - 1).clearRacer(racerID);
+			ec.clearRacer(racer);
 		}
 	}
 
 	public void swapRacer() {
-		if (isOn() && runType == RunType.IND) {
-			runs.get(runs.size() - 1).swapRacer();
+		if (isOn()) {
+			ec.swapRacer();
 		}
 	}
 
 	public void dnfRacer() {
 		if (isOn()) {
-			// TODO: check if this is right for PARIND and other race types
-			runs.get(runs.size() - 1).didNotFinishRacer();
+			ec.dnfRacer();
 		}
 	}
 
@@ -290,20 +277,21 @@ public class ChronoTimer implements Observer {
 	 */
 	public void newRun() {
 		if (isOn() && !runs.get(runs.size() - 1).isActive()) {
-			runs.add(new Run());
+			Run cr = new Run();
+			runs.add(cr);
 			// assign new event controller for new Run
 			switch (runType) {
 			case PARGRP:
-				ec = new ParGrpEventController(timer, runs.get(runs.size() - 1));
+				ec = new ParGrpEventController(timer, cr);
 				break;
 			case GRP:
-				ec = new GrpEventController(timer, runs.get(runs.size() - 1));
+				ec = new GrpEventController(timer, cr);
 				break;
 			case PARIND:
-				ec = new ParIndEventController(timer, runs.get(runs.size() - 1));
+				ec = new ParIndEventController(timer, cr);
 				break;
 			default:
-				ec = new IndEventController(timer, runs.get(runs.size() - 1));
+				ec = new IndEventController(timer, cr);
 				break;
 			}
 		}
@@ -314,7 +302,6 @@ public class ChronoTimer implements Observer {
 	 */
 	public void endRun() {
 		if (isOn()) {
-			runs.get(runs.size() - 1).setActive(false);
 			ec.endRun();
 		}
 	}

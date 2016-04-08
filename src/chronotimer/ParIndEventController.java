@@ -13,13 +13,10 @@ public class ParIndEventController extends EventController {
 	@Override
 	public void channelTriggered(int channelNumber) {
 		if (channelNumber == 1 || channelNumber == 3) {
-			Collection<Integer> queue = run.getQueuedRacers();
+			Queue<Integer> queue = run.getQueuedRacers();
 			if (!queue.isEmpty()) {
 				int finishChannel = (channelNumber == 1) ? 2 : 4;
-				Iterator<Integer> qi = queue.iterator();
-				if (qi.hasNext()) {
-					channelMap.put(qi.next(), finishChannel);
-				}
+				channelMap.put(queue.peek(), finishChannel);
 				run.addRacerStartTime(timer.getTime());
 			}
 		} else if (channelNumber == 2 || channelNumber == 4) {
@@ -36,6 +33,7 @@ public class ParIndEventController extends EventController {
 
 	@Override
 	public void endRun() {
+		run.setActive(false);
 		channelMap.clear();
 	}
 }

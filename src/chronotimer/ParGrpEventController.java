@@ -8,8 +8,4 @@ public class ParGrpEventController extends EventController {
 	@Override
 	public void channelTriggered(int channelNumber) {
 	}
-
-	@Override
-	public void endRun() {
-	}
 }

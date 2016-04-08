@@ -15,5 +15,19 @@ abstract class EventController {
 		run.addRacer(id);
 	}
 
-	abstract public void endRun();
+	public void clearRacer(int id) {
+		run.clearRacer(id);
+	}
+
+	public void swapRacer() {
+		// Optional - depends on event type
+	}
+
+	public void dnfRacer() {
+		run.dnfRacer();
+	}
+
+	public void endRun() {
+		run.setActive(false);
+	}
 }

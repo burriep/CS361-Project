@@ -62,6 +62,16 @@ public class RacerRun {
 	}
 
 	/**
+	 * Set the racer for this RacerRun.
+	 * 
+	 * @param racerID
+	 *            - the racer to associate this RacerRun with.
+	 */
+	public void setRacer(int racerID) {
+		this.racerID = racerID;
+	}
+
+	/**
 	 * Set the start time for this RacerRun.
 	 * 
 	 * @param time
