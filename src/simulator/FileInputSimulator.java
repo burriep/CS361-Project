@@ -6,9 +6,6 @@ package simulator;
  * <TIMESTAMP>	<CMD> <ARGUMENT LIST> <EOL>
  * Where <TIMESTAMP> is in the format HH:MM:SS.Hundredth
  * 
- * The Simulator reads in the text file line by line through a BufferedReader, checks the power status of the ChronoTimer,
- * parses the time, parses the command and its arguments, and then executes the appropriate action.
- *
  */
 
 import java.io.*;
@@ -16,46 +13,31 @@ import java.util.Scanner;
 
 import chronotimer.*;
 
-public class Simulator {
+public class FileInputSimulator {
 	public static void main(String[] args) {
 		Scanner stdIn = new Scanner(System.in);
 		String INPUTFILE = "";
 		ChronoTimer testChronoTimer;
 		Sensor[] sensors = new Sensor[ChronoTimer.DEFAULT_CHANNEL_COUNT];
-		int selectOption = -1;
 		String singleLine;
-		while (selectOption != 1 && selectOption != 2) {
-			System.out.print("Please select [1] to enter data file or [2] to enter commands: ");
-			selectOption = stdIn.nextInt();
-		}
-		if (selectOption == 1) {
-			testChronoTimer = new ChronoTimer(true);
-			System.out.print("Enter file name: ");
-			INPUTFILE = stdIn.next();
-			try {
-				InputStream inStream = new FileInputStream(new File(INPUTFILE));
-				BufferedReader fileReader = new BufferedReader(new InputStreamReader(inStream));
-				while ((singleLine = fileReader.readLine()) != null) {
-					String[] singleLineCommand = singleLine.split("\t");
-					parseLine(singleLineCommand[0], singleLineCommand[1], testChronoTimer, sensors);
-					if (singleLineCommand[1].contains("EXIT")) {
-						break;
-					}
+		testChronoTimer = new ChronoTimer(true);
+		System.out.print("Enter file name: ");
+		INPUTFILE = stdIn.next();
+		try {
+			InputStream inStream = new FileInputStream(new File(INPUTFILE));
+			BufferedReader fileReader = new BufferedReader(new InputStreamReader(inStream));
+			while ((singleLine = fileReader.readLine()) != null) {
+				String[] singleLineCommand = singleLine.split("\t");
+				parseLine(singleLineCommand[0], singleLineCommand[1], testChronoTimer, sensors);
+				if (singleLineCommand[1].contains("EXIT")) {
+					break;
 				}
-				fileReader.close();
-			} catch (FileNotFoundException ex) {
-				System.out.println("Unable to open file '" + INPUTFILE + "'");
-			} catch (IOException ex) {
-				System.out.println("Error reading file '" + INPUTFILE + "'");
 			}
-		} else {
-			singleLine = stdIn.nextLine();
-			testChronoTimer = new ChronoTimer();
-			do {
-				System.out.print("Enter command (type EXIT to quit): ");
-				singleLine = stdIn.nextLine();
-				parseLine(null, singleLine, testChronoTimer, sensors);
-			} while (!singleLine.contains("EXIT"));
+			fileReader.close();
+		} catch (FileNotFoundException ex) {
+			System.out.println("Unable to open file '" + INPUTFILE + "'");
+		} catch (IOException ex) {
+			System.out.println("Error reading file '" + INPUTFILE + "'");
 		}
 		stdIn.close();
 	}
