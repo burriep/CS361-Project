@@ -17,11 +17,13 @@ public class RealTimeSimulator {
 		Sensor[] sensors = new Sensor[ChronoTimer.DEFAULT_CHANNEL_COUNT];
 		String singleLine;
 		testChronoTimer = new ChronoTimer();
-		do {
-			System.out.print("Enter command (type EXIT to quit): ");
+		System.out.print("Enter command (type EXIT to quit): ");
+		singleLine = stdIn.nextLine();
+		while (!singleLine.contains("EXIT")) {
+			System.out.print(">> ");
 			singleLine = stdIn.nextLine();
 			parseLine(null, singleLine, testChronoTimer, sensors);
-		} while (!singleLine.contains("EXIT"));
+		}
 		stdIn.close();
 	}
 
