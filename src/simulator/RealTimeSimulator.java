@@ -19,6 +19,7 @@ public class RealTimeSimulator {
 		testChronoTimer = new ChronoTimer();
 		System.out.print("Enter command (type EXIT to quit): ");
 		singleLine = stdIn.nextLine();
+		parseLine(null, singleLine, testChronoTimer, sensors);
 		while (!singleLine.contains("EXIT")) {
 			System.out.print(">> ");
 			singleLine = stdIn.nextLine();
