@@ -37,7 +37,7 @@ public class Channel {
 	 * @return
 	 */
 	public boolean isConnected() {
-		return mySens != null;
+		return mySens != null || button != null;
 	}
 
 	public void toggleState() {

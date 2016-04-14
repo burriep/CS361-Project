@@ -129,6 +129,13 @@ public class Run {
 			int r0 = startedQueue.get(0);
 			startedQueue.set(0, startedQueue.get(1));
 			startedQueue.set(1, r0);
+			
+			r0 = racerData.get(0).getRacer(); 
+			Time t0 = racerData.get(0).getStartTime();
+			racerData.get(0).setRacer(racerData.get(1).getRacer());
+			racerData.get(0).setStartTime(racerData.get(1).getStartTime());
+			racerData.get(1).setRacer(r0);
+			racerData.get(1).setStartTime(t0);
 		}
 	}
 

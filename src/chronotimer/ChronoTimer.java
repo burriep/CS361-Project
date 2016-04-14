@@ -253,6 +253,14 @@ public class ChronoTimer implements Observer {
 			ec.addRacer(racer);
 		}
 	}
+	
+	/**Get the list of runs for testing
+	 * 
+	 * @return List<Run>
+	 */
+	public List<Run> getRuns(){
+		return runs;
+	}
 
 	public void clearRacer(int racer) {
 		if (isOn()) {
@@ -327,5 +335,14 @@ public class ChronoTimer implements Observer {
 		// if (isOn()) {}
 		// TODO: verify if ChronoTimer can be off for this command
 		return timer.getTimeString();
+	}
+	
+	/**
+	 * Get the Timer object
+	 * 
+	 * @return timer
+	 */
+	public Timer getTimer() {
+		return timer;
 	}
 }

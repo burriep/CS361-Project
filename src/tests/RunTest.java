@@ -21,7 +21,6 @@ public class RunTest {
 		assertEquals(1, run.getQueuedRacers().size());
 		int r3 = run.getQueuedRacers().iterator().next();
 		assertEquals(r2, r3);
-		assertEquals(r2, r3);
 	}
 
 	@Test
@@ -48,6 +47,23 @@ public class RunTest {
 		Run run = new Run();
 		int r1 = 1;
 		run.clearRacer(r1);
+	}
+	
+	@Test
+	public void testSwapRacers(){
+		ChronoTimer ct = new ChronoTimer();
+		int r1 = 123;
+		int r2 = 215;
+
+		Run run = new Run();
+		run.addRacer(r1);
+		run.addRacer(r2);
+		run.addRacerStartTime(ct.getTimer().getTime());
+		run.addRacerStartTime(ct.getTimer().getTime());
+		run.swapRacer();
+		
+		assertEquals(run.getData().get(0).getRacer(), r2);
+		assertEquals(run.getData().get(1).getRacer(), r1);
 	}
 
 }
