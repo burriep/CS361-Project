@@ -345,4 +345,13 @@ public class ChronoTimer implements Observer {
 	public Timer getTimer() {
 		return timer;
 	}
+	
+	/**
+	 * Get the Printer object
+	 * 
+	 * @return printer
+	 */
+	public Printer getPrinter() {
+		return printer;
+	}
 }

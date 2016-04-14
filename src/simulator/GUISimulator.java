@@ -1,28 +1,38 @@
 package simulator;
 
 import java.awt.EventQueue;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
 import javax.swing.JButton;
+
 import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Font;
+
 import javax.swing.JRadioButton;
 import javax.swing.JTextArea;
 import javax.swing.border.MatteBorder;
+
+import chronotimer.ChronoTimer;
+import chronotimer.Sensor;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 public class GUISimulator extends JFrame {
 
+	static ChronoTimer testChronoTimer;
+	Sensor[] sensors = new Sensor[ChronoTimer.DEFAULT_CHANNEL_COUNT];
 	private JPanel contentPane;
 
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
+		testChronoTimer = new ChronoTimer();
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -205,41 +215,81 @@ public class GUISimulator extends JFrame {
 		contentPane.add(btn12);
 
 		JRadioButton enable2 = new JRadioButton("");
+		enable2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				testChronoTimer.toggleChannel(1);
+			}
+		});
 		enable2.setBackground(new Color(255, 255, 255));
 		enable2.setBounds(273, 144, 28, 25);
 		contentPane.add(enable2);
 
 		JRadioButton enable4 = new JRadioButton("");
+		enable4.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				testChronoTimer.toggleChannel(3);
+			}
+		});
 		enable4.setBackground(new Color(255, 255, 255));
 		enable4.setBounds(303, 144, 30, 25);
 		contentPane.add(enable4);
 
 		JRadioButton enable6 = new JRadioButton("");
+		enable6.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				testChronoTimer.toggleChannel(5);
+			}
+		});
 		enable6.setBackground(new Color(255, 255, 255));
 		enable6.setBounds(330, 144, 30, 25);
 		contentPane.add(enable6);
 
 		JRadioButton enable8 = new JRadioButton("");
+		enable8.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				testChronoTimer.toggleChannel(8);
+			}
+		});
 		enable8.setBackground(new Color(255, 255, 255));
 		enable8.setBounds(362, 144, 30, 25);
 		contentPane.add(enable8);
 
 		JRadioButton enable1 = new JRadioButton("");
+		enable1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				testChronoTimer.toggleChannel(0);
+			}
+		});
 		enable1.setBackground(Color.WHITE);
 		enable1.setBounds(273, 80, 28, 25);
 		contentPane.add(enable1);
 
 		JRadioButton enable3 = new JRadioButton("");
+		enable3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				testChronoTimer.toggleChannel(2);
+			}
+		});
 		enable3.setBackground(Color.WHITE);
 		enable3.setBounds(303, 80, 21, 25);
 		contentPane.add(enable3);
 
 		JRadioButton enable5 = new JRadioButton("");
+		enable5.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				testChronoTimer.toggleChannel(4);
+			}
+		});
 		enable5.setBackground(Color.WHITE);
 		enable5.setBounds(330, 80, 30, 25);
 		contentPane.add(enable5);
 
 		JRadioButton enable7 = new JRadioButton("");
+		enable7.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				testChronoTimer.toggleChannel(6);
+			}
+		});
 		enable7.setBackground(Color.WHITE);
 		enable7.setBounds(362, 80, 30, 25);
 		contentPane.add(enable7);
@@ -247,8 +297,13 @@ public class GUISimulator extends JFrame {
 		JButton btnPower = new JButton("Power");
 		btnPower.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//STUB
-				System.out.println("POWER");
+				if (testChronoTimer.isOn()) {
+					System.out.println("POWER OFF");
+					testChronoTimer.powerOff();
+				} else {
+					System.out.println("POWER ON");
+					testChronoTimer.powerOn();
+				}
 			}
 		});
 		btnPower.setFont(new Font("Tahoma", Font.PLAIN, 13));
@@ -280,7 +335,13 @@ public class GUISimulator extends JFrame {
 		JButton btnPrinterPwr = new JButton("Printer Pwr");
 		btnPrinterPwr.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				System.out.println("PRINTER POWER");
+				if (testChronoTimer.printerIsOn()) {
+					System.out.println("PRINTER POWER OFF");
+					testChronoTimer.getPrinter().powerOff();
+				} else {
+					System.out.println("PRINTER POWER ON");
+					testChronoTimer.getPrinter().powerOn();
+				}
 			}
 		});
 		btnPrinterPwr.setFont(new Font("Tahoma", Font.PLAIN, 13));
@@ -301,41 +362,113 @@ public class GUISimulator extends JFrame {
 		contentPane.add(txtrPrinterarea);
 
 		JRadioButton chan1 = new JRadioButton("");
+		chan1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (chan1.isSelected()) {
+					//DISCONNECT SENSOR
+				} else {
+					//CONNECT SENSOR
+				}
+			}
+		});
 		chan1.setBackground(Color.WHITE);
 		chan1.setBounds(93, 411, 22, 22);
 		contentPane.add(chan1);
 
 		JRadioButton chan3 = new JRadioButton("");
+		chan3.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (chan3.isSelected()) {
+					//DISCONNECT SENSOR
+				} else {
+					//CONNECT SENSOR
+				}
+			}
+		});
 		chan3.setBackground(Color.WHITE);
 		chan3.setBounds(123, 411, 22, 22);
 		contentPane.add(chan3);
 
 		JRadioButton chan5 = new JRadioButton("");
+		chan5.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (chan5.isSelected()) {
+					//DISCONNECT SENSOR
+				} else {
+					//CONNECT SENSOR
+				}
+			}
+		});
 		chan5.setBackground(Color.WHITE);
 		chan5.setBounds(153, 411, 22, 22);
 		contentPane.add(chan5);
 
 		JRadioButton chan7 = new JRadioButton("");
+		chan7.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (chan7.isSelected()) {
+					//DISCONNECT SENSOR
+				} else {
+					//CONNECT SENSOR
+				}
+			}
+		});
 		chan7.setBackground(Color.WHITE);
 		chan7.setBounds(183, 411, 22, 22);
 		contentPane.add(chan7);
 
 		JRadioButton chan2 = new JRadioButton("");
+		chan2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (chan2.isSelected()) {
+					//DISCONNECT SENSOR
+				} else {
+					//CONNECT SENSOR
+				}
+			}
+		});
 		chan2.setBackground(Color.WHITE);
 		chan2.setBounds(93, 447, 22, 22);
 		contentPane.add(chan2);
 
 		JRadioButton chan4 = new JRadioButton("");
+		chan4.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (chan4.isSelected()) {
+					//DISCONNECT SENSOR
+				} else {
+					//CONNECT SENSOR
+				}
+			}
+		});
 		chan4.setBackground(Color.WHITE);
 		chan4.setBounds(123, 447, 22, 22);
 		contentPane.add(chan4);
 
 		JRadioButton chan6 = new JRadioButton("");
+		chan6.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (chan6.isSelected()) {
+					//DISCONNECT SENSOR
+				} else {
+					//CONNECT SENSOR
+				}
+			}
+		});
 		chan6.setBackground(Color.WHITE);
 		chan6.setBounds(153, 447, 22, 22);
 		contentPane.add(chan6);
 
 		JRadioButton chan8 = new JRadioButton("");
+		chan8.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (chan8.isSelected()) {
+					//DISCONNECT SENSOR
+				} else {
+					//CONNECT SENSOR
+				}
+			}
+		});
 		chan8.setBackground(Color.WHITE);
 		chan8.setBounds(183, 447, 22, 22);
 		contentPane.add(chan8);
