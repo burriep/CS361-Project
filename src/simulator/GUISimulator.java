@@ -3,6 +3,7 @@ package simulator;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
@@ -65,7 +66,7 @@ public class GUISimulator extends JFrame {
 		JButton btn1 = new JButton("1");
 		btn1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//STUB
+				// STUB
 				System.out.println("1");
 			}
 		});
@@ -78,7 +79,7 @@ public class GUISimulator extends JFrame {
 		JButton btn2 = new JButton("2");
 		btn2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//STUB
+				// STUB
 				System.out.println("2");
 			}
 		});
@@ -91,7 +92,7 @@ public class GUISimulator extends JFrame {
 		JButton btn3 = new JButton("3");
 		btn3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//STUB
+				// STUB
 				System.out.println("3");
 			}
 		});
@@ -104,7 +105,7 @@ public class GUISimulator extends JFrame {
 		JButton btn4 = new JButton("4");
 		btn4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//STUB
+				// STUB
 				System.out.println("4");
 			}
 		});
@@ -117,7 +118,7 @@ public class GUISimulator extends JFrame {
 		JButton btn5 = new JButton("5");
 		btn5.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//STUB
+				// STUB
 				System.out.println("5");
 			}
 		});
@@ -130,7 +131,7 @@ public class GUISimulator extends JFrame {
 		JButton btn6 = new JButton("6");
 		btn6.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//STUB
+				// STUB
 				System.out.println("6");
 			}
 		});
@@ -143,7 +144,7 @@ public class GUISimulator extends JFrame {
 		JButton btn7 = new JButton("7");
 		btn7.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//STUB
+				// STUB
 				System.out.println("7");
 			}
 		});
@@ -156,7 +157,7 @@ public class GUISimulator extends JFrame {
 		JButton btn8 = new JButton("8");
 		btn8.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//STUB
+				// STUB
 				System.out.println("8");
 			}
 		});
@@ -169,7 +170,7 @@ public class GUISimulator extends JFrame {
 		JButton btn9 = new JButton("9");
 		btn9.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//STUB
+				// STUB
 				System.out.println("9");
 			}
 		});
@@ -182,7 +183,7 @@ public class GUISimulator extends JFrame {
 		JButton btn10 = new JButton("*");
 		btn10.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//STUB
+				// STUB
 				System.out.println("*");
 			}
 		});
@@ -195,7 +196,7 @@ public class GUISimulator extends JFrame {
 		JButton btn11 = new JButton("0");
 		btn11.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//STUB
+				// STUB
 				System.out.println("0");
 			}
 		});
@@ -208,7 +209,7 @@ public class GUISimulator extends JFrame {
 		JButton btn12 = new JButton("#");
 		btn12.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//STUB
+				// STUB
 				System.out.println("#");
 			}
 		});
@@ -221,7 +222,11 @@ public class GUISimulator extends JFrame {
 		JRadioButton enable2 = new JRadioButton("");
 		enable2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				testChronoTimer.toggleChannel(1);
+				try {
+					testChronoTimer.toggleChannel(1);
+				} catch (NullPointerException n) {
+
+				}
 			}
 		});
 		enable2.setBackground(new Color(255, 255, 255));
@@ -231,7 +236,11 @@ public class GUISimulator extends JFrame {
 		JRadioButton enable4 = new JRadioButton("");
 		enable4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				testChronoTimer.toggleChannel(3);
+				try {
+					testChronoTimer.toggleChannel(3);
+				} catch (NullPointerException n) {
+
+				}
 			}
 		});
 		enable4.setBackground(new Color(255, 255, 255));
@@ -241,7 +250,11 @@ public class GUISimulator extends JFrame {
 		JRadioButton enable6 = new JRadioButton("");
 		enable6.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				testChronoTimer.toggleChannel(5);
+				try {
+					testChronoTimer.toggleChannel(5);
+				} catch (NullPointerException n) {
+
+				}
 			}
 		});
 		enable6.setBackground(new Color(255, 255, 255));
@@ -251,7 +264,11 @@ public class GUISimulator extends JFrame {
 		JRadioButton enable8 = new JRadioButton("");
 		enable8.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				testChronoTimer.toggleChannel(8);
+				try {
+					testChronoTimer.toggleChannel(8);
+				} catch (NullPointerException n) {
+
+				}
 			}
 		});
 		enable8.setBackground(new Color(255, 255, 255));
@@ -261,7 +278,11 @@ public class GUISimulator extends JFrame {
 		JRadioButton enable1 = new JRadioButton("");
 		enable1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				testChronoTimer.toggleChannel(0);
+				try {
+					testChronoTimer.toggleChannel(0);
+				} catch (NullPointerException n) {
+
+				}
 			}
 		});
 		enable1.setBackground(Color.WHITE);
@@ -271,7 +292,11 @@ public class GUISimulator extends JFrame {
 		JRadioButton enable3 = new JRadioButton("");
 		enable3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				testChronoTimer.toggleChannel(2);
+				try {
+					testChronoTimer.toggleChannel(2);
+				} catch (NullPointerException n) {
+
+				}
 			}
 		});
 		enable3.setBackground(Color.WHITE);
@@ -281,7 +306,11 @@ public class GUISimulator extends JFrame {
 		JRadioButton enable5 = new JRadioButton("");
 		enable5.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				testChronoTimer.toggleChannel(4);
+				try {
+					testChronoTimer.toggleChannel(4);
+				} catch (NullPointerException n) {
+
+				}
 			}
 		});
 		enable5.setBackground(Color.WHITE);
@@ -291,7 +320,11 @@ public class GUISimulator extends JFrame {
 		JRadioButton enable7 = new JRadioButton("");
 		enable7.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				testChronoTimer.toggleChannel(6);
+				try {
+					testChronoTimer.toggleChannel(6);
+				} catch (NullPointerException n) {
+
+				}
 			}
 		});
 		enable7.setBackground(Color.WHITE);
@@ -317,7 +350,7 @@ public class GUISimulator extends JFrame {
 		JButton btnFunction = new JButton("FUNCTION");
 		btnFunction.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//STUB
+				// STUB
 				System.out.println("FUNCTION");
 			}
 		});
@@ -328,8 +361,7 @@ public class GUISimulator extends JFrame {
 		JButton btnSwap = new JButton("SWAP");
 		btnSwap.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//STUB
-				System.out.println("SWAP");
+				testChronoTimer.swapRacer();
 			}
 		});
 		btnSwap.setFont(new Font("Tahoma", Font.PLAIN, 13));
@@ -364,7 +396,7 @@ public class GUISimulator extends JFrame {
 		txtrPrinterarea.setText("");
 		txtrPrinterarea.setBounds(454, 60, 84, 80);
 		contentPane.add(txtrPrinterarea);
-		
+
 		JComboBox comboBox1 = new JComboBox();
 		comboBox1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -380,10 +412,10 @@ public class GUISimulator extends JFrame {
 				testChronoTimer.connectSensor(sensors[0], 1);
 			}
 		});
-		comboBox1.setModel(new DefaultComboBoxModel(new String[] {"(Disconnect)", "GATE", "EYE", "PAD"}));
+		comboBox1.setModel(new DefaultComboBoxModel(new String[] { "(Disconnect)", "GATE", "EYE", "PAD" }));
 		comboBox1.setBounds(90, 411, 75, 22);
 		contentPane.add(comboBox1);
-		
+
 		JComboBox comboBox3 = new JComboBox();
 		comboBox3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -399,10 +431,10 @@ public class GUISimulator extends JFrame {
 				testChronoTimer.connectSensor(sensors[2], 3);
 			}
 		});
-		comboBox3.setModel(new DefaultComboBoxModel(new String[] {"(Disconnect)", "GATE", "EYE", "PAD"}));
+		comboBox3.setModel(new DefaultComboBoxModel(new String[] { "(Disconnect)", "GATE", "EYE", "PAD" }));
 		comboBox3.setBounds(165, 411, 75, 22);
 		contentPane.add(comboBox3);
-		
+
 		JComboBox comboBox5 = new JComboBox();
 		comboBox5.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -418,10 +450,10 @@ public class GUISimulator extends JFrame {
 				testChronoTimer.connectSensor(sensors[4], 5);
 			}
 		});
-		comboBox5.setModel(new DefaultComboBoxModel(new String[] {"(Disconnect)", "GATE", "EYE", "PAD"}));
+		comboBox5.setModel(new DefaultComboBoxModel(new String[] { "(Disconnect)", "GATE", "EYE", "PAD" }));
 		comboBox5.setBounds(240, 411, 75, 22);
 		contentPane.add(comboBox5);
-		
+
 		JComboBox comboBox7 = new JComboBox();
 		comboBox7.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -437,10 +469,10 @@ public class GUISimulator extends JFrame {
 				testChronoTimer.connectSensor(sensors[6], 7);
 			}
 		});
-		comboBox7.setModel(new DefaultComboBoxModel(new String[] {"(Disconnect)", "GATE", "EYE", "PAD"}));
+		comboBox7.setModel(new DefaultComboBoxModel(new String[] { "(Disconnect)", "GATE", "EYE", "PAD" }));
 		comboBox7.setBounds(315, 411, 75, 22);
 		contentPane.add(comboBox7);
-		
+
 		JComboBox comboBox2 = new JComboBox();
 		comboBox2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -456,10 +488,10 @@ public class GUISimulator extends JFrame {
 				testChronoTimer.connectSensor(sensors[1], 2);
 			}
 		});
-		comboBox2.setModel(new DefaultComboBoxModel(new String[] {"(Disconnect)", "GATE", "EYE", "PAD"}));
+		comboBox2.setModel(new DefaultComboBoxModel(new String[] { "(Disconnect)", "GATE", "EYE", "PAD" }));
 		comboBox2.setBounds(90, 447, 75, 22);
 		contentPane.add(comboBox2);
-		
+
 		JComboBox comboBox4 = new JComboBox();
 		comboBox4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -475,10 +507,10 @@ public class GUISimulator extends JFrame {
 				testChronoTimer.connectSensor(sensors[3], 4);
 			}
 		});
-		comboBox4.setModel(new DefaultComboBoxModel(new String[] {"(Disconnect)", "GATE", "EYE", "PAD"}));
+		comboBox4.setModel(new DefaultComboBoxModel(new String[] { "(Disconnect)", "GATE", "EYE", "PAD" }));
 		comboBox4.setBounds(165, 447, 75, 22);
 		contentPane.add(comboBox4);
-		
+
 		JComboBox comboBox6 = new JComboBox();
 		comboBox6.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -494,10 +526,10 @@ public class GUISimulator extends JFrame {
 				testChronoTimer.connectSensor(sensors[5], 6);
 			}
 		});
-		comboBox6.setModel(new DefaultComboBoxModel(new String[] {"(Disconnect)", "GATE", "EYE", "PAD"}));
+		comboBox6.setModel(new DefaultComboBoxModel(new String[] { "(Disconnect)", "GATE", "EYE", "PAD" }));
 		comboBox6.setBounds(240, 447, 75, 22);
 		contentPane.add(comboBox6);
-		
+
 		JComboBox comboBox8 = new JComboBox();
 		comboBox8.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -513,15 +545,18 @@ public class GUISimulator extends JFrame {
 				testChronoTimer.connectSensor(sensors[7], 8);
 			}
 		});
-		comboBox8.setModel(new DefaultComboBoxModel(new String[] {"(Disconnect)", "GATE", "EYE", "PAD"}));
+		comboBox8.setModel(new DefaultComboBoxModel(new String[] { "(Disconnect)", "GATE", "EYE", "PAD" }));
 		comboBox8.setBounds(315, 447, 75, 22);
 		contentPane.add(comboBox8);
 
 		JButton start1 = new JButton("");
 		start1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//STUB
-				System.out.println("START 1");
+				try {
+					sensors[0].trigger();
+				} catch (NullPointerException n) {
+
+				}
 			}
 		});
 		start1.setBounds(270, 62, 23, 18);
@@ -530,8 +565,11 @@ public class GUISimulator extends JFrame {
 		JButton start3 = new JButton("");
 		start3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//STUB
-				System.out.println("START 3");
+				try {
+					sensors[2].trigger();
+				} catch (NullPointerException n) {
+
+				}
 			}
 		});
 		start3.setBounds(301, 62, 23, 18);
@@ -540,8 +578,11 @@ public class GUISimulator extends JFrame {
 		JButton start5 = new JButton("");
 		start5.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//STUB
-				System.out.println("START 5");
+				try {
+					sensors[4].trigger();
+				} catch (NullPointerException n) {
+
+				}
 			}
 		});
 		start5.setBounds(330, 62, 23, 18);
@@ -550,8 +591,11 @@ public class GUISimulator extends JFrame {
 		JButton start7 = new JButton("");
 		start7.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//STUB
-				System.out.println("START 7");
+				try {
+					sensors[6].trigger();
+				} catch (NullPointerException n) {
+
+				}
 			}
 		});
 		start7.setBounds(360, 62, 23, 18);
@@ -560,8 +604,11 @@ public class GUISimulator extends JFrame {
 		JButton finish2 = new JButton("");
 		finish2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//STUB
-				System.out.println("FINISH 2");
+				try {
+					sensors[1].trigger();
+				} catch (NullPointerException n) {
+
+				}
 			}
 		});
 		finish2.setBounds(270, 125, 23, 18);
@@ -570,8 +617,11 @@ public class GUISimulator extends JFrame {
 		JButton finish4 = new JButton("");
 		finish4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//STUB
-				System.out.println("FINISH 4");
+				try {
+					sensors[3].trigger();
+				} catch (NullPointerException n) {
+
+				}
 			}
 		});
 		finish4.setBounds(301, 125, 23, 18);
@@ -580,8 +630,11 @@ public class GUISimulator extends JFrame {
 		JButton finish6 = new JButton("");
 		finish6.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//STUB
-				System.out.println("FINISH 6");
+				try {
+					sensors[5].trigger();
+				} catch (NullPointerException n) {
+
+				}
 			}
 		});
 		finish6.setBounds(330, 125, 23, 18);
@@ -590,8 +643,11 @@ public class GUISimulator extends JFrame {
 		JButton finish8 = new JButton("");
 		finish8.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//STUB
-				System.out.println("FINISH 8");
+				try {
+					sensors[7].trigger();
+				} catch (NullPointerException n) {
+
+				}
 			}
 		});
 		finish8.setBounds(362, 125, 23, 18);
@@ -600,7 +656,7 @@ public class GUISimulator extends JFrame {
 		JButton leftArrow = new JButton("L");
 		leftArrow.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//STUB
+				// STUB
 				System.out.println("LEFT");
 			}
 		});
@@ -610,7 +666,7 @@ public class GUISimulator extends JFrame {
 		JButton rightArrow = new JButton("R");
 		rightArrow.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//STUB
+				// STUB
 				System.out.println("RIGHT");
 			}
 		});
@@ -620,7 +676,7 @@ public class GUISimulator extends JFrame {
 		JButton downArrow = new JButton("D");
 		downArrow.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//STUB
+				// STUB
 				System.out.println("DOWN");
 			}
 		});
@@ -630,7 +686,7 @@ public class GUISimulator extends JFrame {
 		JButton upArrow = new JButton("U");
 		upArrow.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//STUB
+				// STUB
 				System.out.println("UP");
 			}
 		});
@@ -680,8 +736,8 @@ public class GUISimulator extends JFrame {
 		JButton usbPort = new JButton("");
 		usbPort.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//STUB
-				System.out.println("USB INPUT");
+				String inputValue = JOptionPane.showInputDialog("Please input directory: ");
+
 			}
 		});
 		usbPort.setBounds(432, 435, 40, 10);
