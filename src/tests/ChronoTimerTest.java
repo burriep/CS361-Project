@@ -96,21 +96,81 @@ public class ChronoTimerTest {
 	
 	@Test
 	public void TestSingleParInd(){
-		//TODO
 		ChronoTimer ct = new ChronoTimer();
+		ct.powerOn();
+		Sensor sens1 = new Sensor(SensorType.PUSH);
+		Sensor sens2 = new Sensor(SensorType.PUSH);
+		ct.connectButton(sens1, 1);
+		ct.connectButton(sens2, 2);
+		ct.toggleChannel(1);
+		ct.toggleChannel(2);
 		ct.setEventType(RunType.PARIND);
 		ct.newRun();
 		ct.addRacer(234);
+		ct.update(sens1, null);
+		ct.update(sens2, null);
+		assertEquals(ct.getRuns().get(0).getData().get(0).getRacer(), 234);
 		ct.endRun();
 	}
 	
 	@Test
 	public void TestMultipleParInd(){
-		//TODO
+		ChronoTimer ct = new ChronoTimer();
+		ct.powerOn();
+		Sensor sens1 = new Sensor(SensorType.PUSH);
+		Sensor sens2 = new Sensor(SensorType.PUSH);
+		Sensor sens3 = new Sensor(SensorType.PUSH);
+		Sensor sens4 = new Sensor(SensorType.PUSH);
+		ct.connectButton(sens1, 1);
+		ct.connectButton(sens2, 2);
+		ct.connectButton(sens3, 3);
+		ct.connectButton(sens4, 4);
+		ct.toggleChannel(1);
+		ct.toggleChannel(2);
+		ct.toggleChannel(3);
+		ct.toggleChannel(4);
+		ct.setEventType(RunType.PARIND);
+		ct.newRun();
+		ct.addRacer(234);
+		ct.addRacer(345);
+		ct.addRacer(456);
+		ct.addRacer(567);
+		ct.update(sens1, null);
+		ct.update(sens2, null);
+		ct.update(sens1, null);
+		ct.update(sens3, null);
+		ct.update(sens4, null);
+		ct.update(sens3, null);
+		ct.update(sens2, null);
+		ct.update(sens4, null);
+		assertEquals(ct.getRuns().get(0).getData().get(0).getRacer(), 234);
+		assertEquals(ct.getRuns().get(0).getData().get(1).getRacer(), 456);
+		assertEquals(ct.getRuns().get(0).getData().get(2).getRacer(), 345);
+		assertEquals(ct.getRuns().get(0).getData().get(3).getRacer(), 567);
+		ct.endRun();
 	}
 	
 	@Test
 	public void testSingleGrp(){
+		ChronoTimer ct = new ChronoTimer();
+		ct.powerOn();
+		Sensor sens1 = new Sensor(SensorType.PUSH);
+		Sensor sens2 = new Sensor(SensorType.PUSH);
+		ct.connectButton(sens1, 1);
+		ct.connectButton(sens2, 2);
+		ct.toggleChannel(1);
+		ct.toggleChannel(2);
+		ct.setEventType(RunType.GRP);
+		ct.newRun();
+		ct.addRacer(1);
+		ct.update(sens1, null);
+		ct.update(sens2, null);
+		assertEquals(ct.getRuns().get(0).getData().get(0).getRacer(), 1);
+		ct.endRun();
+	}
+	
+	@Test
+	public void testMultipleGrp(){
 		//TODO
 		ChronoTimer ct = new ChronoTimer();
 		ct.powerOn();
@@ -122,28 +182,64 @@ public class ChronoTimerTest {
 		ct.toggleChannel(2);
 		ct.setEventType(RunType.GRP);
 		ct.newRun();
-		ct.addRacer(234);
-		ct.addRacer(345);
+		ct.addRacer(1);
+		ct.addRacer(2);
+		ct.addRacer(3);
+		ct.addRacer(4);
 		ct.update(sens1, null);
 		ct.update(sens1, null);
 		ct.update(sens2, null);
+		ct.update(sens1, null);
 		ct.update(sens2, null);
-		assertEquals(ct.getRuns().get(0).getData().get(0).getRacer(), 234);
-		assertEquals(ct.getRuns().get(0).getData().get(1).getRacer(), 345);
+		ct.update(sens2, null);
+		ct.update(sens1, null);
+		ct.update(sens2, null);
+		assertEquals(ct.getRuns().get(0).getData().get(0).getRacer(), 1);
+		assertEquals(ct.getRuns().get(0).getData().get(1).getRacer(), 2);
+		assertEquals(ct.getRuns().get(0).getData().get(2).getRacer(), 3);
+		assertEquals(ct.getRuns().get(0).getData().get(3).getRacer(), 4);
 		ct.endRun();
 	}
 	
 	@Test
-	public void testMultipleGrp(){
-		//TODO
+	public void switchEventMidrace(){
+		ChronoTimer ct = new ChronoTimer();
+		ct.powerOn();
+		Sensor sens1 = new Sensor(SensorType.PUSH);
+		Sensor sens2 = new Sensor(SensorType.PUSH);
+		ct.connectButton(sens1, 1);
+		ct.connectButton(sens2, 2);
+		ct.toggleChannel(1);
+		ct.toggleChannel(2);
+		ct.setEventType(RunType.IND);
+		ct.newRun();
+		ct.addRacer(234);
+		ct.update(sens1, null);
+		ct.setEventType(RunType.GRP);
+		ct.update(sens2, null);
+		assertEquals(ct.getRuns().get(0).getData().get(0).getRacer(), 234);
+		ct.endRun();
 	}
 	
 	@Test
-	public void switchEventMidrace(){
-		//TODO
+	public void testDidNotFinish(){
+		ChronoTimer ct = new ChronoTimer();
+		ct.powerOn();
+		Sensor sens1 = new Sensor(SensorType.PUSH);
+		Sensor sens2 = new Sensor(SensorType.PUSH);
+		ct.connectButton(sens1, 1);
+		ct.connectButton(sens2, 2);
+		ct.toggleChannel(1);
+		ct.toggleChannel(2);
+		ct.setEventType(RunType.IND);
+		ct.newRun();
+		ct.addRacer(234);
+		ct.update(sens1, null);
+		ct.dnfRacer();
+		assertEquals(ct.getRuns().get(0).getData().get(0).getRacer(), 234);
+		assertEquals(ct.getRuns().get(0).getData().get(0).getEndTime(), null);
+		ct.endRun();
 	}
-	
-	
 	
 	
 }
