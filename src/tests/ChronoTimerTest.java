@@ -37,7 +37,7 @@ public class ChronoTimerTest {
 		ct.setEventType(RunType.PARIND);
 		ct.newRun();
 		ct.addRacer(567);
-		
+
 	}
 
 	@Test
@@ -50,8 +50,7 @@ public class ChronoTimerTest {
 		ct.endRun();
 		ct.setEventType(RunType.IND);
 	}
-	
-	
+
 	@Test
 	public void testSingleInd() {
 		ChronoTimer ct = new ChronoTimer();
@@ -70,7 +69,7 @@ public class ChronoTimerTest {
 		assertEquals(ct.getRuns().get(0).getData().get(0).getRacer(), 234);
 		ct.endRun();
 	}
-	
+
 	@Test
 	public void testMultipleInd() {
 		ChronoTimer ct = new ChronoTimer();
@@ -93,9 +92,9 @@ public class ChronoTimerTest {
 		assertEquals(ct.getRuns().get(0).getData().get(1).getRacer(), 345);
 		ct.endRun();
 	}
-	
+
 	@Test
-	public void TestSingleParInd(){
+	public void TestSingleParInd() {
 		ChronoTimer ct = new ChronoTimer();
 		ct.powerOn();
 		Sensor sens1 = new Sensor(SensorType.PUSH);
@@ -112,9 +111,9 @@ public class ChronoTimerTest {
 		assertEquals(ct.getRuns().get(0).getData().get(0).getRacer(), 234);
 		ct.endRun();
 	}
-	
+
 	@Test
-	public void TestMultipleParInd(){
+	public void TestMultipleParInd() {
 		ChronoTimer ct = new ChronoTimer();
 		ct.powerOn();
 		Sensor sens1 = new Sensor(SensorType.PUSH);
@@ -138,20 +137,20 @@ public class ChronoTimerTest {
 		sens1.trigger();
 		sens2.trigger();
 		sens1.trigger();
-		ct.update(sens3, null);
-		ct.update(sens4, null);
-		ct.update(sens3, null);
+		sens3.trigger();
+		sens4.trigger();
+		sens3.trigger();
 		sens2.trigger();
-		ct.update(sens4, null);
+		sens4.trigger();
 		assertEquals(ct.getRuns().get(0).getData().get(0).getRacer(), 234);
 		assertEquals(ct.getRuns().get(0).getData().get(1).getRacer(), 456);
 		assertEquals(ct.getRuns().get(0).getData().get(2).getRacer(), 345);
 		assertEquals(ct.getRuns().get(0).getData().get(3).getRacer(), 567);
 		ct.endRun();
 	}
-	
+
 	@Test
-	public void testSingleGrp(){
+	public void testSingleGrp() {
 		ChronoTimer ct = new ChronoTimer();
 		ct.powerOn();
 		Sensor sens1 = new Sensor(SensorType.PUSH);
@@ -168,9 +167,9 @@ public class ChronoTimerTest {
 		assertEquals(ct.getRuns().get(0).getData().get(0).getRacer(), 1);
 		ct.endRun();
 	}
-	
+
 	@Test
-	public void testMultipleGrp(){
+	public void testMultipleGrp() {
 		ChronoTimer ct = new ChronoTimer();
 		ct.powerOn();
 		Sensor sens1 = new Sensor(SensorType.PUSH);
@@ -199,9 +198,9 @@ public class ChronoTimerTest {
 		assertEquals(ct.getRuns().get(0).getData().get(3).getRacer(), 4);
 		ct.endRun();
 	}
-	
+
 	@Test
-	public void switchEventMidrace(){
+	public void switchEventMidrace() {
 		ChronoTimer ct = new ChronoTimer();
 		ct.powerOn();
 		Sensor sens1 = new Sensor(SensorType.PUSH);
@@ -219,9 +218,9 @@ public class ChronoTimerTest {
 		assertEquals(ct.getRuns().get(0).getData().get(0).getRacer(), 234);
 		ct.endRun();
 	}
-	
+
 	@Test
-	public void testDidNotFinish(){
+	public void testDidNotFinish() {
 		ChronoTimer ct = new ChronoTimer();
 		ct.powerOn();
 		Sensor sens1 = new Sensor(SensorType.PUSH);
@@ -239,6 +238,5 @@ public class ChronoTimerTest {
 		assertEquals(ct.getRuns().get(0).getData().get(0).getEndTime(), null);
 		ct.endRun();
 	}
-	
-	
+
 }
