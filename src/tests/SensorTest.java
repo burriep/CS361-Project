@@ -17,7 +17,7 @@ public class SensorTest {
 	}
 
 	@Test
-	public void testSensor() {
+	public void testInitialization() {
 		Sensor s = new Sensor(null);
 		assertEquals(s.getSensorType(), SensorType.PUSH);
 		s = new Sensor(SensorType.EYE);
@@ -30,28 +30,6 @@ public class SensorTest {
 		assertEquals(s.getSensorType(), SensorType.PAD);
 		s = new Sensor(SensorType.PUSH);
 		assertEquals(s.getSensorType(), SensorType.PUSH);
-	}
-
-	@Test
-	public void testGetSensorType() {
-		// already tested SensorType.EYE in testSensor()
-		Sensor s = new Sensor(SensorType.GATE);
-		assertEquals(s.getSensorType(), SensorType.GATE);
-		// check that getSensorType() doesn't change the sensor type
-		assertEquals(s.getSensorType(), SensorType.GATE);
-		s = new Sensor(SensorType.PAD);
-		assertEquals(s.getSensorType(), SensorType.PAD);
-		s = new Sensor(SensorType.PUSH);
-		assertEquals(s.getSensorType(), SensorType.PUSH);
-	}
-
-	@Test
-	public void testTriggerNotRegistered() {
-		Sensor s = new Sensor(SensorType.GATE);
-		TestObserver to = new TestObserver();
-		s.trigger();
-		assertFalse(to.wasUpdated);
-		assertEquals(s.countObservers(), 0);
 	}
 
 	@Test
