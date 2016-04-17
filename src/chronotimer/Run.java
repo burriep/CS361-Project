@@ -5,7 +5,7 @@ import com.google.gson.Gson;
 
 public class Run {
 	private List<RacerRun> racerData;
-	private Queue<Integer> notStartedQueue;
+	private List<Integer> notStartedQueue;
 	private List<Integer> startedQueue;
 	private boolean active;
 
@@ -15,7 +15,7 @@ public class Run {
 	public Run() {
 		racerData = new ArrayList<RacerRun>();
 		notStartedQueue = new LinkedList<Integer>();
-		startedQueue = new ArrayList<Integer>();
+		startedQueue = new LinkedList<Integer>();
 		active = true;
 	}
 
@@ -129,8 +129,8 @@ public class Run {
 			int r0 = startedQueue.get(0);
 			startedQueue.set(0, startedQueue.get(1));
 			startedQueue.set(1, r0);
-			
-			r0 = racerData.get(0).getRacer(); 
+
+			r0 = racerData.get(0).getRacer();
 			Time t0 = racerData.get(0).getStartTime();
 			racerData.get(0).setRacer(racerData.get(1).getRacer());
 			racerData.get(0).setStartTime(racerData.get(1).getStartTime());
@@ -185,10 +185,36 @@ public class Run {
 	 *            - the start time for the next racer.
 	 */
 	public void addRacerStartTime(Time t) {
-		if (isActive() && t != null && !notStartedQueue.isEmpty()) {
-			int r = notStartedQueue.remove();
-			startedQueue.add(r);
-			racerData.add(new RacerRun(r, t));
+		if (!notStartedQueue.isEmpty()) {
+			addRacerStartTime(notStartedQueue.get(0), t);
+		}
+	}
+
+	/**
+	 * Add time <code>t</code> as the start time for the next racer in the queue
+	 * to start and remove that racer from the queue to start.
+	 * <strong>Precondition:</strong><br>
+	 * This Run is active and has not been ended.<br>
+	 * The queue of racers to start is not empty.<br>
+	 * <code>racerID</code> must be within the range [0, 99999].<br>
+	 * <code>racerID</code> has been queued to start and has not yet started<br>
+	 * <code>t</code> is not NULL.<br>
+	 * No start time will be added and no changes will be made if precondition
+	 * is not met.
+	 * 
+	 * @param racerID
+	 *            - the racer to associate with the start time.
+	 * @param t
+	 *            - the start time for racer <code>racerID</code>.
+	 */
+	public void addRacerStartTime(int racerID, Time t) {
+		if (isActive() && isValidRacerID(racerID) && t != null && !notStartedQueue.isEmpty()) {
+			boolean wasQueued = notStartedQueue.remove(Integer.valueOf(racerID));
+			if (!wasQueued) {
+				return; // racer was not in notStartedQueue
+			}
+			startedQueue.add(racerID);
+			racerData.add(new RacerRun(racerID, t));
 		}
 	}
 
@@ -207,12 +233,8 @@ public class Run {
 	 *            - the end time for the next racer.
 	 */
 	public void addRacerEndTime(Time t) {
-		if (isActive() && t != null && !startedQueue.isEmpty()) {
-			int r = startedQueue.remove(0);
-			RacerRun rr = findRacerRun(r);
-			if (rr != null) {
-				rr.setEndTime(t);
-			}
+		if (!startedQueue.isEmpty()) {
+			addRacerEndTime(startedQueue.get(0), t);
 		}
 	}
 
@@ -229,7 +251,7 @@ public class Run {
 	 * not met.
 	 * 
 	 * @param racerID
-	 *            - the racer to associate with the start time.
+	 *            - the racer to associate with the end time.
 	 * @param t
 	 *            - the end time for racer <code>racerID</code>.
 	 */
@@ -288,30 +310,30 @@ public class Run {
 	}
 
 	/**
-	 * Returns a Collection of racers that are queued to start but have not yet
+	 * Returns a List of racers that are queued to start but have not yet
 	 * started. Never NULL.
 	 * 
-	 * @return Collection of not started racers.
+	 * @return the queue of racers waiting to start.
 	 */
-	public Queue<Integer> getQueuedRacers() {
+	public List<Integer> getQueuedRacers() {
 		return notStartedQueue;
 	}
 
 	/**
-	 * Returns a Collection of racers who have started but have not finished.
-	 * Never NULL.
+	 * Returns a List of racers who have started but have not finished. Never
+	 * NULL.
 	 * 
-	 * @return Collection of started racers.
+	 * @return the list of racers who have started and are currently active.
 	 */
 	public List<Integer> getStartedRacers() {
 		return startedQueue;
 	}
 
 	/**
-	 * Collection of RacerRuns containing the data associating a Racer to a
-	 * start and end time. Never NULL.
+	 * List of RacerRuns containing the data associating a Racer to a start and
+	 * end time. Never NULL.
 	 * 
-	 * @return Collection of RacerRuns
+	 * @return the list of RacerRun data in this Run.
 	 */
 	public List<RacerRun> getData() {
 		return racerData;
