@@ -53,4 +53,45 @@ public class ParIndEventController extends EventController {
 		run.setActive(false);
 		finishChannelMap.clear();
 	}
+
+	@Override
+	public String getRunningDisplay() {
+		StringBuilder out = new StringBuilder();
+		List<Integer> queued = run.getQueuedRacers();
+		List<Integer> started = run.getStartedRacers();
+		List<RacerRun> runData = run.getData();
+
+		// the next pair to run
+		for (int i = 0; i < queued.size() && i < 2; i++) {
+			out.append(queued.get(i)).append("\n");
+		}
+		out.append("\n");
+
+		// the running time of the racer(s)
+		for (int sr : started) {
+			out.append(sr).append(" ");
+			// current running time
+			for (int i = runData.size() - 1; i >= 0; --i) {
+				RacerRun rr = runData.get(i);
+				if (rr.getRacer() == sr) {
+					out.append(Timer.getDifference(rr.getStartTime(), timer.getTime()));
+					break;
+				}
+			}
+			out.append(" R \n");
+		}
+		out.append("\n");
+
+		// and the finish times of the last pair to finish.
+		int finishedRacersFound = 0;
+		for (int i = runData.size() - 1; i >= 0 && finishedRacersFound < 2; --i) {
+			RacerRun rr = runData.get(i);
+			if (rr.getEndTime() != null) {
+				out.append(rr.getRacer()).append(" ");
+				out.append(rr.getElapsedTime()).append(" F\n");
+				break;
+			}
+		}
+		return out.toString();
+	}
 }

@@ -8,4 +8,9 @@ public class ParGrpEventController extends EventController {
 	@Override
 	public void channelTriggered(int channelNumber) {
 	}
+
+	@Override
+	public String getRunningDisplay() {
+		return ""; // TODO: Sprint 4
+	}
 }

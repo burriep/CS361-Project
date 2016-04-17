@@ -30,4 +30,6 @@ abstract class EventController {
 	public void endRun() {
 		run.setActive(false);
 	}
+
+	abstract public String getRunningDisplay();
 }

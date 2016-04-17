@@ -206,9 +206,11 @@ public class ChronoTimer implements Observer {
 
 	/**
 	 * Print run data for the current run.
+	 * 
+	 * @return the text that was printed.
 	 */
-	public void printCurrentRun() {
-		printRun(runs.size());
+	public String printCurrentRun() {
+		return printRun(runs.size());
 	}
 
 	/**
@@ -216,14 +218,20 @@ public class ChronoTimer implements Observer {
 	 * 
 	 * @param id
 	 *            must be a valid run number.
+	 * @return the text that was printed.
 	 */
-	public void printRun(int id) {
+	public String printRun(int id) {
 		if (isOn()) {
 			if (id > 0 && id <= runs.size()) {
-				printer.print("Run " + id);
-				printer.print(runs.get(id - 1).toString());
+				StringBuilder sb = new StringBuilder();
+				sb.append("Run ").append(id).append("\n");
+				sb.append(runs.get(id - 1).toString());
+				printer.print(sb.toString());
+				sb.append("\n");
+				return sb.toString();
 			}
 		}
+		return "";
 	}
 
 	public void exportCurrentRun() {
@@ -253,12 +261,13 @@ public class ChronoTimer implements Observer {
 			ec.addRacer(racer);
 		}
 	}
-	
-	/**Get the list of runs for testing
+
+	/**
+	 * Get the list of runs for testing
 	 * 
 	 * @return List<Run>
 	 */
-	public List<Run> getRuns(){
+	public List<Run> getRuns() {
 		return runs;
 	}
 
@@ -336,7 +345,7 @@ public class ChronoTimer implements Observer {
 		// TODO: verify if ChronoTimer can be off for this command
 		return timer.getTimeString();
 	}
-	
+
 	/**
 	 * Get the Timer object
 	 * 
@@ -345,7 +354,7 @@ public class ChronoTimer implements Observer {
 	public Timer getTimer() {
 		return timer;
 	}
-	
+
 	/**
 	 * Get the Printer object
 	 * 
@@ -353,5 +362,17 @@ public class ChronoTimer implements Observer {
 	 */
 	public Printer getPrinter() {
 		return printer;
+	}
+
+	/**
+	 * Get information about the current run, specifically formatted for the
+	 * running display on the ChronoTimer.
+	 * 
+	 * @return current run info
+	 */
+	public String getRunningDisplay() {
+		if (isOn())
+			return ec.getRunningDisplay();
+		return "";
 	}
 }

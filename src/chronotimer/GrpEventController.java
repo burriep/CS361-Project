@@ -39,4 +39,24 @@ public class GrpEventController extends EventController {
 		startTime = null;
 		place = 0;
 	}
+
+	@Override
+	public String getRunningDisplay() {
+		StringBuilder out = new StringBuilder();
+		List<RacerRun> runData = run.getData();
+
+		// the running time
+		out.append(Timer.getDifference(startTime, timer.getTime()));
+
+		// the last finish
+		for (int i = runData.size() - 1; i >= 0; --i) {
+			RacerRun rr = runData.get(i);
+			if (rr.getEndTime() != null) {
+				out.append(rr.getRacer()).append(" ");
+				out.append(rr.getElapsedTime()).append(" F\n");
+				break;
+			}
+		}
+		return out.toString();
+	}
 }
