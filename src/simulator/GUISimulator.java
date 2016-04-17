@@ -18,6 +18,7 @@ import javax.swing.JTextArea;
 import javax.swing.border.MatteBorder;
 
 import chronotimer.ChronoTimer;
+import chronotimer.RunType;
 import chronotimer.Sensor;
 import chronotimer.SensorType;
 
@@ -32,6 +33,10 @@ public class GUISimulator extends JFrame {
 	static ChronoTimer testChronoTimer;
 	Sensor[] sensors = new Sensor[ChronoTimer.DEFAULT_CHANNEL_COUNT];
 	private JPanel contentPane;
+	JTextArea mainDisplay;
+	private int currentMenu = 1;
+	private int menuSelection = 1;
+	private String numPadSelection = "";
 
 	/**
 	 * Launch the application.
@@ -66,8 +71,10 @@ public class GUISimulator extends JFrame {
 		JButton btn1 = new JButton("1");
 		btn1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// STUB
-				System.out.println("1");
+				if (currentMenu == 5 || currentMenu == 6) {
+					numPadSelection += "1";
+					numClrInput();
+				}
 			}
 		});
 		btn1.setBorder(null);
@@ -79,8 +86,10 @@ public class GUISimulator extends JFrame {
 		JButton btn2 = new JButton("2");
 		btn2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// STUB
-				System.out.println("2");
+				if (currentMenu == 5 || currentMenu == 6) {
+					numPadSelection += "2";
+					numClrInput();
+				}
 			}
 		});
 		btn2.setBorder(null);
@@ -92,8 +101,10 @@ public class GUISimulator extends JFrame {
 		JButton btn3 = new JButton("3");
 		btn3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// STUB
-				System.out.println("3");
+				if (currentMenu == 5 || currentMenu == 6) {
+					numPadSelection += "3";
+					numClrInput();
+				}
 			}
 		});
 		btn3.setBorder(null);
@@ -105,8 +116,10 @@ public class GUISimulator extends JFrame {
 		JButton btn4 = new JButton("4");
 		btn4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// STUB
-				System.out.println("4");
+				if (currentMenu == 5 || currentMenu == 6) {
+					numPadSelection += "4";
+					numClrInput();
+				}
 			}
 		});
 		btn4.setBorder(null);
@@ -118,8 +131,10 @@ public class GUISimulator extends JFrame {
 		JButton btn5 = new JButton("5");
 		btn5.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// STUB
-				System.out.println("5");
+				if (currentMenu == 5 || currentMenu == 6) {
+					numPadSelection += "5";
+					numClrInput();
+				}
 			}
 		});
 		btn5.setBorder(null);
@@ -131,8 +146,10 @@ public class GUISimulator extends JFrame {
 		JButton btn6 = new JButton("6");
 		btn6.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// STUB
-				System.out.println("6");
+				if (currentMenu == 5 || currentMenu == 6) {
+					numPadSelection += "6";
+					numClrInput();
+				}
 			}
 		});
 		btn6.setBorder(null);
@@ -144,8 +161,10 @@ public class GUISimulator extends JFrame {
 		JButton btn7 = new JButton("7");
 		btn7.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// STUB
-				System.out.println("7");
+				if (currentMenu == 5 || currentMenu == 6) {
+					numPadSelection += "7";
+					numClrInput();
+				}
 			}
 		});
 		btn7.setBorder(null);
@@ -157,8 +176,10 @@ public class GUISimulator extends JFrame {
 		JButton btn8 = new JButton("8");
 		btn8.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// STUB
-				System.out.println("8");
+				if (currentMenu == 5 || currentMenu == 6) {
+					numPadSelection += "8";
+					numClrInput();
+				}
 			}
 		});
 		btn8.setBorder(null);
@@ -170,8 +191,10 @@ public class GUISimulator extends JFrame {
 		JButton btn9 = new JButton("9");
 		btn9.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// STUB
-				System.out.println("9");
+				if (currentMenu == 5 || currentMenu == 6) {
+					numPadSelection += "9";
+					numClrInput();
+				}
 			}
 		});
 		btn9.setBorder(null);
@@ -183,8 +206,10 @@ public class GUISimulator extends JFrame {
 		JButton btn10 = new JButton("*");
 		btn10.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// STUB
-				System.out.println("*");
+				if (currentMenu == 5 || currentMenu == 6) {
+					numPadSelection = "";
+					numClrInput();
+				}
 			}
 		});
 		btn10.setBorder(null);
@@ -196,8 +221,10 @@ public class GUISimulator extends JFrame {
 		JButton btn11 = new JButton("0");
 		btn11.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// STUB
-				System.out.println("0");
+				if (currentMenu == 5 || currentMenu == 6) {
+					numPadSelection += "0";
+					numClrInput();
+				}
 			}
 		});
 		btn11.setBorder(null);
@@ -209,8 +236,19 @@ public class GUISimulator extends JFrame {
 		JButton btn12 = new JButton("#");
 		btn12.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// STUB
-				System.out.println("#");
+				if (currentMenu == 5) {
+					if (!numPadSelection.equals("")) {
+						testChronoTimer.addRacer(Integer.parseInt(numPadSelection));
+						numPadSelection = "";
+						mainDisplay.setText("RACER ADDED. \n\n NUM " + numPadSelection);
+					}
+				} else if (currentMenu == 6) {
+					if (!numPadSelection.equals("")) {
+						testChronoTimer.clearRacer(Integer.parseInt(numPadSelection));
+						numPadSelection = "";
+						mainDisplay.setText("RACER CLEARED. \n\n CLR " + numPadSelection);
+					}
+				}
 			}
 		});
 		btn12.setBorder(null);
@@ -372,10 +410,8 @@ public class GUISimulator extends JFrame {
 		btnPrinterPwr.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (testChronoTimer.printerIsOn()) {
-					System.out.println("PRINTER POWER OFF");
 					testChronoTimer.getPrinter().powerOff();
 				} else {
-					System.out.println("PRINTER POWER ON");
 					testChronoTimer.getPrinter().powerOn();
 				}
 			}
@@ -384,9 +420,9 @@ public class GUISimulator extends JFrame {
 		btnPrinterPwr.setBounds(444, 21, 108, 25);
 		contentPane.add(btnPrinterPwr);
 
-		JTextArea mainDisplay = new JTextArea();
+		mainDisplay = new JTextArea();
 		mainDisplay.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
-		mainDisplay.setText("");
+		mainDisplay.setText("1. RUN OPTIONS <<\n" + "2. RUNNER OPTIONS \n" + "3. EVENT \n" + "4. RESET");
 		mainDisplay.setBounds(243, 183, 149, 135);
 		mainDisplay.setEditable(false);
 		contentPane.add(mainDisplay);
@@ -656,8 +692,10 @@ public class GUISimulator extends JFrame {
 		JButton leftArrow = new JButton("L");
 		leftArrow.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// STUB
-				System.out.println("LEFT");
+				if ((currentMenu - 1) >= 1) {
+					currentMenu = 1;
+					setMenu();
+				}
 			}
 		});
 		leftArrow.setBounds(70, 214, 21, 23);
@@ -666,8 +704,43 @@ public class GUISimulator extends JFrame {
 		JButton rightArrow = new JButton("R");
 		rightArrow.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// STUB
-				System.out.println("RIGHT");
+				if (currentMenu == 1 && menuSelection == 1) {
+					currentMenu = 2;
+					menuSelection = 1;
+					setMenu();
+				} else if (currentMenu == 1 && menuSelection == 2) {
+					currentMenu = 3;
+					menuSelection = 1;
+					setMenu();
+				} else if (currentMenu == 1 && menuSelection == 3) {
+					currentMenu = 4;
+					menuSelection = 1;
+					setMenu();
+				} else if (currentMenu == 1 && menuSelection == 4) {
+					testChronoTimer.reset();
+				} else if (currentMenu == 2 && menuSelection == 1) {
+					testChronoTimer.newRun();
+				} else if (currentMenu == 2 && menuSelection == 2) {
+					testChronoTimer.endRun();
+				} else if (currentMenu == 3 && menuSelection == 1) {
+					currentMenu = 5;
+					numPadSelection = "";
+					numClrInput();
+				} else if (currentMenu == 3 && menuSelection == 2) {
+					testChronoTimer.dnfRacer();
+				} else if (currentMenu == 3 && menuSelection == 3) {
+					currentMenu = 6;
+					numPadSelection = "";
+					numClrInput();
+				} else if (currentMenu == 4 && menuSelection == 1) {
+					testChronoTimer.setEventType(RunType.IND);
+				} else if (currentMenu == 4 && menuSelection == 2) {
+					testChronoTimer.setEventType(RunType.PARIND);
+				} else if (currentMenu == 4 && menuSelection == 3) {
+					testChronoTimer.setEventType(RunType.GRP);
+				} else if (currentMenu == 4 && menuSelection == 4) {
+					testChronoTimer.setEventType(RunType.PARGRP);
+				}
 			}
 		});
 		rightArrow.setBounds(99, 214, 21, 23);
@@ -676,8 +749,19 @@ public class GUISimulator extends JFrame {
 		JButton downArrow = new JButton("D");
 		downArrow.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// STUB
-				System.out.println("DOWN");
+				if (currentMenu == 1 && (menuSelection + 1) <= 4) {
+					menuSelection += 1;
+					setMenu();
+				} else if (currentMenu == 2 && (menuSelection + 1) <= 2) {
+					menuSelection += 1;
+					setMenu();
+				} else if (currentMenu == 3 && (menuSelection + 1) <= 3) {
+					menuSelection += 1;
+					setMenu();
+				} else if (currentMenu == 4 && (menuSelection + 1) <= 4) {
+					menuSelection += 1;
+					setMenu();
+				}
 			}
 		});
 		downArrow.setBounds(140, 214, 21, 23);
@@ -686,8 +770,10 @@ public class GUISimulator extends JFrame {
 		JButton upArrow = new JButton("U");
 		upArrow.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// STUB
-				System.out.println("UP");
+				if ((menuSelection - 1) > 0) {
+					menuSelection -= 1;
+					setMenu();
+				}
 			}
 		});
 		upArrow.setBounds(168, 214, 21, 23);
@@ -772,5 +858,68 @@ public class GUISimulator extends JFrame {
 		lblNewLabel_1.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
 		lblNewLabel_1.setBounds(10, 11, 610, 348);
 		contentPane.add(lblNewLabel_1);
+	}
+
+	private void setMenu() {
+		if (currentMenu == 1) {
+			if (menuSelection == 1) {
+				mainDisplay.setText("1. RUN OPTIONS <<\n" + "2. RUNNER OPTIONS \n" + "3. EVENT \n" + "4. RESET");
+			} else if (menuSelection == 2) {
+				mainDisplay.setText("1. RUN OPTIONS \n" + "2. RUNNER OPTIONS <<\n" + "3. EVENT \n" + "4. RESET");
+			} else if (menuSelection == 3) {
+				mainDisplay.setText("1. RUN OPTIONS \n" + "2. RUNNER OPTIONS \n" + "3. EVENT <<\n" + "4. RESET");
+			} else if (menuSelection == 4) {
+				mainDisplay.setText("1. RUN OPTIONS \n" + "2. RUNNER OPTIONS \n" + "3. EVENT \n" + "4. RESET <<");
+			} else {
+				System.out.println("Error on selection: " + menuSelection);
+			}
+		} else if (currentMenu == 2) {
+			if (menuSelection == 1) {
+				mainDisplay.setText("1. NEW RUN <<\n" + "2. END RUN \n");
+			} else if (menuSelection == 2) {
+				mainDisplay.setText("1. NEW RUN \n" + "2. END RUN <<\n");
+			} else if (menuSelection == 3) {
+				currentMenu = 1;
+			} else {
+				System.out.println("Error on selection: " + menuSelection);
+			}
+		} else if (currentMenu == 3) {
+			if (menuSelection == 1) {
+				mainDisplay.setText("1. NUM <<\n 2. DNF \n 3. CLR");
+			} else if (menuSelection == 2) {
+				mainDisplay.setText("1. NUM \n 2. DNF <<\n 3. CLR");
+			} else if (menuSelection == 3) {
+				mainDisplay.setText("1. NUM \n 2. DNF \n 3. CLR <<");
+			} else if (menuSelection == 4) {
+				currentMenu = 1;
+			} else {
+				System.out.println("Error on selection: " + menuSelection);
+			}
+		} else if (currentMenu == 4) {
+			if (menuSelection == 1) {
+				mainDisplay.setText("1. IND <<\n 2. PARIND \n 3. GRP \n 4. PARGRP \n");
+			} else if (menuSelection == 2) {
+				mainDisplay.setText("1. IND \n 2. PARIND <<\n 3. GRP \n 4. PARGRP \n");
+			} else if (menuSelection == 3) {
+				mainDisplay.setText("1. IND \n 2. PARIND \n 3. GRP <<\n 4. PARGRP");
+			} else if (menuSelection == 4) {
+				mainDisplay.setText("1. IND \n 2. PARIND \n 3. GRP \n 4. PARGRP <<");
+			} else if (menuSelection == 5) {
+				currentMenu = 1;
+			} else {
+				System.out.println("Error on selection: " + menuSelection);
+			}
+		}
+		mainDisplay.update(mainDisplay.getGraphics());
+	}
+
+	private void numClrInput() {
+		if (currentMenu == 5) {
+			mainDisplay.setText("NUM " + numPadSelection);
+		} else if (currentMenu == 6) {
+			mainDisplay.setText("CLR " + numPadSelection);
+		} else {
+			System.out.println("Error on selection: " + menuSelection);
+		}
 	}
 }
