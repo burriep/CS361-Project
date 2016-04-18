@@ -51,24 +51,40 @@ public class ChronoTimer implements Observer {
 		powerOff(); // must be explicitly turned on by client
 	}
 
+	/**
+	 * Powers this ChronoTimer ON so that it can be interacted with.
+	 */
 	public void powerOn() {
 		powerState = true;
 	}
 
+	/**
+	 * Powers this ChronoTimer OFF so that no changes can be made to the data.
+	 */
 	public void powerOff() {
 		powerState = false;
 	}
 
+	/**
+	 * Check if this ChronoTimer is ON.
+	 * 
+	 * @return true if power is ON.
+	 */
 	public boolean isOn() {
 		return powerState;
 	}
 
+	/**
+	 * Check if the printer power is ON.
+	 * 
+	 * @return true if printer power is ON.
+	 */
 	public boolean printerIsOn() {
 		return printer.isOn();
 	}
 
 	/**
-	 * Remove all data and reset the ChronoTimer to its initial state
+	 * Remove all data and reset the ChronoTimer to its initial state.
 	 */
 	public void reset() {
 		boolean bakPower = isOn();
@@ -90,72 +106,94 @@ public class ChronoTimer implements Observer {
 	}
 
 	/**
-	 * Connect the appropriate sensor on the appropriate channel
+	 * Connect a sensor to the given channel. If Precondition is not met, no
+	 * change will be made.<br>
+	 * 
+	 * @pre no sensor is currently connected to the channel number given.
+	 * @pre Sensor s is not null.<br>
+	 * @pre channel is a valid channel number from [1,
+	 *      {@link #DEFAULT_CHANNEL_COUNT DEFAULT_CHANNEL_COUNT}]
 	 * 
 	 * @param s
-	 * @param channelNumber
+	 *            - the sensor to connect.
+	 * @param channel
+	 *            - the channel number to connect the Sensor to.
 	 */
-	public void connectSensor(Sensor s, int channelNumber) {
-		if (isOn()) {
-			if (channelNumber > 0 && channelNumber <= channels.length) {
-				channels[channelNumber - 1].connect(s);
+	public void connectSensor(Sensor s, int channel) {
+		if (isOn() && s != null && channel > 0 && channel <= channels.length) {
+			Channel c = channels[channel - 1];
+			if (c.getSensor() == null) {
+				c.connect(s);
 				s.addObserver(this);
 			}
 		}
 	}
 
 	/**
-	 * Connect a manual push button to this channel.
+	 * Connect a manual push button to this channel. If Precondition is not met,
+	 * no change will be made.<br>
+	 * 
+	 * @pre no sensor is currently connected to the channel number given.
+	 * @pre Sensor s is not null.<br>
+	 * @pre channel is a valid channel number from [1,
+	 *      {@link #DEFAULT_CHANNEL_COUNT DEFAULT_CHANNEL_COUNT}]
 	 * 
 	 * @param s
-	 *            - the push button sensor
-	 * @param channelNumber
-	 *            - the channel number to connect the sensor to. Must be within
-	 *            range [1, DEFAULT_CHANNEL_COUNT].
+	 *            - the push button sensor to connect
+	 * @param channel
+	 *            - the channel number to connect the sensor to.
 	 */
-	public void connectButton(Sensor s, int channelNumber) {
-		if (isOn()) {
-			if (channelNumber > 0 && channelNumber <= channels.length) {
-				channels[channelNumber - 1].connectButton(s);
+	public void connectButton(Sensor s, int channel) {
+		if (isOn() && s != null && channel > 0 && channel <= channels.length) {
+			Channel c = channels[channel - 1];
+			if (c.getButton() == null) {
+				c.connectButton(s);
 				s.addObserver(this);
 			}
 		}
 	}
 
 	/**
-	 * Disconnects a sensor from channel <code>channelNumber</code>
+	 * Disconnects a sensor from channel <code>channelNumber</code>. If
+	 * Precondition is not met, no change will be made.<br>
+	 * 
+	 * @pre A sensor is connected to the channel.
+	 * @pre channel is a valid channel number from [1,
+	 *      {@link #DEFAULT_CHANNEL_COUNT DEFAULT_CHANNEL_COUNT}]
 	 * 
 	 * @param channelNumber
+	 *            - the channel number to disconnect the sensor.
 	 */
 	public void disconnectSensor(int channelNumber) {
-		if (isOn()) {
-			if (channelNumber > 0 && channelNumber <= channels.length) {
-				Channel c = channels[channelNumber - 1];
-				if (c.isConnected()) {
-					c.getSensor().deleteObserver(this);
-					c.disconnect();
-				}
+		if (isOn() && channelNumber > 0 && channelNumber <= channels.length) {
+			Channel c = channels[channelNumber - 1];
+			if (c.getSensor() != null) {
+				c.getSensor().deleteObserver(this);
+				c.disconnect();
 			}
 		}
 	}
 
 	/**
-	 * Toggle the appropriate channel using its index in the array
+	 * Toggle the given channel. If Precondition is not met, no change will be
+	 * made.<br>
+	 * 
+	 * @pre channel is a valid channel number from [1,
+	 *      {@link #DEFAULT_CHANNEL_COUNT DEFAULT_CHANNEL_COUNT}]
+	 * @pre A sensor (or button) is connected to this channel.
 	 * 
 	 * @param channelNumber
+	 *            - the channel number to toggle.
 	 */
 	public void toggleChannel(int channelNumber) {
-		if (isOn()) {
-			if (channelNumber > 0 && channelNumber <= channels.length) {
-				Channel c = channels[channelNumber - 1];
-				if (c.isConnected()) {
-					c.toggleState();
-				}
+		if (isOn() && channelNumber > 0 && channelNumber <= channels.length) {
+			Channel c = channels[channelNumber - 1];
+			if (c.isConnected()) {
+				c.toggleState();
 			}
 		}
 	}
 
-	// trigger channel
 	@Override
 	public void update(Observable o, Object arg) {
 		if (isOn()) {
@@ -177,6 +215,7 @@ public class ChronoTimer implements Observer {
 	 * Set the RunType to be used.
 	 * 
 	 * @param e
+	 *            - the RunType which will be used.
 	 */
 	public void setEventType(RunType e) {
 		if (isOn()) {
@@ -234,10 +273,23 @@ public class ChronoTimer implements Observer {
 		return "";
 	}
 
+	/**
+	 * Exports the current run to a file named Run#.json where # is the current
+	 * run number.
+	 */
 	public void exportCurrentRun() {
 		exportRun(runs.size());
 	}
 
+	/**
+	 * Exports the run with the given id to a file named Run&lt;id&gt;.json. If
+	 * precondition is not met, no data will be exported.
+	 * 
+	 * @pre id must be a valid run number from 1 to current run.
+	 * 
+	 * @param id
+	 *            - the run number to export.
+	 */
 	public void exportRun(int id) {
 		if (isOn()) {
 			if (id > 0 && id <= runs.size()) {
@@ -290,7 +342,7 @@ public class ChronoTimer implements Observer {
 	}
 
 	/**
-	 * Add a run to the current event. Must end the current run first.
+	 * Start a new run of the same type. Must end the current run first.
 	 */
 	public void newRun() {
 		if (isOn() && !runs.get(runs.size() - 1).isActive()) {
@@ -330,8 +382,6 @@ public class ChronoTimer implements Observer {
 	 *            - time
 	 */
 	public void setTime(String t) {
-		// if (isOn()) {}
-		// TODO: verify if ChronoTimer can be off for this command
 		timer.setTime(t);
 	}
 
@@ -341,8 +391,6 @@ public class ChronoTimer implements Observer {
 	 * @return time
 	 */
 	public String getTime() {
-		// if (isOn()) {}
-		// TODO: verify if ChronoTimer can be off for this command
 		return timer.getTimeString();
 	}
 
