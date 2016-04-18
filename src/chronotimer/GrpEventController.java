@@ -47,6 +47,7 @@ public class GrpEventController extends EventController {
 
 		// the running time
 		out.append(Timer.getDifference(startTime, timer.getTime()));
+		out.append("\n");
 
 		// the last finish
 		for (int i = runData.size() - 1; i >= 0; --i) {

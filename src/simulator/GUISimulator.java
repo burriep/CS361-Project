@@ -263,7 +263,7 @@ public class GUISimulator extends JFrame {
 		enable2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					testChronoTimer.toggleChannel(1);
+					testChronoTimer.toggleChannel(2);
 				} catch (NullPointerException n) {
 
 				}
@@ -277,7 +277,7 @@ public class GUISimulator extends JFrame {
 		enable4.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					testChronoTimer.toggleChannel(3);
+					testChronoTimer.toggleChannel(4);
 				} catch (NullPointerException n) {
 
 				}
@@ -291,7 +291,7 @@ public class GUISimulator extends JFrame {
 		enable6.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					testChronoTimer.toggleChannel(5);
+					testChronoTimer.toggleChannel(6);
 				} catch (NullPointerException n) {
 
 				}
@@ -319,7 +319,7 @@ public class GUISimulator extends JFrame {
 		enable1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					testChronoTimer.toggleChannel(0);
+					testChronoTimer.toggleChannel(1);
 				} catch (NullPointerException n) {
 
 				}
@@ -333,7 +333,7 @@ public class GUISimulator extends JFrame {
 		enable3.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					testChronoTimer.toggleChannel(2);
+					testChronoTimer.toggleChannel(3);
 				} catch (NullPointerException n) {
 
 				}
@@ -347,7 +347,7 @@ public class GUISimulator extends JFrame {
 		enable5.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					testChronoTimer.toggleChannel(4);
+					testChronoTimer.toggleChannel(5);
 				} catch (NullPointerException n) {
 
 				}
@@ -361,7 +361,7 @@ public class GUISimulator extends JFrame {
 		enable7.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					testChronoTimer.toggleChannel(6);
+					testChronoTimer.toggleChannel(7);
 				} catch (NullPointerException n) {
 
 				}
@@ -480,11 +480,11 @@ public class GUISimulator extends JFrame {
 				if (comboBox3.getSelectedItem().toString().equals("(Disconnect)")) {
 					testChronoTimer.disconnectSensor(3);
 				} else if (comboBox3.getSelectedItem().toString().equals("GATE")) {
-					sensors[0] = new Sensor(SensorType.GATE);
+					sensors[2] = new Sensor(SensorType.GATE);
 				} else if (comboBox3.getSelectedItem().toString().equals("EYE")) {
-					sensors[0] = new Sensor(SensorType.EYE);
+					sensors[2] = new Sensor(SensorType.EYE);
 				} else if (comboBox3.getSelectedItem().toString().equals("PAD")) {
-					sensors[0] = new Sensor(SensorType.PAD);
+					sensors[2] = new Sensor(SensorType.PAD);
 				}
 				testChronoTimer.connectSensor(sensors[2], 3);
 			}
