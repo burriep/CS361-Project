@@ -6,28 +6,18 @@ import chronotimer.Timer;
 
 public class TimerTest {
 	@Test
-	public void test0ArgumentConstructor() {
+	public void testInitialization() {
+		// zero argument constructor
 		Timer t = new Timer();
 		assertFalse(t.getTime() == null);
-	}
-
-	@Test
-	public void test1ArgumentConstructor() {
-		Timer t = new Timer(null);
+		// one argument constructor
+		t = new Timer(null);
 		assertFalse(t.getTimeString() == null);
 		t = new Timer("11:00");
 		assertFalse(t.getTimeString() == null);
 		assertFalse(t.getTimeString() == "11:00");
 		assertFalse(t.getTimeString() == "11:00:00.00");
 		t = new Timer("11:00:00.00");
-		assertEquals(t.getTimeString(), "11:00:00.00");
-	}
-
-	@Test
-	public void testGetTime() {
-		Timer t = new Timer("11:00:00.00");
-		assertEquals(t.getTimeString(), "11:00:00.00");
-		// make sure that getTime didin't change the time
 		assertEquals(t.getTimeString(), "11:00:00.00");
 	}
 
@@ -43,6 +33,22 @@ public class TimerTest {
 		assertEquals(t.getTimeString(), "12:00:02.00");
 		t.setTime("12:00");
 		assertEquals(t.getTimeString(), "12:00:02.00");
+	}
+
+	@Test
+	public void testRealTimeSetTime() throws InterruptedException {
+		String st0 = "18:00:00.00", st1, st2;
+		// start a timer with real-time off
+		Timer t = new Timer(true);
+		Thread.sleep(500);
+		t.setTime(st0);
+		st1 = t.getTimeString();
+		// might be a few milliseconds off
+		assertEquals(0, Timer.getDifference(st0, st1), 0.1);
+		Thread.sleep(500);
+		st2 = t.getTimeString();
+		// might be a few milliseconds off
+		assertEquals(0.5, Timer.getDifference(st1, st2), 0.1);
 	}
 
 	@Test
@@ -143,21 +149,5 @@ public class TimerTest {
 		// test double stop
 		t.stop();
 		assertEquals(t.getTimeString(), st2);
-	}
-
-	@Test
-	public void testRealTimeSetTime() throws InterruptedException {
-		String st0 = "18:00:00.00", st1, st2;
-		// start a timer with real-time off
-		Timer t = new Timer(true);
-		Thread.sleep(500);
-		t.setTime(st0);
-		st1 = t.getTimeString();
-		// might be a few milliseconds off
-		assertEquals(0, Timer.getDifference(st0, st1), 0.1);
-		Thread.sleep(500);
-		st2 = t.getTimeString();
-		// might be a few milliseconds off
-		assertEquals(0.5, Timer.getDifference(st1, st2), 0.1);
 	}
 }
