@@ -16,6 +16,7 @@ import java.awt.Font;
 import javax.swing.JRadioButton;
 import javax.swing.JTextArea;
 import javax.swing.border.MatteBorder;
+import javax.swing.Timer;
 
 import chronotimer.ChronoTimer;
 import chronotimer.RunType;
@@ -34,6 +35,7 @@ public class GUISimulator extends JFrame {
 	Sensor[] sensors = new Sensor[ChronoTimer.DEFAULT_CHANNEL_COUNT];
 	private JPanel contentPane;
 	JTextArea mainDisplay;
+	JTextArea txtrPrinterarea;
 	private int currentMenu = 1;
 	private int menuSelection = 1;
 	private String numPadSelection = "";
@@ -373,10 +375,8 @@ public class GUISimulator extends JFrame {
 		btnPower.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (testChronoTimer.isOn()) {
-					System.out.println("POWER OFF");
 					testChronoTimer.powerOff();
 				} else {
-					System.out.println("POWER ON");
 					testChronoTimer.powerOn();
 				}
 			}
@@ -384,17 +384,6 @@ public class GUISimulator extends JFrame {
 		btnPower.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		btnPower.setBounds(60, 29, 91, 30);
 		contentPane.add(btnPower);
-
-		JButton btnFunction = new JButton("FUNCTION");
-		btnFunction.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				// STUB
-				System.out.println("FUNCTION");
-			}
-		});
-		btnFunction.setFont(new Font("Tahoma", Font.PLAIN, 13));
-		btnFunction.setBounds(48, 183, 107, 25);
-		contentPane.add(btnFunction);
 
 		JButton btnSwap = new JButton("SWAP");
 		btnSwap.addActionListener(new ActionListener() {
@@ -405,6 +394,27 @@ public class GUISimulator extends JFrame {
 		btnSwap.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		btnSwap.setBounds(62, 276, 89, 27);
 		contentPane.add(btnSwap);
+
+		JComboBox functionBox = new JComboBox();
+		if (functionBox.getSelectedItem().toString().equals("RUN OPTIONS")) {
+			currentMenu = 2;
+			menuSelection = 1;
+			setMenu();
+		} else if (functionBox.getSelectedItem().toString().equals("RUNNER OPTIONS")) {
+			currentMenu = 3;
+			menuSelection = 1;
+			setMenu();
+		} else if (functionBox.getSelectedItem().toString().equals("EVENT")) {
+			currentMenu = 4;
+			menuSelection = 1;
+			setMenu();
+		} else if (functionBox.getSelectedItem().toString().equals("RESET")) {
+			testChronoTimer.reset();
+		}
+		functionBox.setModel(new DefaultComboBoxModel(
+				new String[] { "RUN OPTIONS", "RUNNER OPTIONS", "EVENT", "RESET" }));
+		functionBox.setBounds(48, 183, 107, 25);
+		contentPane.add(functionBox);
 
 		JButton btnPrinterPwr = new JButton("Printer Pwr");
 		btnPrinterPwr.addActionListener(new ActionListener() {
@@ -427,11 +437,19 @@ public class GUISimulator extends JFrame {
 		mainDisplay.setEditable(false);
 		contentPane.add(mainDisplay);
 
-		JTextArea txtrPrinterarea = new JTextArea();
+		txtrPrinterarea = new JTextArea();
 		txtrPrinterarea.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
 		txtrPrinterarea.setText("");
 		txtrPrinterarea.setBounds(454, 60, 84, 80);
+		txtrPrinterarea.setEditable(false);
 		contentPane.add(txtrPrinterarea);
+
+		Timer timer = new Timer(10, new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				txtrPrinterarea.setText(testChronoTimer.getRunningDisplay());
+			}
+		});
+		timer.start();
 
 		JComboBox comboBox1 = new JComboBox();
 		comboBox1.addActionListener(new ActionListener() {
@@ -689,7 +707,7 @@ public class GUISimulator extends JFrame {
 		finish8.setBounds(362, 125, 23, 18);
 		contentPane.add(finish8);
 
-		JButton leftArrow = new JButton("L");
+		JButton leftArrow = new JButton("<");
 		leftArrow.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if ((currentMenu - 1) >= 1) {
@@ -698,10 +716,10 @@ public class GUISimulator extends JFrame {
 				}
 			}
 		});
-		leftArrow.setBounds(70, 214, 21, 23);
+		leftArrow.setBounds(35, 214, 42, 23);
 		contentPane.add(leftArrow);
 
-		JButton rightArrow = new JButton("R");
+		JButton rightArrow = new JButton(">");
 		rightArrow.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (currentMenu == 1 && menuSelection == 1) {
@@ -743,10 +761,10 @@ public class GUISimulator extends JFrame {
 				}
 			}
 		});
-		rightArrow.setBounds(99, 214, 21, 23);
+		rightArrow.setBounds(80, 214, 42, 23);
 		contentPane.add(rightArrow);
 
-		JButton downArrow = new JButton("D");
+		JButton downArrow = new JButton("V");
 		downArrow.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (currentMenu == 1 && (menuSelection + 1) <= 4) {
@@ -764,10 +782,10 @@ public class GUISimulator extends JFrame {
 				}
 			}
 		});
-		downArrow.setBounds(140, 214, 21, 23);
+		downArrow.setBounds(126, 214, 42, 23);
 		contentPane.add(downArrow);
 
-		JButton upArrow = new JButton("U");
+		JButton upArrow = new JButton("^");
 		upArrow.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if ((menuSelection - 1) > 0) {
@@ -776,7 +794,7 @@ public class GUISimulator extends JFrame {
 				}
 			}
 		});
-		upArrow.setBounds(168, 214, 21, 23);
+		upArrow.setBounds(172, 214, 42, 23);
 		contentPane.add(upArrow);
 
 		JLabel lblChan = new JLabel("CHAN");
@@ -858,6 +876,11 @@ public class GUISimulator extends JFrame {
 		lblNewLabel_1.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
 		lblNewLabel_1.setBounds(10, 11, 610, 348);
 		contentPane.add(lblNewLabel_1);
+
+		JLabel FUNCTION = new JLabel("FUNCTION");
+		FUNCTION.setBounds(66, 166, 75, 16);
+		contentPane.add(FUNCTION);
+
 	}
 
 	private void setMenu() {
