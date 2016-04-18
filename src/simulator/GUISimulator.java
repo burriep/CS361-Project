@@ -396,21 +396,25 @@ public class GUISimulator extends JFrame {
 		contentPane.add(btnSwap);
 
 		JComboBox functionBox = new JComboBox();
-		if (functionBox.getSelectedItem().toString().equals("RUN OPTIONS")) {
-			currentMenu = 2;
-			menuSelection = 1;
-			setMenu();
-		} else if (functionBox.getSelectedItem().toString().equals("RUNNER OPTIONS")) {
-			currentMenu = 3;
-			menuSelection = 1;
-			setMenu();
-		} else if (functionBox.getSelectedItem().toString().equals("EVENT")) {
-			currentMenu = 4;
-			menuSelection = 1;
-			setMenu();
-		} else if (functionBox.getSelectedItem().toString().equals("RESET")) {
-			testChronoTimer.reset();
-		}
+		functionBox.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if (functionBox.getSelectedItem().toString().equals("RUN OPTIONS")) {
+					currentMenu = 2;
+					menuSelection = 1;
+					setMenu();
+				} else if (functionBox.getSelectedItem().toString().equals("RUNNER OPTIONS")) {
+					currentMenu = 3;
+					menuSelection = 1;
+					setMenu();
+				} else if (functionBox.getSelectedItem().toString().equals("EVENT")) {
+					currentMenu = 4;
+					menuSelection = 1;
+					setMenu();
+				} else if (functionBox.getSelectedItem().toString().equals("RESET")) {
+					testChronoTimer.reset();
+				}
+			}
+		});
 		functionBox.setModel(new DefaultComboBoxModel(
 				new String[] { "RUN OPTIONS", "RUNNER OPTIONS", "EVENT", "RESET" }));
 		functionBox.setBounds(48, 183, 107, 25);
