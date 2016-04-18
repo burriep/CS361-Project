@@ -152,7 +152,7 @@ public class Run {
 	 */
 	public void clearRacer(int racerID) {
 		if (isValidRacerID(racerID)) {
-			notStartedQueue.remove(racerID);
+			notStartedQueue.remove(Integer.valueOf(racerID));
 		}
 	}
 
