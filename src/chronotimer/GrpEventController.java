@@ -60,4 +60,11 @@ public class GrpEventController extends EventController {
 		}
 		return out.toString();
 	}
+
+	@Override
+	public void dnfRacer(){
+		//TODO
+	}
 }
+
+
