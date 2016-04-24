@@ -13,6 +13,7 @@ public class ChronoTimer implements Observer {
 	private List<Run> runs;
 	private EventController ec;
 	private RunType runType;
+	private WebClient web;
 	public static final int DEFAULT_CHANNEL_COUNT = 12;
 
 	/**
@@ -48,6 +49,7 @@ public class ChronoTimer implements Observer {
 		for (int i = 0; i < channels.length; i++) {
 			channels[i] = new Channel();
 		}
+		web = new WebClient();
 		powerOff(); // must be explicitly turned on by client
 	}
 
@@ -56,12 +58,15 @@ public class ChronoTimer implements Observer {
 	 */
 	public void powerOn() {
 		powerState = true;
+		// newRun();
 	}
 
 	/**
 	 * Powers this ChronoTimer OFF so that no changes can be made to the data.
+	 * Powering OFF the ChronoTimer ends the current run.
 	 */
 	public void powerOff() {
+		// endRun();
 		powerState = false;
 	}
 
@@ -224,19 +229,18 @@ public class ChronoTimer implements Observer {
 			}
 			if (runType != e) {
 				runType = e;
-				Run cr = runs.get(runs.size() - 1);
 				switch (runType) {
 				case PARGRP:
-					ec = new ParGrpEventController(timer, cr);
+					ec = new ParGrpEventController(timer, getCurrentRun());
 					break;
 				case GRP:
-					ec = new GrpEventController(timer, cr);
+					ec = new GrpEventController(timer, getCurrentRun());
 					break;
 				case PARIND:
-					ec = new ParIndEventController(timer, cr);
+					ec = new ParIndEventController(timer, getCurrentRun());
 					break;
 				default:
-					ec = new IndEventController(timer, cr);
+					ec = new IndEventController(timer, getCurrentRun());
 					break;
 				}
 			}
@@ -323,6 +327,10 @@ public class ChronoTimer implements Observer {
 		return runs;
 	}
 
+	private Run getCurrentRun() {
+		return runs.get(runs.size() - 1);
+	}
+
 	public void clearRacer(int racer) {
 		if (isOn()) {
 			ec.clearRacer(racer);
@@ -345,33 +353,38 @@ public class ChronoTimer implements Observer {
 	 * Start a new run of the same type. Must end the current run first.
 	 */
 	public void newRun() {
-		if (isOn() && !runs.get(runs.size() - 1).isActive()) {
-			Run cr = new Run();
-			runs.add(cr);
+		if (isOn() && !getCurrentRun().isActive()) {
+			runs.add(new Run());
 			// assign new event controller for new Run
 			switch (runType) {
 			case PARGRP:
-				ec = new ParGrpEventController(timer, cr);
+				ec = new ParGrpEventController(timer, getCurrentRun());
 				break;
 			case GRP:
-				ec = new GrpEventController(timer, cr);
+				ec = new GrpEventController(timer, getCurrentRun());
 				break;
 			case PARIND:
-				ec = new ParIndEventController(timer, cr);
+				ec = new ParIndEventController(timer, getCurrentRun());
 				break;
 			default:
-				ec = new IndEventController(timer, cr);
+				ec = new IndEventController(timer, getCurrentRun());
 				break;
 			}
 		}
 	}
 
 	/**
-	 * End current run of the current event
+	 * End current run of the current event.
+	 * 
+	 * @pre Current run must be active.
 	 */
 	public void endRun() {
 		if (isOn()) {
-			ec.endRun();
+			Run cr = getCurrentRun();
+			if (cr.isActive()) {
+				ec.endRun();
+				web.sendData(cr.toJSON());
+			}
 		}
 	}
 

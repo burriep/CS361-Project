@@ -1,0 +1,7 @@
+166	George Washington
+167	John Adams
+200	Thomas Jefferson
+201	James Madison
+234	James Monroe
+315	John Quincy Adams
+317	Andrew Jackson
