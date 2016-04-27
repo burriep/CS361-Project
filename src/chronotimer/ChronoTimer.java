@@ -58,7 +58,6 @@ public class ChronoTimer implements Observer {
 	 */
 	public void powerOn() {
 		powerState = true;
-		// newRun();
 	}
 
 	/**
@@ -66,7 +65,11 @@ public class ChronoTimer implements Observer {
 	 * Powering OFF the ChronoTimer ends the current run.
 	 */
 	public void powerOff() {
-		// endRun();
+		// endRun(); // TODO: make this work
+		for (Channel c : channels) {
+			if (c.isEnabled())
+				c.toggleState();
+		}
 		powerState = false;
 	}
 
@@ -99,11 +102,14 @@ public class ChronoTimer implements Observer {
 		runs.clear();
 		runs.add(new Run());
 		setEventType(RunType.IND);
-		for (int i = 0; i < channels.length; i++) {
-			if (channels[i].getSensor() != null) {
-				channels[i].getSensor().deleteObservers();
-				channels[i].disconnect();
+		for (Channel c : channels) {
+			if (c.isEnabled())
+				c.toggleState();
+			if (c.getSensor() != null) {
+				c.getSensor().deleteObservers();
+				c.disconnect();
 			}
+			// TODO: should we also be disconnecting the buttons?
 		}
 		if (!bakPower) {
 			powerOff();
