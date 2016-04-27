@@ -265,4 +265,25 @@ public class Timer {
 			return null;
 		}
 	}
+
+	/**
+	 * Convert a duration (in seconds) to a time string in the format
+	 * HH:MM:SS.thousandths.
+	 * 
+	 * @param duration
+	 *            - time in seconds.
+	 * @return duration in time form as a string.
+	 */
+	public static String durationToTimeString(double duration) {
+		if (duration <= 0)
+			return "DNF";
+		if (duration < 60)
+			return Double.toString(duration);
+		int minutes = (int) (duration / 60);
+		double seconds = duration - minutes;
+		if (minutes < 60)
+			return minutes + ":" + seconds;
+		int hours = minutes / 60;
+		return hours + ":" + minutes + ":" + seconds;
+	}
 }

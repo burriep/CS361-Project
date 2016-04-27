@@ -26,12 +26,13 @@ import com.sun.net.httpserver.HttpHandler;
 import com.sun.net.httpserver.HttpServer;
 
 import chronotimer.RacerRun;
+import chronotimer.Timer;
 
 public class WebServer {
 
 	// a shared area where we store POST data.
 	static String racerNamesFilePath = "data/racers.txt";
-	static ArrayList<RacerRun> data = new ArrayList<RacerRun>();
+	static ArrayList<ArrayList<RacerRun>> data = new ArrayList<>();
 	static Map<Integer, String> names = new HashMap<Integer, String>();
 	static Comparator<RacerRun> cmp = new Comparator<RacerRun>() {
 		@Override
@@ -79,7 +80,7 @@ public class WebServer {
 		while (fileIn.hasNextLine()) {
 			String line = fileIn.nextLine();
 			try {
-				String[] parts = line.split("\t");
+				String[] parts = line.split("\\s", 2);
 				if (parts.length < 2)
 					continue;
 				int rid = Integer.parseInt(parts[0]);
@@ -92,35 +93,81 @@ public class WebServer {
 		fileIn.close();
 	}
 
+	private static Map<String, String> getQueryMap(String query) {
+		// info from: http://stackoverflow.com/a/17472462
+		Map<String, String> map = new HashMap<String, String>();
+		if (query != null) {
+			String[] queries = query.split("&");
+			for (String arg : queries) {
+				String[] parts = arg.split("=");
+				if (parts.length == 2)
+					map.put(parts[0], parts[1]);
+				else
+					map.put(parts[0], "");
+			}
+		}
+		return map;
+	}
+
 	static class DisplayHandler implements HttpHandler {
 		public void handle(HttpExchange t) throws IOException {
+			Map<String, String> queries = getQueryMap(t.getRequestURI().getQuery());
 			t.getResponseHeaders().set("Content-Type", "text/html");
-			String response = "<!doctype html><html><head><link rel=\"stylesheet\" href=\"style.css\" />"
-					+ "<title>Race Results</title></head><body>";
-			Gson g = new Gson();
-			if (!data.isEmpty()) {
+			StringBuilder r = new StringBuilder();
+			r.append("<!doctype html><html>");
+			r.append("<head><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">");
+			r.append("<link rel=\"stylesheet\" href=\"style.css\" />");
+			r.append("<title>Race Results</title></head>");
+			r.append("<body>");
+			r.append("<form class=\"changeRunForm group\"><label for=\"run\">Choose a run:</label>");
+			r.append("<select name=\"run\" id=\"run\" onchange=\"if(this.value==''){window.location.href=window.location.pathname;}else{window.location.search='?run='+this.value;}\">");
+			r.append("<option value=\"\">Most Recent Run</option>");
 
-				response += "<table><tr><th>Place</th><th>Number</th><th>Name</th><th>Time</th></tr>";
+			int runIndex = data.size() - 1;
+			try {
+				String tmp = queries.get("run");
+				int val = Integer.parseInt(tmp) - 1;
+				if (val >= 0 && val < data.size())
+					runIndex = val;
+			} catch (NumberFormatException e) {
+			}
+
+			for (int i = data.size() - 1; i >= 0; --i) {
+				r.append("<option value=\"").append((i + 1)).append("\"");
+				if (runIndex == i)
+					r.append(" selected");
+				r.append(">Run ").append(i + 1).append("</option>");
+			}
+
+			r.append("</select>");
+			// r.append("<button type=\"submit\">View</button>");
+			r.append("</form>");
+			r.append("<table class=\"runTable\"><tr class=\"headerRow\">");
+			r.append("<th class=\"runHeader run__place\">Place</th>");
+			r.append("<th class=\"runHeader run__rid\">Number</th>");
+			r.append("<th class=\"runHeader run__name\">Name</th>");
+			r.append("<th class=\"runHeader run__time\">Time</th></tr>");
+
+			if (!data.isEmpty()) {
 				int place = 1;
-				for (RacerRun rr : data) {
+				ArrayList<RacerRun> cr = data.get(runIndex);
+				for (RacerRun rr : cr) {
 					int rid = rr.getRacer();
-					response += "<tr>";
-					response += "<td>" + place + "</td>";
-					response += "<td>" + rid + "</td>";
-					response += "<td>" + names.getOrDefault(rid, "") + "</td>";
-					response += "<td>" + rr.getElapsedTime() + "</td>";
-					response += "</tr>";
+					r.append("<tr class=\"run__item\">");
+					r.append("<td class=\"run__place\">").append(place).append("</td>");
+					r.append("<td class=\"run__rid\">").append(rid).append("</td>");
+					r.append("<td class=\"run__name\">").append(names.getOrDefault(rid, "")).append("</td>");
+					r.append("<td class=\"run__time\">").append(Timer.durationToTimeString(rr.getElapsedTime())).append("</td>");
+					r.append("</tr>");
 					place++;
 				}
-				response += "</table>";
-			} else {
-				response += "<p>No Data</p>";
 			}
-			response += "</body></html>";
+			r.append("</table>");
+			r.append("</body></html>");
 			// write out the response
-			t.sendResponseHeaders(200, response.length());
+			t.sendResponseHeaders(200, r.length());
 			OutputStream os = t.getResponseBody();
-			os.write(response.getBytes());
+			os.write(r.toString().getBytes());
 			os.close();
 		}
 	}
@@ -148,7 +195,7 @@ public class WebServer {
 	static class PostHandler implements HttpHandler {
 		public void handle(HttpExchange transmission) throws IOException {
 			// shared data that is used with other handlers
-			String sharedResponse = "";
+			String response = "";
 
 			// set up a stream to read the body of the request
 			InputStream inputStr = transmission.getRequestBody();
@@ -168,16 +215,16 @@ public class WebServer {
 			}
 
 			// create our response String to use in other handler
-			sharedResponse = sharedResponse + sb.toString();
+			response = sb.toString();
 
-			System.out.println(sharedResponse);
+			System.out.println(response);
 
-			Gson gson = new Gson();
-			ArrayList<RacerRun> tmpData = gson.fromJson(sharedResponse, new TypeToken<Collection<RacerRun>>() {
-			}.getType());
-			if (!tmpData.isEmpty()) {
-				data = tmpData;
-				data.sort(cmp);
+			if (!response.isEmpty()) {
+				Gson gson = new Gson();
+				ArrayList<RacerRun> tmpData = gson.fromJson(response, new TypeToken<Collection<RacerRun>>() {
+				}.getType());
+				tmpData.sort(cmp);
+				data.add(tmpData);
 			}
 
 			// respond to the POST with ROGER
