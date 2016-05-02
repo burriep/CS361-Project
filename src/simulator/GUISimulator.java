@@ -844,7 +844,8 @@ public class GUISimulator extends JFrame {
 		JButton usbPort = new JButton("");
 		usbPort.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String inputValue = JOptionPane.showInputDialog("Please input directory: ");
+				testChronoTimer.exportCurrentRun();
+				//String inputValue = JOptionPane.showInputDialog("Please input directory: ");
 
 			}
 		});
