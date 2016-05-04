@@ -1,6 +1,6 @@
 package chronotimer;
 
-import java.util.Map;
+import java.util.*;
 
 public class ParGrpEventController extends EventController {
 	private Map<Integer, Integer> finishChannelMap;
@@ -14,7 +14,7 @@ public class ParGrpEventController extends EventController {
 	@Override
 	public void channelTriggered(int channelNumber) {
 		int tempID;
-		if (startTime == null) {
+		if (startTime == null && channelNumber == 1) {
 			startTime = timer.getTime();
 			for (int i = 1; i <= lanes; i++) {
 				tempID = finishChannelMap.getOrDefault(i, -1);
@@ -23,7 +23,7 @@ public class ParGrpEventController extends EventController {
 				}
 			}
 		}
-		else {
+		else if (startTime != null){
 			tempID = finishChannelMap.getOrDefault(channelNumber, -1);
 			if (tempID >= 0) {
 				run.addRacerEndTime(tempID, timer.getTime());
@@ -34,7 +34,22 @@ public class ParGrpEventController extends EventController {
 
 	@Override
 	public String getRunningDisplay() {
-		return ""; // TODO: Sprint 4
+		StringBuilder out = new StringBuilder();
+		List<RacerRun> runData = run.getData();
+		
+		// the running time
+		out.append(Timer.getDifference(startTime, timer.getTime()));
+		out.append("\n");
+		
+		for (int i = runData.size() - 1; i >= 0; --i) {
+			RacerRun rr = runData.get(i);
+			if(rr.getEndTime() != null) {
+				out.append(rr.getRacer()).append(" ");
+				out.append(rr.getElapsedTime()).append(" F\n");
+				break;
+			}
+		}
+		return out.toString();
 	}
 	
 	@Override
