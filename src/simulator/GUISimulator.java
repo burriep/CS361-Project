@@ -79,6 +79,20 @@ public class GUISimulator extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
+		setupNumbers();
+		setupChannelToggles();
+		setupPowerSwap();
+		setupDisplay();
+		setupChannelDropdowns();
+		setupManualTriggers();
+		setupFunctions();
+		setupLabels();
+		setupExport();
+
+		testChronoTimer.powerOff();
+	}
+
+	public void setupNumbers() {
 		/**
 		 * Each button only displays in the function text area while the
 		 * ChronoTimer is on and waiting for a numeric input.
@@ -320,7 +334,9 @@ public class GUISimulator extends JFrame {
 		btn12.setFont(new Font("Tahoma", Font.PLAIN, 14));
 		btn12.setBounds(514, 282, 31, 30);
 		contentPane.add(btn12);
+	}
 
+	public void setupChannelToggles() {
 		/**
 		 * Section of buttons that allows channels to be enabled and disabled
 		 */
@@ -379,7 +395,9 @@ public class GUISimulator extends JFrame {
 		channelToggles[6].setBounds(362, 80, 30, 25);
 		channelToggles[6].setEnabled(false);
 		contentPane.add(channelToggles[6]);
+	}
 
+	public void setupPowerSwap() {
 		/**
 		 * Button to turn the ChronoTimer on and off
 		 */
@@ -439,7 +457,9 @@ public class GUISimulator extends JFrame {
 		btnPrinterPwr.setFont(new Font("Tahoma", Font.PLAIN, 13));
 		btnPrinterPwr.setBounds(444, 21, 108, 25);
 		contentPane.add(btnPrinterPwr);
+	}
 
+	public void setupDisplay() {
 		/**
 		 * The main real time display for the ChronoTimer
 		 */
@@ -484,7 +504,9 @@ public class GUISimulator extends JFrame {
 			}
 		});
 		timer2.start();
+	}
 
+	public void setupChannelDropdowns() {
 		/**
 		 * Series of boxes that represent the sensors and type being connected
 		 */
@@ -639,7 +661,9 @@ public class GUISimulator extends JFrame {
 		comboBox8.setModel(new DefaultComboBoxModel(new String[] { "(Disconnect)", "GATE", "EYE", "PAD" }));
 		comboBox8.setBounds(315, 447, 75, 22);
 		contentPane.add(comboBox8);
+	}
 
+	public void setupManualTriggers() {
 		/**
 		 * Series of buttons that allow manual trigger of channels
 		 */
@@ -648,7 +672,6 @@ public class GUISimulator extends JFrame {
 			sensorButtons[i] = new Sensor(SensorType.PUSH);
 			testChronoTimer.connectButton(sensorButtons[i], (i + 1));
 		}
-		// TODO
 		JButton start1 = new JButton("");
 		start1.addActionListener(new SensorButtonListener(0));
 		start1.setBounds(270, 62, 23, 18);
@@ -688,7 +711,9 @@ public class GUISimulator extends JFrame {
 		finish8.addActionListener(new SensorButtonListener(7));
 		finish8.setBounds(362, 125, 23, 18);
 		contentPane.add(finish8);
+	}
 
+	public void setupFunctions() {
 		JButton leftArrow = new JButton("<");
 		// STUB FOR LEFT ARROW
 		leftArrow.setBounds(35, 214, 42, 23);
@@ -709,6 +734,23 @@ public class GUISimulator extends JFrame {
 		upArrow.setBounds(172, 214, 42, 23);
 		contentPane.add(upArrow);
 
+		/**
+		 * Function button that allows user to select a function for the
+		 * ChronoTimer
+		 */
+		JButton btnFunction = new JButton("FUNCTION");
+		btnFunction.setBounds(60, 181, 97, 25);
+		btnFunction.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				numPadSelection = "";
+				getFunction = true;
+				funDisplay.setText("FUNC: " + numPadSelection);
+			}
+		});
+		contentPane.add(btnFunction);
+	}
+
+	public void setupLabels() {
 		/**
 		 * Series of labels to display information for each button
 		 */
@@ -751,18 +793,6 @@ public class GUISimulator extends JFrame {
 		lblChronotimer.setFont(new Font("Tahoma", Font.BOLD | Font.ITALIC, 14));
 		lblChronotimer.setBounds(223, 27, 160, 14);
 		contentPane.add(lblChronotimer);
-
-		JButton usbPort = new JButton("");
-		usbPort.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				testChronoTimer.exportCurrentRun();
-				// String inputValue =
-				// JOptionPane.showInputDialog("Please input directory: ");
-
-			}
-		});
-		usbPort.setBounds(432, 435, 40, 10);
-		contentPane.add(usbPort);
 
 		JLabel CHlabel_1 = new JLabel("1                  3                 5                 7");
 		CHlabel_1.setFont(new Font("Tahoma", Font.BOLD, 12));
@@ -835,21 +865,6 @@ public class GUISimulator extends JFrame {
 		lblPargrp.setBounds(100, 142, 65, 16);
 		contentPane.add(lblPargrp);
 
-		/**
-		 * Function button that allows user to select a function for the
-		 * ChronoTimer
-		 */
-		JButton btnFunction = new JButton("FUNCTION");
-		btnFunction.setBounds(60, 181, 97, 25);
-		btnFunction.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				numPadSelection = "";
-				getFunction = true;
-				funDisplay.setText("FUNC: " + numPadSelection);
-			}
-		});
-		contentPane.add(btnFunction);
-
 		JLabel lblFunctions = new JLabel("FUNCTIONS");
 		lblFunctions.setFont(new Font("Tahoma", Font.BOLD, 13));
 		lblFunctions.setBounds(15, 62, 89, 16);
@@ -860,8 +875,17 @@ public class GUISimulator extends JFrame {
 		powerStatus.setBounds(40, 35, 30, 16);
 		powerStatus.setForeground(Color.BLACK);
 		contentPane.add(powerStatus);
+	}
 
-		testChronoTimer.powerOff();
+	public void setupExport() {
+		JButton usbPort = new JButton("");
+		usbPort.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				testChronoTimer.exportCurrentRun();
+			}
+		});
+		usbPort.setBounds(432, 435, 40, 10);
+		contentPane.add(usbPort);
 	}
 
 	/**
