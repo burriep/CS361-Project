@@ -34,15 +34,26 @@ import javax.swing.DefaultComboBoxModel;
 public class GUISimulator extends JFrame {
 
 	static ChronoTimer testChronoTimer;
-	Sensor[] sensors;
-	Sensor[] sensorButtons;
-	JRadioButton[] channelToggles;
-	JComboBox[] channelDropdowns;
+	private Sensor[] sensors;
+	private Sensor[] sensorButtons;
+	private JButton[] manualTriggers;
+	private JRadioButton[] channelToggles;
+	private JComboBox[] channelDropdowns;
+	private JButton[] numBtns;
 	private JPanel contentPane;
-	JTextArea mainDisplay;
-	JTextPane txtrPrinterarea;
-	JTextArea funDisplay;
-	JLabel powerStatus;
+	private JButton leftArrow;
+	private JButton rightArrow;
+	private JButton downArrow;
+	private JButton upArrow;
+	private JButton btnFunction;
+	private JButton btnSwap;
+	private JButton usbPort;
+	private JButton numBtnClr;
+	private JButton numBtnHash;
+	private JTextArea mainDisplay;
+	private JTextPane txtrPrinterarea;
+	private JTextArea funDisplay;
+	private JLabel powerStatus;
 	private boolean getFunction = false;
 	private boolean getRunNum = false;
 	private boolean getClrNum = false;
@@ -80,10 +91,12 @@ public class GUISimulator extends JFrame {
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 
-		sensors = new Sensor[ChronoTimer.DEFAULT_CHANNEL_COUNT];
-		sensorButtons = new Sensor[ChronoTimer.DEFAULT_CHANNEL_COUNT];
+		sensors = new Sensor[8];
+		sensorButtons = new Sensor[8];
+		manualTriggers = new JButton[8];
 		channelToggles = new JRadioButton[8];
 		channelDropdowns = new JComboBox[8];
+		numBtns = new JButton[10];
 
 		setupNumbers();
 		setupChannelToggles();
@@ -104,219 +117,51 @@ public class GUISimulator extends JFrame {
 		 * ChronoTimer is on and waiting for a numeric input.
 		 */
 
-		JButton btn1 = new JButton("1");
-		btn1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				numPadSelection += "1";
-				if (getRunNum) {
-					funDisplay.setText("NUM: " + numPadSelection);
-				} else if (getClrNum) {
-					funDisplay.setText("CLR: " + numPadSelection);
-				} else if (getFunction) {
-					funDisplay.setText("FUNC: " + numPadSelection);
-				}
-			}
-		});
-		btn1.setBorder(null);
-		btn1.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		btn1.setBackground(Color.GRAY);
-		btn1.setBounds(446, 185, 31, 30);
-		contentPane.add(btn1);
-
-		JButton btn2 = new JButton("2");
-		btn2.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				numPadSelection += "2";
-				if (getRunNum) {
-					funDisplay.setText("NUM: " + numPadSelection);
-				} else if (getClrNum) {
-					funDisplay.setText("CLR: " + numPadSelection);
-				} else if (getFunction) {
-					funDisplay.setText("FUNC: " + numPadSelection);
-				}
-			}
-		});
-		btn2.setBorder(null);
-		btn2.setBackground(Color.GRAY);
-		btn2.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		btn2.setBounds(481, 185, 31, 30);
-		contentPane.add(btn2);
-
-		JButton btn3 = new JButton("3");
-		btn3.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				numPadSelection += "3";
-				if (getRunNum) {
-					funDisplay.setText("NUM: " + numPadSelection);
-				} else if (getClrNum) {
-					funDisplay.setText("CLR: " + numPadSelection);
-				} else if (getFunction) {
-					funDisplay.setText("FUNC: " + numPadSelection);
-				}
-			}
-		});
-		btn3.setBorder(null);
-		btn3.setBackground(Color.GRAY);
-		btn3.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		btn3.setBounds(514, 185, 31, 30);
-		contentPane.add(btn3);
-
-		JButton btn4 = new JButton("4");
-		btn4.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				numPadSelection += "4";
-				if (getRunNum) {
-					funDisplay.setText("NUM: " + numPadSelection);
-				} else if (getClrNum) {
-					funDisplay.setText("CLR: " + numPadSelection);
-				} else if (getFunction) {
-					funDisplay.setText("FUNC: " + numPadSelection);
-				}
-			}
-		});
-		btn4.setBorder(null);
-		btn4.setBackground(Color.GRAY);
-		btn4.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		btn4.setBounds(446, 217, 31, 30);
-		contentPane.add(btn4);
-
-		JButton btn5 = new JButton("5");
-		btn5.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				numPadSelection += "5";
-				if (getRunNum) {
-					funDisplay.setText("NUM: " + numPadSelection);
-				} else if (getClrNum) {
-					funDisplay.setText("CLR: " + numPadSelection);
-				} else if (getFunction) {
-					funDisplay.setText("FUNC: " + numPadSelection);
-				}
-			}
-		});
-		btn5.setBorder(null);
-		btn5.setBackground(Color.GRAY);
-		btn5.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		btn5.setBounds(481, 217, 31, 30);
-		contentPane.add(btn5);
-
-		JButton btn6 = new JButton("6");
-		btn6.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				numPadSelection += "6";
-				if (getRunNum) {
-					funDisplay.setText("NUM: " + numPadSelection);
-				} else if (getClrNum) {
-					funDisplay.setText("CLR: " + numPadSelection);
-				} else if (getFunction) {
-					funDisplay.setText("FUNC: " + numPadSelection);
-				}
-			}
-		});
-		btn6.setBorder(null);
-		btn6.setBackground(Color.GRAY);
-		btn6.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		btn6.setBounds(514, 217, 31, 30);
-		contentPane.add(btn6);
-
-		JButton btn7 = new JButton("7");
-		btn7.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				numPadSelection += "7";
-				if (getRunNum) {
-					funDisplay.setText("NUM: " + numPadSelection);
-				} else if (getClrNum) {
-					funDisplay.setText("CLR: " + numPadSelection);
-				} else if (getFunction) {
-					funDisplay.setText("FUNC: " + numPadSelection);
-				}
-			}
-		});
-		btn7.setBorder(null);
-		btn7.setBackground(Color.GRAY);
-		btn7.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		btn7.setBounds(446, 249, 31, 30);
-		contentPane.add(btn7);
-
-		JButton btn8 = new JButton("8");
-		btn8.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				numPadSelection += "8";
-				if (getRunNum) {
-					funDisplay.setText("NUM: " + numPadSelection);
-				} else if (getClrNum) {
-					funDisplay.setText("CLR: " + numPadSelection);
-				} else if (getFunction) {
-					funDisplay.setText("FUNC: " + numPadSelection);
-				}
-			}
-		});
-		btn8.setBorder(null);
-		btn8.setBackground(Color.GRAY);
-		btn8.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		btn8.setBounds(481, 249, 31, 30);
-		contentPane.add(btn8);
-
-		JButton btn9 = new JButton("9");
-		btn9.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				numPadSelection += "9";
-				if (getRunNum) {
-					funDisplay.setText("NUM: " + numPadSelection);
-				} else if (getClrNum) {
-					funDisplay.setText("CLR: " + numPadSelection);
-				} else if (getFunction) {
-					funDisplay.setText("FUNC: " + numPadSelection);
-				}
-			}
-		});
-		btn9.setBorder(null);
-		btn9.setBackground(Color.GRAY);
-		btn9.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		btn9.setBounds(514, 249, 31, 30);
-		contentPane.add(btn9);
+		for (int i = 0; i < numBtns.length; i++) {
+			numBtns[i] = new JButton(Integer.toString(i));
+			numBtns[i].setEnabled(false);
+			numBtns[i].addActionListener(new NumPadBtnListener(i));
+			numBtns[i].setBorder(null);
+			numBtns[i].setFont(new Font("Tahoma", Font.PLAIN, 14));
+			numBtns[i].setBackground(Color.GRAY);
+			contentPane.add(numBtns[i]);
+		}
+		numBtns[0].setBounds(481, 282, 31, 30);
+		numBtns[1].setBounds(446, 185, 31, 30);
+		numBtns[2].setBounds(481, 185, 31, 30);
+		numBtns[3].setBounds(514, 185, 31, 30);
+		numBtns[4].setBounds(446, 217, 31, 30);
+		numBtns[5].setBounds(481, 217, 31, 30);
+		numBtns[6].setBounds(514, 217, 31, 30);
+		numBtns[7].setBounds(446, 249, 31, 30);
+		numBtns[8].setBounds(481, 249, 31, 30);
+		numBtns[9].setBounds(514, 249, 31, 30);
 
 		/**
 		 * The '*' acts as a clear button for the current string that has been
 		 * entered
 		 */
-		JButton btn10 = new JButton("*");
-		btn10.addActionListener(new ActionListener() {
+		numBtnClr = new JButton("*");
+		numBtnClr.setEnabled(false);
+		numBtnClr.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				numPadSelection = "";
 			}
 		});
-		btn10.setBorder(null);
-		btn10.setBackground(Color.GRAY);
-		btn10.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		btn10.setBounds(446, 282, 31, 30);
-		contentPane.add(btn10);
-
-		JButton btn11 = new JButton("0");
-		btn11.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				numPadSelection += "0";
-				if (getRunNum) {
-					funDisplay.setText("NUM: " + numPadSelection);
-				} else if (getClrNum) {
-					funDisplay.setText("CLR: " + numPadSelection);
-				} else if (getFunction) {
-					funDisplay.setText("FUNC: " + numPadSelection);
-				}
-			}
-		});
-		btn11.setBorder(null);
-		btn11.setBackground(Color.GRAY);
-		btn11.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		btn11.setBounds(481, 282, 31, 30);
-		contentPane.add(btn11);
+		numBtnClr.setBorder(null);
+		numBtnClr.setBackground(Color.GRAY);
+		numBtnClr.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		numBtnClr.setBounds(446, 282, 31, 30);
+		contentPane.add(numBtnClr);
 
 		/**
 		 * The '#' button functions as an enter key for numeric input. Data is
 		 * only entered while the ChronoTimer is waiting for a function
 		 * selection, a racer number to add, or a racer number to delete.
 		 */
-		JButton btn12 = new JButton("#");
-		btn12.addActionListener(new ActionListener() {
+		numBtnHash = new JButton("#");
+		numBtnHash.setEnabled(false);
+		numBtnHash.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if (testChronoTimer.isOn()) {
 					if (getFunction) {
@@ -335,11 +180,11 @@ public class GUISimulator extends JFrame {
 				}
 			}
 		});
-		btn12.setBorder(null);
-		btn12.setBackground(Color.GRAY);
-		btn12.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		btn12.setBounds(514, 282, 31, 30);
-		contentPane.add(btn12);
+		numBtnHash.setBorder(null);
+		numBtnHash.setBackground(Color.GRAY);
+		numBtnHash.setFont(new Font("Tahoma", Font.PLAIN, 14));
+		numBtnHash.setBounds(514, 282, 31, 30);
+		contentPane.add(numBtnHash);
 	}
 
 	public void setupChannelToggles() {
@@ -413,16 +258,46 @@ public class GUISimulator extends JFrame {
 				if (testChronoTimer.isOn()) {
 					testChronoTimer.powerOff();
 					powerStatus.setForeground(Color.BLACK);
+					// disable inputs
 					for (int i = 0; i < channelToggles.length; ++i) {
 						channelToggles[i].setSelected(false);
 						channelToggles[i].setEnabled(false);
+						channelDropdowns[i].setEnabled(false);
+						manualTriggers[i].setEnabled(false);
 					}
+					for (int i = 0; i < numBtns.length; i++) {
+						numBtns[i].setEnabled(false);
+					}
+					numBtnClr.setEnabled(false);
+					numBtnHash.setEnabled(false);
+					leftArrow.setEnabled(false);
+					rightArrow.setEnabled(false);
+					downArrow.setEnabled(false);
+					upArrow.setEnabled(false);
+					btnFunction.setEnabled(false);
+					btnSwap.setEnabled(false);
+					usbPort.setEnabled(false);
 				} else {
 					testChronoTimer.powerOn();
+					// enable inputs
 					powerStatus.setForeground(Color.GREEN);
 					for (int i = 0; i < channelToggles.length; ++i) {
 						channelToggles[i].setEnabled(true);
+						channelDropdowns[i].setEnabled(true);
+						manualTriggers[i].setEnabled(true);
 					}
+					for (int i = 0; i < numBtns.length; i++) {
+						numBtns[i].setEnabled(true);
+					}
+					numBtnClr.setEnabled(true);
+					numBtnHash.setEnabled(true);
+					leftArrow.setEnabled(true);
+					rightArrow.setEnabled(true);
+					downArrow.setEnabled(true);
+					upArrow.setEnabled(true);
+					btnFunction.setEnabled(true);
+					btnSwap.setEnabled(true);
+					usbPort.setEnabled(true);
 				}
 			}
 		});
@@ -433,7 +308,8 @@ public class GUISimulator extends JFrame {
 		/**
 		 * Button that allows racers to be swapped
 		 */
-		JButton btnSwap = new JButton("SWAP");
+		btnSwap = new JButton("SWAP");
+		btnSwap.setEnabled(false);
 		btnSwap.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				testChronoTimer.swapRacer();
@@ -521,6 +397,7 @@ public class GUISimulator extends JFrame {
 			channelDropdowns[i] = new JComboBox(options);
 			channelDropdowns[i].addActionListener(new ChannelDropdownListener(i, i));
 			contentPane.add(channelDropdowns[i]);
+			channelDropdowns[i].setEnabled(false);
 		}
 		channelDropdowns[0].setBounds(90, 411, 75, 22);
 		channelDropdowns[2].setBounds(165, 411, 75, 22);
@@ -536,78 +413,53 @@ public class GUISimulator extends JFrame {
 		/**
 		 * Series of buttons that allow manual trigger of channels
 		 */
-		// create the manual push-buttons
 		for (int i = 0; i < sensorButtons.length; i++) {
 			sensorButtons[i] = new Sensor(SensorType.PUSH);
 			testChronoTimer.connectButton(sensorButtons[i], (i + 1));
 		}
-		JButton start1 = new JButton("");
-		start1.addActionListener(new SensorButtonListener(0));
-		start1.setBounds(270, 62, 23, 18);
-		contentPane.add(start1);
-
-		JButton start3 = new JButton("");
-		start3.addActionListener(new SensorButtonListener(2));
-		start3.setBounds(301, 62, 23, 18);
-		contentPane.add(start3);
-
-		JButton start5 = new JButton("");
-		start5.addActionListener(new SensorButtonListener(4));
-		start5.setBounds(330, 62, 23, 18);
-		contentPane.add(start5);
-
-		JButton start7 = new JButton("");
-		start7.addActionListener(new SensorButtonListener(6));
-		start7.setBounds(360, 62, 23, 18);
-		contentPane.add(start7);
-
-		JButton finish2 = new JButton("");
-		finish2.addActionListener(new SensorButtonListener(1));
-		finish2.setBounds(270, 125, 23, 18);
-		contentPane.add(finish2);
-
-		JButton finish4 = new JButton("");
-		finish4.addActionListener(new SensorButtonListener(3));
-		finish4.setBounds(301, 125, 23, 18);
-		contentPane.add(finish4);
-
-		JButton finish6 = new JButton("");
-		finish6.addActionListener(new SensorButtonListener(5));
-		finish6.setBounds(330, 125, 23, 18);
-		contentPane.add(finish6);
-
-		JButton finish8 = new JButton("");
-		finish8.addActionListener(new SensorButtonListener(7));
-		finish8.setBounds(362, 125, 23, 18);
-		contentPane.add(finish8);
+		for (int i = 0; i < manualTriggers.length; i++) {
+			manualTriggers[i] = new JButton("");
+			manualTriggers[i].addActionListener(new SensorButtonListener(i));
+			contentPane.add(manualTriggers[i]);
+			manualTriggers[i].setEnabled(false);
+		}
+		manualTriggers[0].setBounds(270, 62, 23, 18);
+		manualTriggers[2].setBounds(301, 62, 23, 18);
+		manualTriggers[4].setBounds(330, 62, 23, 18);
+		manualTriggers[6].setBounds(360, 62, 23, 18);
+		manualTriggers[1].setBounds(270, 125, 23, 18);
+		manualTriggers[3].setBounds(301, 125, 23, 18);
+		manualTriggers[5].setBounds(330, 125, 23, 18);
+		manualTriggers[7].setBounds(362, 125, 23, 18);
 	}
 
 	public void setupFunctions() {
-		JButton leftArrow = new JButton("<");
-		// STUB FOR LEFT ARROW
+		leftArrow = new JButton("<");
 		leftArrow.setBounds(35, 214, 42, 23);
 		contentPane.add(leftArrow);
+		leftArrow.setEnabled(false);
 
-		JButton rightArrow = new JButton(">");
-		// STUB FOR RIGHT ARROW
+		rightArrow = new JButton(">");
 		rightArrow.setBounds(80, 214, 42, 23);
 		contentPane.add(rightArrow);
+		rightArrow.setEnabled(false);
 
-		JButton downArrow = new JButton("V");
-		// STUB FOR DOWN ARROW
+		downArrow = new JButton("V");
 		downArrow.setBounds(126, 214, 42, 23);
 		contentPane.add(downArrow);
+		downArrow.setEnabled(false);
 
-		JButton upArrow = new JButton("^");
-		// STUB FOR UP ARROW
+		upArrow = new JButton("^");
 		upArrow.setBounds(172, 214, 42, 23);
 		contentPane.add(upArrow);
+		upArrow.setEnabled(false);
 
 		/**
 		 * Function button that allows user to select a function for the
 		 * ChronoTimer
 		 */
-		JButton btnFunction = new JButton("FUNCTION");
+		btnFunction = new JButton("FUNCTION");
+		btnFunction.setEnabled(false);
 		btnFunction.setBounds(60, 181, 97, 25);
 		btnFunction.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -747,7 +599,8 @@ public class GUISimulator extends JFrame {
 	}
 
 	public void setupExport() {
-		JButton usbPort = new JButton("");
+		usbPort = new JButton("");
+		usbPort.setEnabled(false);
 		usbPort.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				testChronoTimer.exportCurrentRun();
@@ -842,6 +695,25 @@ public class GUISimulator extends JFrame {
 			} else if (channelDropdowns[ci].getSelectedItem().toString().equals("PAD")) {
 				sensors[si] = new Sensor(SensorType.PAD);
 				testChronoTimer.connectSensor(sensors[si], ci + 1);
+			}
+		}
+	}
+
+	public class NumPadBtnListener implements ActionListener {
+		int num;
+
+		public NumPadBtnListener(int number) {
+			num = number;
+		}
+
+		public void actionPerformed(ActionEvent e) {
+			numPadSelection += num;
+			if (getRunNum) {
+				funDisplay.setText("NUM: " + numPadSelection);
+			} else if (getClrNum) {
+				funDisplay.setText("CLR: " + numPadSelection);
+			} else if (getFunction) {
+				funDisplay.setText("FUNC: " + numPadSelection);
 			}
 		}
 	}
