@@ -35,6 +35,8 @@ public class GUISimulator extends JFrame {
 
 	static ChronoTimer testChronoTimer;
 	Sensor[] sensors = new Sensor[ChronoTimer.DEFAULT_CHANNEL_COUNT];
+	Sensor[] sensorButtons = new Sensor[ChronoTimer.DEFAULT_CHANNEL_COUNT];
+	JRadioButton[] channelToggles = new JRadioButton[8];
 	private JPanel contentPane;
 	JTextArea mainDisplay;
 	JTextPane txtrPrinterarea;
@@ -67,6 +69,7 @@ public class GUISimulator extends JFrame {
 	 * Create the frame.
 	 */
 	public GUISimulator() {
+		testChronoTimer.powerOn();
 		setTitle("ChronoTimer 1009");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 646, 585);
@@ -321,117 +324,61 @@ public class GUISimulator extends JFrame {
 		/**
 		 * Section of buttons that allows channels to be enabled and disabled
 		 */
-		JRadioButton enable2 = new JRadioButton("");
-		enable2.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try {
-					testChronoTimer.toggleChannel(2);
-				} catch (NullPointerException n) {
+		channelToggles[1] = new JRadioButton("");
+		channelToggles[1].addActionListener(new ToggleChannelListener(2));
+		channelToggles[1].setBackground(new Color(255, 255, 255));
+		channelToggles[1].setBounds(273, 144, 28, 25);
+		channelToggles[1].setEnabled(false);
+		contentPane.add(channelToggles[1]);
 
-				}
-			}
-		});
-		enable2.setBackground(new Color(255, 255, 255));
-		enable2.setBounds(273, 144, 28, 25);
-		contentPane.add(enable2);
+		channelToggles[3] = new JRadioButton("");
+		channelToggles[3].addActionListener(new ToggleChannelListener(4));
+		channelToggles[3].setBackground(new Color(255, 255, 255));
+		channelToggles[3].setBounds(303, 144, 30, 25);
+		channelToggles[3].setEnabled(false);
+		contentPane.add(channelToggles[3]);
 
-		JRadioButton enable4 = new JRadioButton("");
-		enable4.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try {
-					testChronoTimer.toggleChannel(4);
-				} catch (NullPointerException n) {
+		channelToggles[5] = new JRadioButton("");
+		channelToggles[5].addActionListener(new ToggleChannelListener(6));
+		channelToggles[5].setBackground(new Color(255, 255, 255));
+		channelToggles[5].setBounds(330, 144, 30, 25);
+		channelToggles[5].setEnabled(false);
+		contentPane.add(channelToggles[5]);
 
-				}
-			}
-		});
-		enable4.setBackground(new Color(255, 255, 255));
-		enable4.setBounds(303, 144, 30, 25);
-		contentPane.add(enable4);
+		channelToggles[7] = new JRadioButton("");
+		channelToggles[7].addActionListener(new ToggleChannelListener(8));
+		channelToggles[7].setBackground(new Color(255, 255, 255));
+		channelToggles[7].setBounds(362, 144, 30, 25);
+		channelToggles[7].setEnabled(false);
+		contentPane.add(channelToggles[7]);
 
-		JRadioButton enable6 = new JRadioButton("");
-		enable6.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try {
-					testChronoTimer.toggleChannel(6);
-				} catch (NullPointerException n) {
+		channelToggles[0] = new JRadioButton("");
+		channelToggles[0].addActionListener(new ToggleChannelListener(1));
+		channelToggles[0].setBackground(Color.WHITE);
+		channelToggles[0].setBounds(273, 80, 28, 25);
+		channelToggles[0].setEnabled(false);
+		contentPane.add(channelToggles[0]);
 
-				}
-			}
-		});
-		enable6.setBackground(new Color(255, 255, 255));
-		enable6.setBounds(330, 144, 30, 25);
-		contentPane.add(enable6);
+		channelToggles[2] = new JRadioButton("");
+		channelToggles[2].addActionListener(new ToggleChannelListener(3));
+		channelToggles[2].setBackground(Color.WHITE);
+		channelToggles[2].setBounds(303, 80, 21, 25);
+		channelToggles[2].setEnabled(false);
+		contentPane.add(channelToggles[2]);
 
-		JRadioButton enable8 = new JRadioButton("");
-		enable8.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try {
-					testChronoTimer.toggleChannel(8);
-				} catch (NullPointerException n) {
+		channelToggles[4] = new JRadioButton("");
+		channelToggles[4].addActionListener(new ToggleChannelListener(5));
+		channelToggles[4].setBackground(Color.WHITE);
+		channelToggles[4].setBounds(330, 80, 30, 25);
+		channelToggles[4].setEnabled(false);
+		contentPane.add(channelToggles[4]);
 
-				}
-			}
-		});
-		enable8.setBackground(new Color(255, 255, 255));
-		enable8.setBounds(362, 144, 30, 25);
-		contentPane.add(enable8);
-
-		JRadioButton enable1 = new JRadioButton("");
-		enable1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try {
-					testChronoTimer.toggleChannel(1);
-				} catch (NullPointerException n) {
-
-				}
-			}
-		});
-		enable1.setBackground(Color.WHITE);
-		enable1.setBounds(273, 80, 28, 25);
-		contentPane.add(enable1);
-
-		JRadioButton enable3 = new JRadioButton("");
-		enable3.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try {
-					testChronoTimer.toggleChannel(3);
-				} catch (NullPointerException n) {
-
-				}
-			}
-		});
-		enable3.setBackground(Color.WHITE);
-		enable3.setBounds(303, 80, 21, 25);
-		contentPane.add(enable3);
-
-		JRadioButton enable5 = new JRadioButton("");
-		enable5.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try {
-					testChronoTimer.toggleChannel(5);
-				} catch (NullPointerException n) {
-
-				}
-			}
-		});
-		enable5.setBackground(Color.WHITE);
-		enable5.setBounds(330, 80, 30, 25);
-		contentPane.add(enable5);
-
-		JRadioButton enable7 = new JRadioButton("");
-		enable7.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try {
-					testChronoTimer.toggleChannel(7);
-				} catch (NullPointerException n) {
-
-				}
-			}
-		});
-		enable7.setBackground(Color.WHITE);
-		enable7.setBounds(362, 80, 30, 25);
-		contentPane.add(enable7);
+		channelToggles[6] = new JRadioButton("");
+		channelToggles[6].addActionListener(new ToggleChannelListener(7));
+		channelToggles[6].setBackground(Color.WHITE);
+		channelToggles[6].setBounds(362, 80, 30, 25);
+		channelToggles[6].setEnabled(false);
+		contentPane.add(channelToggles[6]);
 
 		/**
 		 * Button to turn the ChronoTimer on and off
@@ -442,9 +389,16 @@ public class GUISimulator extends JFrame {
 				if (testChronoTimer.isOn()) {
 					testChronoTimer.powerOff();
 					powerStatus.setForeground(Color.BLACK);
+					for (int i = 0; i < channelToggles.length; ++i) {
+						channelToggles[i].setSelected(false);
+						channelToggles[i].setEnabled(false);
+					}
 				} else {
 					testChronoTimer.powerOn();
 					powerStatus.setForeground(Color.GREEN);
+					for (int i = 0; i < channelToggles.length; ++i) {
+						channelToggles[i].setEnabled(true);
+					}
 				}
 			}
 		});
@@ -689,111 +643,49 @@ public class GUISimulator extends JFrame {
 		/**
 		 * Series of buttons that allow manual trigger of channels
 		 */
+		// create the manual push-buttons
+		for (int i = 0; i < sensorButtons.length; i++) {
+			sensorButtons[i] = new Sensor(SensorType.PUSH);
+			testChronoTimer.connectButton(sensorButtons[i], (i + 1));
+		}
+		// TODO
 		JButton start1 = new JButton("");
-		start1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try {
-					sensors[0].trigger();
-				} catch (NullPointerException n) {
-
-				}
-			}
-		});
+		start1.addActionListener(new SensorButtonListener(0));
 		start1.setBounds(270, 62, 23, 18);
 		contentPane.add(start1);
 
 		JButton start3 = new JButton("");
-		start3.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try {
-					sensors[2].trigger();
-				} catch (NullPointerException n) {
-
-				}
-			}
-		});
+		start3.addActionListener(new SensorButtonListener(2));
 		start3.setBounds(301, 62, 23, 18);
 		contentPane.add(start3);
 
 		JButton start5 = new JButton("");
-		start5.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try {
-					sensors[4].trigger();
-				} catch (NullPointerException n) {
-
-				}
-			}
-		});
+		start5.addActionListener(new SensorButtonListener(4));
 		start5.setBounds(330, 62, 23, 18);
 		contentPane.add(start5);
 
 		JButton start7 = new JButton("");
-		start7.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try {
-					sensors[6].trigger();
-				} catch (NullPointerException n) {
-
-				}
-			}
-		});
+		start7.addActionListener(new SensorButtonListener(6));
 		start7.setBounds(360, 62, 23, 18);
 		contentPane.add(start7);
 
 		JButton finish2 = new JButton("");
-		finish2.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try {
-					sensors[1].trigger();
-					printerString += "\n" + testChronoTimer.printCurrentRun();
-				} catch (NullPointerException n) {
-
-				}
-			}
-		});
+		finish2.addActionListener(new SensorButtonListener(1));
 		finish2.setBounds(270, 125, 23, 18);
 		contentPane.add(finish2);
 
 		JButton finish4 = new JButton("");
-		finish4.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try {
-					sensors[3].trigger();
-					printerString += "\n" + testChronoTimer.printCurrentRun();
-				} catch (NullPointerException n) {
-
-				}
-			}
-		});
+		finish4.addActionListener(new SensorButtonListener(3));
 		finish4.setBounds(301, 125, 23, 18);
 		contentPane.add(finish4);
 
 		JButton finish6 = new JButton("");
-		finish6.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try {
-					sensors[5].trigger();
-					printerString += "\n" + testChronoTimer.printCurrentRun();
-				} catch (NullPointerException n) {
-
-				}
-			}
-		});
+		finish6.addActionListener(new SensorButtonListener(5));
 		finish6.setBounds(330, 125, 23, 18);
 		contentPane.add(finish6);
 
 		JButton finish8 = new JButton("");
-		finish8.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try {
-					sensors[7].trigger();
-					printerString += "\n" + testChronoTimer.printCurrentRun();
-				} catch (NullPointerException n) {
-
-				}
-			}
-		});
+		finish8.addActionListener(new SensorButtonListener(7));
 		finish8.setBounds(362, 125, 23, 18);
 		contentPane.add(finish8);
 
@@ -962,13 +854,14 @@ public class GUISimulator extends JFrame {
 		lblFunctions.setFont(new Font("Tahoma", Font.BOLD, 13));
 		lblFunctions.setBounds(15, 62, 89, 16);
 		contentPane.add(lblFunctions);
-		
-		powerStatus = new JLabel("•");
+
+		powerStatus = new JLabel("ï¿½");
 		powerStatus.setFont(new Font("Tahoma", Font.BOLD, 16));
 		powerStatus.setBounds(40, 35, 30, 16);
 		powerStatus.setForeground(Color.BLACK);
 		contentPane.add(powerStatus);
 
+		testChronoTimer.powerOff();
 	}
 
 	/**
@@ -1009,5 +902,29 @@ public class GUISimulator extends JFrame {
 			funDisplay.setText("ERROR: Invalid selection");
 		}
 		funDisplay.update(funDisplay.getGraphics());
+	}
+
+	public class ToggleChannelListener implements ActionListener {
+		private int channelNum;
+
+		public ToggleChannelListener(int num) {
+			channelNum = num;
+		}
+
+		public void actionPerformed(ActionEvent e) {
+			testChronoTimer.toggleChannel(channelNum);
+		}
+	}
+
+	public class SensorButtonListener implements ActionListener {
+		private int sensorIndex;
+
+		public SensorButtonListener(int index) {
+			sensorIndex = index;
+		}
+
+		public void actionPerformed(ActionEvent e) {
+			sensorButtons[sensorIndex].trigger();
+		}
 	}
 }
