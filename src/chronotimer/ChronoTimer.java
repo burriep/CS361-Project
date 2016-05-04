@@ -65,7 +65,7 @@ public class ChronoTimer implements Observer {
 	 * Powering OFF the ChronoTimer ends the current run.
 	 */
 	public void powerOff() {
-		// endRun(); // TODO: make this work
+		endRun(); // TODO: make this work
 		for (Channel c : channels) {
 			if (c.isEnabled())
 				c.toggleState();

@@ -25,6 +25,7 @@ public class ChronoTimerTest {
 		ct.reset();
 		assertEquals(true, ct.printerIsOn());
 		ct.powerOff();
+		// TODO: make test case more thorough
 	}
 
 	@Test
@@ -37,7 +38,7 @@ public class ChronoTimerTest {
 		ct.setEventType(RunType.PARIND);
 		ct.newRun();
 		ct.addRacer(567);
-
+		// TODO assertions missing
 	}
 
 	@Test
@@ -49,6 +50,7 @@ public class ChronoTimerTest {
 		ct.addRacer(234);
 		ct.endRun();
 		ct.setEventType(RunType.IND);
+		// TODO: assertions missing
 	}
 
 	@Test
@@ -66,8 +68,17 @@ public class ChronoTimerTest {
 		ct.addRacer(234);
 		sens1.trigger();
 		sens2.trigger();
-		assertEquals(ct.getRuns().get(0).getData().get(0).getRacer(), 234);
+
+		Run cr = ct.getRuns().get(ct.getRuns().size() - 1);
+		assertEquals(1, cr.getData().size());
+		assertEquals(234, cr.getData().get(0).getRacer());
+
 		ct.endRun();
+		// re-test after ending the run
+
+		cr = ct.getRuns().get(ct.getRuns().size() - 1);
+		assertEquals(1, cr.getData().size());
+		assertEquals(234, cr.getData().get(0).getRacer());
 	}
 
 	@Test
@@ -88,8 +99,11 @@ public class ChronoTimerTest {
 		sens1.trigger();
 		sens2.trigger();
 		sens2.trigger();
-		assertEquals(ct.getRuns().get(0).getData().get(0).getRacer(), 234);
-		assertEquals(ct.getRuns().get(0).getData().get(1).getRacer(), 345);
+
+		Run cr = ct.getRuns().get(ct.getRuns().size() - 1);
+		assertEquals(2, cr.getData().size());
+		assertEquals(234, cr.getData().get(0).getRacer());
+		assertEquals(345, cr.getData().get(1).getRacer());
 		ct.endRun();
 	}
 
@@ -108,7 +122,10 @@ public class ChronoTimerTest {
 		ct.addRacer(234);
 		sens1.trigger();
 		sens2.trigger();
-		assertEquals(ct.getRuns().get(0).getData().get(0).getRacer(), 234);
+
+		Run cr = ct.getRuns().get(ct.getRuns().size() - 1);
+		assertEquals(1, cr.getData().size());
+		assertEquals(234, cr.getData().get(0).getRacer());
 		ct.endRun();
 	}
 
@@ -142,10 +159,14 @@ public class ChronoTimerTest {
 		sens3.trigger();
 		sens2.trigger();
 		sens4.trigger();
-		assertEquals(ct.getRuns().get(0).getData().get(0).getRacer(), 234);
-		assertEquals(ct.getRuns().get(0).getData().get(1).getRacer(), 456);
-		assertEquals(ct.getRuns().get(0).getData().get(2).getRacer(), 345);
-		assertEquals(ct.getRuns().get(0).getData().get(3).getRacer(), 567);
+
+		Run cr = ct.getRuns().get(ct.getRuns().size() - 1);
+		assertEquals(4, cr.getData().size());
+		assertEquals(234, cr.getData().get(0).getRacer());
+		assertEquals(456, cr.getData().get(1).getRacer());
+		assertEquals(345, cr.getData().get(2).getRacer());
+		assertEquals(567, cr.getData().get(3).getRacer());
+
 		ct.endRun();
 	}
 
@@ -164,7 +185,10 @@ public class ChronoTimerTest {
 		ct.addRacer(1);
 		sens1.trigger();
 		sens2.trigger();
-		assertEquals(ct.getRuns().get(0).getData().get(0).getRacer(), 1);
+
+		Run cr = ct.getRuns().get(ct.getRuns().size() - 1);
+		assertEquals(1, cr.getData().size());
+		assertEquals(1, cr.getData().get(0).getRacer());
 		ct.endRun();
 	}
 
@@ -192,10 +216,13 @@ public class ChronoTimerTest {
 		sens2.trigger();
 		sens1.trigger();
 		sens2.trigger();
-		assertEquals(ct.getRuns().get(0).getData().get(0).getRacer(), 1);
-		assertEquals(ct.getRuns().get(0).getData().get(1).getRacer(), 2);
-		assertEquals(ct.getRuns().get(0).getData().get(2).getRacer(), 3);
-		assertEquals(ct.getRuns().get(0).getData().get(3).getRacer(), 4);
+
+		Run cr = ct.getRuns().get(ct.getRuns().size() - 1);
+		assertEquals(4, cr.getData().size());
+		assertEquals(1, cr.getData().get(0).getRacer());
+		assertEquals(2, cr.getData().get(1).getRacer());
+		assertEquals(3, cr.getData().get(2).getRacer());
+		assertEquals(4, cr.getData().get(3).getRacer());
 		ct.endRun();
 	}
 
@@ -215,7 +242,10 @@ public class ChronoTimerTest {
 		sens1.trigger();
 		ct.setEventType(RunType.GRP);
 		sens2.trigger();
-		assertEquals(ct.getRuns().get(0).getData().get(0).getRacer(), 234);
+
+		Run cr = ct.getRuns().get(ct.getRuns().size() - 1);
+		assertEquals(1, cr.getData().size());
+		assertEquals(234, cr.getData().get(0).getRacer());
 		ct.endRun();
 	}
 
@@ -234,9 +264,11 @@ public class ChronoTimerTest {
 		ct.addRacer(234);
 		sens1.trigger();
 		ct.dnfRacer();
-		assertEquals(ct.getRuns().get(0).getData().get(0).getRacer(), 234);
-		assertEquals(ct.getRuns().get(0).getData().get(0).getEndTime(), null);
+
+		Run cr = ct.getRuns().get(ct.getRuns().size() - 1);
+		assertEquals(1, cr.getData().size());
+		assertEquals(234, cr.getData().get(0).getRacer());
+		assertEquals(null, cr.getData().get(0).getEndTime());
 		ct.endRun();
 	}
-
 }
