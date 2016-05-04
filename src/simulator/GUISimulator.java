@@ -41,6 +41,7 @@ public class GUISimulator extends JFrame {
 	private boolean getRunNum = false;
 	private boolean getClrNum = false;
 	private String numPadSelection = "";
+	private String printerString = "";
 
 	/**
 	 * Launch the application.
@@ -71,6 +72,11 @@ public class GUISimulator extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+
+		/**
+		 * Each button only displays in the function text area while the
+		 * ChronoTimer is on and waiting for a numeric input.
+		 */
 
 		JButton btn1 = new JButton("1");
 		btn1.addActionListener(new ActionListener() {
@@ -243,6 +249,10 @@ public class GUISimulator extends JFrame {
 		btn9.setBounds(514, 249, 31, 30);
 		contentPane.add(btn9);
 
+		/**
+		 * The '*' acts as a clear button for the current string that has been
+		 * entered
+		 */
 		JButton btn10 = new JButton("*");
 		btn10.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -274,6 +284,11 @@ public class GUISimulator extends JFrame {
 		btn11.setBounds(481, 282, 31, 30);
 		contentPane.add(btn11);
 
+		/**
+		 * The '#' button functions as an enter key for numeric input. Data is
+		 * only entered while the ChronoTimer is waiting for a function
+		 * selection, a racer number to add, or a racer number to delete.
+		 */
 		JButton btn12 = new JButton("#");
 		btn12.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -300,6 +315,9 @@ public class GUISimulator extends JFrame {
 		btn12.setBounds(514, 282, 31, 30);
 		contentPane.add(btn12);
 
+		/**
+		 * Section of buttons that allows channels to be enabled and disabled
+		 */
 		JRadioButton enable2 = new JRadioButton("");
 		enable2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -412,6 +430,9 @@ public class GUISimulator extends JFrame {
 		enable7.setBounds(362, 80, 30, 25);
 		contentPane.add(enable7);
 
+		/**
+		 * Button to turn the ChronoTimer on and off
+		 */
 		JButton btnPower = new JButton("Power");
 		btnPower.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -426,6 +447,9 @@ public class GUISimulator extends JFrame {
 		btnPower.setBounds(60, 29, 91, 30);
 		contentPane.add(btnPower);
 
+		/**
+		 * Button that allows racers to be swapped
+		 */
 		JButton btnSwap = new JButton("SWAP");
 		btnSwap.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -436,13 +460,20 @@ public class GUISimulator extends JFrame {
 		btnSwap.setBounds(62, 276, 89, 27);
 		contentPane.add(btnSwap);
 
+		/**
+		 * Button to toggle printer power
+		 */
 		JButton btnPrinterPwr = new JButton("Printer Pwr");
 		btnPrinterPwr.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (testChronoTimer.printerIsOn()) {
-					testChronoTimer.getPrinter().powerOff();
-				} else {
-					testChronoTimer.getPrinter().powerOn();
+				if (testChronoTimer.isOn()) {
+					if (testChronoTimer.printerIsOn()) {
+						testChronoTimer.getPrinter().powerOff();
+						funDisplay.setText("PRINTER OFF");
+					} else {
+						testChronoTimer.getPrinter().powerOn();
+						funDisplay.setText("PRINTER ON");
+					}
 				}
 			}
 		});
@@ -450,6 +481,9 @@ public class GUISimulator extends JFrame {
 		btnPrinterPwr.setBounds(444, 21, 108, 25);
 		contentPane.add(btnPrinterPwr);
 
+		/**
+		 * The main real time display for the ChronoTimer
+		 */
 		mainDisplay = new JTextArea();
 		mainDisplay.setBorder(new MatteBorder(1, 1, 0, 1, (Color) new Color(0, 0, 0)));
 		mainDisplay.setBounds(243, 183, 150, 115);
@@ -462,19 +496,37 @@ public class GUISimulator extends JFrame {
 		});
 		timer.start();
 
+		/**
+		 * This allows for function information to be displayed below the real
+		 * time display.
+		 */
 		funDisplay = new JTextArea();
 		funDisplay.setBorder(new MatteBorder(0, 1, 1, 1, (Color) new Color(0, 0, 0)));
 		funDisplay.setBounds(243, 298, 150, 25);
 		funDisplay.setEditable(false);
 		contentPane.add(funDisplay);
 
+		/**
+		 * Printer display area, only display results of each run
+		 */
 		txtrPrinterarea = new JTextArea();
 		txtrPrinterarea.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
 		txtrPrinterarea.setText("");
 		txtrPrinterarea.setBounds(454, 60, 84, 80);
 		txtrPrinterarea.setEditable(false);
 		contentPane.add(txtrPrinterarea);
+		Timer timer2 = new Timer(10, new ActionListener() {
+			public void actionPerformed(ActionEvent evt) {
+				if (testChronoTimer.printerIsOn()) {
+					txtrPrinterarea.setText(printerString);
+				}
+			}
+		});
+		timer2.start();
 
+		/**
+		 * Series of boxes that represent the sensors and type being connected
+		 */
 		JComboBox comboBox1 = new JComboBox();
 		comboBox1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -627,6 +679,9 @@ public class GUISimulator extends JFrame {
 		comboBox8.setBounds(315, 447, 75, 22);
 		contentPane.add(comboBox8);
 
+		/**
+		 * Series of buttons that allow manual trigger of channels
+		 */
 		JButton start1 = new JButton("");
 		start1.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -684,6 +739,7 @@ public class GUISimulator extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					sensors[1].trigger();
+					printerString += "\n" + testChronoTimer.printCurrentRun();
 				} catch (NullPointerException n) {
 
 				}
@@ -697,6 +753,7 @@ public class GUISimulator extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					sensors[3].trigger();
+					printerString += "\n" + testChronoTimer.printCurrentRun();
 				} catch (NullPointerException n) {
 
 				}
@@ -710,6 +767,7 @@ public class GUISimulator extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					sensors[5].trigger();
+					printerString += "\n" + testChronoTimer.printCurrentRun();
 				} catch (NullPointerException n) {
 
 				}
@@ -723,6 +781,7 @@ public class GUISimulator extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					sensors[7].trigger();
+					printerString += "\n" + testChronoTimer.printCurrentRun();
 				} catch (NullPointerException n) {
 
 				}
@@ -751,6 +810,9 @@ public class GUISimulator extends JFrame {
 		upArrow.setBounds(172, 214, 42, 23);
 		contentPane.add(upArrow);
 
+		/**
+		 * Series of labels to display information for each button
+		 */
 		JLabel lblChan = new JLabel("CHAN");
 		lblChan.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblChan.setBounds(31, 394, 46, 14);
@@ -874,6 +936,10 @@ public class GUISimulator extends JFrame {
 		lblPargrp.setBounds(100, 142, 65, 16);
 		contentPane.add(lblPargrp);
 
+		/**
+		 * Function button that allows user to select a function for the
+		 * ChronoTimer
+		 */
 		JButton btnFunction = new JButton("FUNCTION");
 		btnFunction.setBounds(60, 181, 97, 25);
 		btnFunction.addActionListener(new ActionListener() {
@@ -892,6 +958,12 @@ public class GUISimulator extends JFrame {
 
 	}
 
+	/**
+	 * Function that updates the function display on the ChronoTimer and
+	 * accesses the appropriate function information
+	 * 
+	 * @param functionSelection
+	 */
 	private void setFunction(String functionSelection) {
 		if (functionSelection.equals("1")) {
 			testChronoTimer.newRun();
