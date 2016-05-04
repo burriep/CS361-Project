@@ -56,7 +56,7 @@ public class ParGrpEventController extends EventController {
 					out.append(rr.getElapsedTime()).append(" F\n");
 				} else {
 					out.append(rr.getRacer()).append(" ");
-					out.append(runningTime).append("\n");
+					out.append(runningTime).append(" R\n");
 				}
 			}
 		}
