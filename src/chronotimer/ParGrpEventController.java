@@ -4,11 +4,12 @@ import java.util.*;
 
 public class ParGrpEventController extends EventController {
 	private Map<Integer, Integer> finishChannelMap;
-	private int lanes = 1; 
+	private int lanes = 1;
 	private Time startTime;
 
 	public ParGrpEventController(Timer t, Run currentRun) {
 		super(t, currentRun);
+		finishChannelMap = new HashMap<>();
 	}
 
 	@Override
@@ -18,12 +19,11 @@ public class ParGrpEventController extends EventController {
 			startTime = timer.getTime();
 			for (int i = 1; i <= lanes; i++) {
 				tempID = finishChannelMap.getOrDefault(i, -1);
-				if (tempID >= 0){
+				if (tempID >= 0) {
 					run.addRacer(tempID, startTime);
 				}
 			}
-		}
-		else if (startTime != null){
+		} else if (startTime != null) {
 			tempID = finishChannelMap.getOrDefault(channelNumber, -1);
 			if (tempID >= 0) {
 				run.addRacerEndTime(tempID, timer.getTime());
@@ -36,28 +36,42 @@ public class ParGrpEventController extends EventController {
 	public String getRunningDisplay() {
 		StringBuilder out = new StringBuilder();
 		List<RacerRun> runData = run.getData();
-		
-		// the running time
-		out.append(Timer.getDifference(startTime, timer.getTime()));
-		out.append("\n");
-		
-		for (int i = runData.size() - 1; i >= 0; --i) {
-			RacerRun rr = runData.get(i);
-			if(rr.getEndTime() != null) {
-				out.append(rr.getRacer()).append(" ");
-				out.append(rr.getElapsedTime()).append(" F\n");
-				break;
+
+		if (startTime == null) {
+			// run not started
+			for (int i = 1; i <= 8; ++i) {
+				int racerID = finishChannelMap.getOrDefault(i, -1);
+				if (racerID >= 0)
+					out.append(racerID).append("\n");
+				else
+					break;
+			}
+		} else {
+			// run started
+			double runningTime = Timer.getDifference(startTime, timer.getTime());
+			for (int i = 0; i < runData.size(); ++i) {
+				RacerRun rr = runData.get(i);
+				if (rr.getEndTime() != null) {
+					out.append(rr.getRacer()).append(" ");
+					out.append(rr.getElapsedTime()).append(" F\n");
+				} else {
+					out.append(rr.getRacer()).append(" ");
+					out.append(runningTime).append("\n");
+				}
 			}
 		}
+
 		return out.toString();
 	}
-	
+
 	@Override
 	public void addRacer(int id) {
-		finishChannelMap.put(lanes, id);
-		lanes++;
+		if (lanes <= 8 && startTime == null) {
+			finishChannelMap.put(lanes, id);
+			lanes++;
+		}
 	}
-	
+
 	public void clearRacer(int id) {
 		if (finishChannelMap.containsValue(id)) {
 			for (int i = 1; i <= lanes; i++) {
@@ -68,9 +82,8 @@ public class ParGrpEventController extends EventController {
 			}
 		}
 	}
-	
-	public void dnfRacer(){
-		//TODO
+
+	public void dnfRacer() {
+		// not applicable to this race type
 	}
 }
-

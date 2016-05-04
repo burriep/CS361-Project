@@ -28,10 +28,11 @@ public class IndEventController extends EventController {
 		List<Integer> started = run.getStartedRacers();
 		List<RacerRun> runData = run.getData();
 
-		// the next three to start
-		for (int i = 0; i < queued.size() && i < 3; i++) {
+		// the next three to start, front of queue at the bottom of the list
+		int start = (queued.size() < 3) ? queued.size() - 1 : 2;
+		for (int i = start; i >= 0; --i) {
 			out.append(queued.get(i));
-			if (i == 2)
+			if (i == 0)
 				out.append(" >");
 			out.append("\n");
 		}
