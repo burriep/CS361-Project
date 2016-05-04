@@ -95,13 +95,19 @@ public class Run {
 	 *            - the end time for this racer.
 	 */
 	public void addRacer(int racerID, Time start, Time end) {
-		if (isActive() && isValidRacerID(racerID) && !containsRacer(racerID)) {
+		if (isActive() && isValidRacerID(racerID) && isValidTimeRange(start, end) && !containsRacer(racerID)) {
 			racerData.add(new RacerRun(racerID, start, end));
 		}
 	}
 
-	private boolean isValidRacerID(int racerID) {
+	private static boolean isValidRacerID(int racerID) {
 		return racerID >= 0 && racerID <= 99999;
+	}
+
+	private static boolean isValidTimeRange(Time start, Time end) {
+		if (start == null || end == null)
+			return true;
+		return start.compareTo(end) <= 0;
 	}
 
 	private boolean containsRacer(int racerID) {
@@ -126,16 +132,18 @@ public class Run {
 	 */
 	public void swapRacer() {
 		if (isActive() && startedQueue.size() >= 2) {
+			// swap entries in the started queue
 			int r0 = startedQueue.get(0);
 			startedQueue.set(0, startedQueue.get(1));
 			startedQueue.set(1, r0);
 
-			r0 = racerData.get(0).getRacer();
-			Time t0 = racerData.get(0).getStartTime();
-			racerData.get(0).setRacer(racerData.get(1).getRacer());
-			racerData.get(0).setStartTime(racerData.get(1).getStartTime());
-			racerData.get(1).setRacer(r0);
-			racerData.get(1).setStartTime(t0);
+			// swap entries in the racer data
+			int index0 = racerData.size() - startedQueue.size();
+			int index1 = index0 + 1;
+			RacerRun rr0 = racerData.get(index0);
+			RacerRun rr1 = racerData.get(index1);
+			racerData.set(index0, rr1);
+			racerData.set(index1, rr0);
 		}
 	}
 

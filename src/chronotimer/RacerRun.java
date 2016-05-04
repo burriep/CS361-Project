@@ -13,11 +13,11 @@ public class RacerRun {
 	private Time startTime;
 	private Time endTime;
 
-	private boolean isValidRacerID(int racerID) {
+	private static boolean isValidRacerID(int racerID) {
 		return racerID >= 0 && racerID <= 99999;
 	}
 
-	private boolean isValidTimeRange(Time start, Time end) {
+	private static boolean isValidTimeRange(Time start, Time end) {
 		if (start == null || end == null)
 			return true;
 		return start.compareTo(end) <= 0;
