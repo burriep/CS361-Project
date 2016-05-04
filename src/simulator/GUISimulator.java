@@ -34,9 +34,10 @@ import javax.swing.DefaultComboBoxModel;
 public class GUISimulator extends JFrame {
 
 	static ChronoTimer testChronoTimer;
-	Sensor[] sensors = new Sensor[ChronoTimer.DEFAULT_CHANNEL_COUNT];
-	Sensor[] sensorButtons = new Sensor[ChronoTimer.DEFAULT_CHANNEL_COUNT];
-	JRadioButton[] channelToggles = new JRadioButton[8];
+	Sensor[] sensors;
+	Sensor[] sensorButtons;
+	JRadioButton[] channelToggles;
+	JComboBox[] channelDropdowns;
 	private JPanel contentPane;
 	JTextArea mainDisplay;
 	JTextPane txtrPrinterarea;
@@ -78,6 +79,11 @@ public class GUISimulator extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
+
+		sensors = new Sensor[ChronoTimer.DEFAULT_CHANNEL_COUNT];
+		sensorButtons = new Sensor[ChronoTimer.DEFAULT_CHANNEL_COUNT];
+		channelToggles = new JRadioButton[8];
+		channelDropdowns = new JComboBox[8];
 
 		setupNumbers();
 		setupChannelToggles();
@@ -510,157 +516,20 @@ public class GUISimulator extends JFrame {
 		/**
 		 * Series of boxes that represent the sensors and type being connected
 		 */
-		JComboBox comboBox1 = new JComboBox();
-		comboBox1.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (comboBox1.getSelectedItem().toString().equals("(Disconnect)")) {
-					testChronoTimer.disconnectSensor(1);
-				} else if (comboBox1.getSelectedItem().toString().equals("GATE")) {
-					sensors[0] = new Sensor(SensorType.GATE);
-				} else if (comboBox1.getSelectedItem().toString().equals("EYE")) {
-					sensors[0] = new Sensor(SensorType.EYE);
-				} else if (comboBox1.getSelectedItem().toString().equals("PAD")) {
-					sensors[0] = new Sensor(SensorType.PAD);
-				}
-				testChronoTimer.connectSensor(sensors[0], 1);
-			}
-		});
-		comboBox1.setModel(new DefaultComboBoxModel(new String[] { "(Disconnect)", "GATE", "EYE", "PAD" }));
-		comboBox1.setBounds(90, 411, 75, 22);
-		contentPane.add(comboBox1);
-
-		JComboBox comboBox3 = new JComboBox();
-		comboBox3.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (comboBox3.getSelectedItem().toString().equals("(Disconnect)")) {
-					testChronoTimer.disconnectSensor(3);
-				} else if (comboBox3.getSelectedItem().toString().equals("GATE")) {
-					sensors[2] = new Sensor(SensorType.GATE);
-				} else if (comboBox3.getSelectedItem().toString().equals("EYE")) {
-					sensors[2] = new Sensor(SensorType.EYE);
-				} else if (comboBox3.getSelectedItem().toString().equals("PAD")) {
-					sensors[2] = new Sensor(SensorType.PAD);
-				}
-				testChronoTimer.connectSensor(sensors[2], 3);
-			}
-		});
-		comboBox3.setModel(new DefaultComboBoxModel(new String[] { "(Disconnect)", "GATE", "EYE", "PAD" }));
-		comboBox3.setBounds(165, 411, 75, 22);
-		contentPane.add(comboBox3);
-
-		JComboBox comboBox5 = new JComboBox();
-		comboBox5.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (comboBox5.getSelectedItem().toString().equals("(Disconnect)")) {
-					testChronoTimer.disconnectSensor(5);
-				} else if (comboBox5.getSelectedItem().toString().equals("GATE")) {
-					sensors[4] = new Sensor(SensorType.GATE);
-				} else if (comboBox5.getSelectedItem().toString().equals("EYE")) {
-					sensors[4] = new Sensor(SensorType.EYE);
-				} else if (comboBox5.getSelectedItem().toString().equals("PAD")) {
-					sensors[4] = new Sensor(SensorType.PAD);
-				}
-				testChronoTimer.connectSensor(sensors[4], 5);
-			}
-		});
-		comboBox5.setModel(new DefaultComboBoxModel(new String[] { "(Disconnect)", "GATE", "EYE", "PAD" }));
-		comboBox5.setBounds(240, 411, 75, 22);
-		contentPane.add(comboBox5);
-
-		JComboBox comboBox7 = new JComboBox();
-		comboBox7.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (comboBox7.getSelectedItem().toString().equals("(Disconnect)")) {
-					testChronoTimer.disconnectSensor(6);
-				} else if (comboBox7.getSelectedItem().toString().equals("GATE")) {
-					sensors[6] = new Sensor(SensorType.GATE);
-				} else if (comboBox7.getSelectedItem().toString().equals("EYE")) {
-					sensors[6] = new Sensor(SensorType.EYE);
-				} else if (comboBox7.getSelectedItem().toString().equals("PAD")) {
-					sensors[6] = new Sensor(SensorType.PAD);
-				}
-				testChronoTimer.connectSensor(sensors[6], 7);
-			}
-		});
-		comboBox7.setModel(new DefaultComboBoxModel(new String[] { "(Disconnect)", "GATE", "EYE", "PAD" }));
-		comboBox7.setBounds(315, 411, 75, 22);
-		contentPane.add(comboBox7);
-
-		JComboBox comboBox2 = new JComboBox();
-		comboBox2.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (comboBox2.getSelectedItem().toString().equals("(Disconnect)")) {
-					testChronoTimer.disconnectSensor(2);
-				} else if (comboBox2.getSelectedItem().toString().equals("GATE")) {
-					sensors[1] = new Sensor(SensorType.GATE);
-				} else if (comboBox2.getSelectedItem().toString().equals("EYE")) {
-					sensors[1] = new Sensor(SensorType.EYE);
-				} else if (comboBox2.getSelectedItem().toString().equals("PAD")) {
-					sensors[1] = new Sensor(SensorType.PAD);
-				}
-				testChronoTimer.connectSensor(sensors[1], 2);
-			}
-		});
-		comboBox2.setModel(new DefaultComboBoxModel(new String[] { "(Disconnect)", "GATE", "EYE", "PAD" }));
-		comboBox2.setBounds(90, 447, 75, 22);
-		contentPane.add(comboBox2);
-
-		JComboBox comboBox4 = new JComboBox();
-		comboBox4.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (comboBox4.getSelectedItem().toString().equals("(Disconnect)")) {
-					testChronoTimer.disconnectSensor(4);
-				} else if (comboBox4.getSelectedItem().toString().equals("GATE")) {
-					sensors[3] = new Sensor(SensorType.GATE);
-				} else if (comboBox7.getSelectedItem().toString().equals("EYE")) {
-					sensors[3] = new Sensor(SensorType.EYE);
-				} else if (comboBox7.getSelectedItem().toString().equals("PAD")) {
-					sensors[3] = new Sensor(SensorType.PAD);
-				}
-				testChronoTimer.connectSensor(sensors[3], 4);
-			}
-		});
-		comboBox4.setModel(new DefaultComboBoxModel(new String[] { "(Disconnect)", "GATE", "EYE", "PAD" }));
-		comboBox4.setBounds(165, 447, 75, 22);
-		contentPane.add(comboBox4);
-
-		JComboBox comboBox6 = new JComboBox();
-		comboBox6.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (comboBox6.getSelectedItem().toString().equals("(Disconnect)")) {
-					testChronoTimer.disconnectSensor(6);
-				} else if (comboBox6.getSelectedItem().toString().equals("GATE")) {
-					sensors[5] = new Sensor(SensorType.GATE);
-				} else if (comboBox6.getSelectedItem().toString().equals("EYE")) {
-					sensors[5] = new Sensor(SensorType.EYE);
-				} else if (comboBox6.getSelectedItem().toString().equals("PAD")) {
-					sensors[5] = new Sensor(SensorType.PAD);
-				}
-				testChronoTimer.connectSensor(sensors[5], 6);
-			}
-		});
-		comboBox6.setModel(new DefaultComboBoxModel(new String[] { "(Disconnect)", "GATE", "EYE", "PAD" }));
-		comboBox6.setBounds(240, 447, 75, 22);
-		contentPane.add(comboBox6);
-
-		JComboBox comboBox8 = new JComboBox();
-		comboBox8.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				if (comboBox8.getSelectedItem().toString().equals("(Disconnect)")) {
-					testChronoTimer.disconnectSensor(8);
-				} else if (comboBox8.getSelectedItem().toString().equals("GATE")) {
-					sensors[7] = new Sensor(SensorType.GATE);
-				} else if (comboBox8.getSelectedItem().toString().equals("EYE")) {
-					sensors[7] = new Sensor(SensorType.EYE);
-				} else if (comboBox8.getSelectedItem().toString().equals("PAD")) {
-					sensors[7] = new Sensor(SensorType.PAD);
-				}
-				testChronoTimer.connectSensor(sensors[7], 8);
-			}
-		});
-		comboBox8.setModel(new DefaultComboBoxModel(new String[] { "(Disconnect)", "GATE", "EYE", "PAD" }));
-		comboBox8.setBounds(315, 447, 75, 22);
-		contentPane.add(comboBox8);
+		String[] options = { "(Disconnect)", "GATE", "EYE", "PAD" };
+		for (int i = 0; i < channelDropdowns.length; i++) {
+			channelDropdowns[i] = new JComboBox(options);
+			channelDropdowns[i].addActionListener(new ChannelDropdownListener(i, i));
+			contentPane.add(channelDropdowns[i]);
+		}
+		channelDropdowns[0].setBounds(90, 411, 75, 22);
+		channelDropdowns[2].setBounds(165, 411, 75, 22);
+		channelDropdowns[4].setBounds(240, 411, 75, 22);
+		channelDropdowns[6].setBounds(315, 411, 75, 22);
+		channelDropdowns[1].setBounds(90, 447, 75, 22);
+		channelDropdowns[3].setBounds(165, 447, 75, 22);
+		channelDropdowns[5].setBounds(240, 447, 75, 22);
+		channelDropdowns[7].setBounds(315, 447, 75, 22);
 	}
 
 	public void setupManualTriggers() {
@@ -949,6 +818,31 @@ public class GUISimulator extends JFrame {
 
 		public void actionPerformed(ActionEvent e) {
 			sensorButtons[sensorIndex].trigger();
+		}
+	}
+
+	public class ChannelDropdownListener implements ActionListener {
+		private int ci;
+		private int si;
+
+		public ChannelDropdownListener(int channelIndex, int sensorIndex) {
+			ci = channelIndex;
+			si = sensorIndex;
+		}
+
+		public void actionPerformed(ActionEvent e) {
+			if (channelDropdowns[ci].getSelectedItem().toString().equals("(Disconnect)")) {
+				testChronoTimer.disconnectSensor(ci + 1);
+			} else if (channelDropdowns[ci].getSelectedItem().toString().equals("GATE")) {
+				sensors[si] = new Sensor(SensorType.GATE);
+				testChronoTimer.connectSensor(sensors[si], ci + 1);
+			} else if (channelDropdowns[ci].getSelectedItem().toString().equals("EYE")) {
+				sensors[si] = new Sensor(SensorType.EYE);
+				testChronoTimer.connectSensor(sensors[si], ci + 1);
+			} else if (channelDropdowns[ci].getSelectedItem().toString().equals("PAD")) {
+				sensors[si] = new Sensor(SensorType.PAD);
+				testChronoTimer.connectSensor(sensors[si], ci + 1);
+			}
 		}
 	}
 }
