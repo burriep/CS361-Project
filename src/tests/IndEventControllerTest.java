@@ -7,7 +7,14 @@ import chronotimer.*;
 public class IndEventControllerTest {
 	@Test
 	public void testChannelTriggered() {
-		fail("Not yet implemented"); // TODO
+		Timer t = new Timer("11:00:00.00", false);
+		Run r = new Run();
+		IndEventController ec = new IndEventController(t, r);
+		ec.addRacer(123);
+		ec.channelTriggered(1);
+		ec.channelTriggered(2);
+		assertEquals(0, r.getQueuedRacers().size());
+		assertEquals(1, r.getData().size());
 	}
 
 	@Test
@@ -33,21 +40,50 @@ public class IndEventControllerTest {
 
 	@Test
 	public void testAddRacer() {
-		fail("Not yet implemented"); // TODO
+		Timer t = new Timer("11:00:00.00", false);
+		Run r = new Run();
+		IndEventController ec = new IndEventController(t, r);
+		ec.addRacer(123);
+		ec.channelTriggered(1);
+		ec.channelTriggered(2);
+		assertEquals(0, r.getQueuedRacers().size());
+		assertEquals(1, r.getData().size());
+		assertEquals(123, r.getData().get(0).getRacer());
 	}
 
 	@Test
 	public void testClearRacer() {
-		fail("Not yet implemented"); // TODO
+		Timer t = new Timer("11:00:00.00", false);
+		Run r = new Run();
+		IndEventController ec = new IndEventController(t, r);
+		ec.addRacer(123);
+		ec.clearRacer(123);
+		assertEquals(0, r.getQueuedRacers().size());
+		assertEquals(0, r.getData().size());
 	}
 
 	@Test
 	public void testDnfRacer() {
-		fail("Not yet implemented"); // TODO
+		Timer t = new Timer("11:00:00.00", false);
+		Run r = new Run();
+		IndEventController ec = new IndEventController(t, r);
+		ec.addRacer(123);
+		ec.channelTriggered(1);
+		ec.dnfRacer();
+		assertEquals(0, r.getQueuedRacers().size());
+		assertEquals(123, r.getData().get(0).getRacer());
+		assertEquals(1, r.getData().size());
+		assertEquals(null, r.getData().get(0).getEndTime());
 	}
 
 	@Test
 	public void testEndRun() {
-		fail("Not yet implemented"); // TODO
+		Timer t = new Timer("11:00:00.00", false);
+		Run r = new Run();
+		IndEventController ec = new IndEventController(t, r);
+		ec.addRacer(123);
+		ec.channelTriggered(1);
+		ec.channelTriggered(2);
+		ec.endRun();
 	}
 }
