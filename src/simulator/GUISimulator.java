@@ -5,6 +5,8 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTextPane;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
 import javax.swing.JButton;
@@ -35,8 +37,9 @@ public class GUISimulator extends JFrame {
 	Sensor[] sensors = new Sensor[ChronoTimer.DEFAULT_CHANNEL_COUNT];
 	private JPanel contentPane;
 	JTextArea mainDisplay;
-	JTextArea txtrPrinterarea;
+	JTextPane txtrPrinterarea;
 	JTextArea funDisplay;
+	JLabel powerStatus;
 	private boolean getFunction = false;
 	private boolean getRunNum = false;
 	private boolean getClrNum = false;
@@ -438,8 +441,10 @@ public class GUISimulator extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				if (testChronoTimer.isOn()) {
 					testChronoTimer.powerOff();
+					powerStatus.setForeground(Color.BLACK);
 				} else {
 					testChronoTimer.powerOn();
+					powerStatus.setForeground(Color.GREEN);
 				}
 			}
 		});
@@ -509,12 +514,14 @@ public class GUISimulator extends JFrame {
 		/**
 		 * Printer display area, only display results of each run
 		 */
-		txtrPrinterarea = new JTextArea();
-		txtrPrinterarea.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
+		txtrPrinterarea = new JTextPane();
 		txtrPrinterarea.setText("");
-		txtrPrinterarea.setBounds(454, 60, 84, 80);
 		txtrPrinterarea.setEditable(false);
-		contentPane.add(txtrPrinterarea);
+		JScrollPane scrollPrinter = new JScrollPane(txtrPrinterarea, JScrollPane.VERTICAL_SCROLLBAR_ALWAYS,
+				JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+		scrollPrinter.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
+		scrollPrinter.setBounds(454, 60, 84, 80);
+		contentPane.add(scrollPrinter);
 		Timer timer2 = new Timer(10, new ActionListener() {
 			public void actionPerformed(ActionEvent evt) {
 				if (testChronoTimer.printerIsOn()) {
@@ -955,6 +962,12 @@ public class GUISimulator extends JFrame {
 		lblFunctions.setFont(new Font("Tahoma", Font.BOLD, 13));
 		lblFunctions.setBounds(15, 62, 89, 16);
 		contentPane.add(lblFunctions);
+		
+		powerStatus = new JLabel("•");
+		powerStatus.setFont(new Font("Tahoma", Font.BOLD, 16));
+		powerStatus.setBounds(40, 35, 30, 16);
+		powerStatus.setForeground(Color.BLACK);
+		contentPane.add(powerStatus);
 
 	}
 
