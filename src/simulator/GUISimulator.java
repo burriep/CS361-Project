@@ -378,14 +378,14 @@ public class GUISimulator extends JFrame {
 		scrollPrinter.setBorder(new MatteBorder(1, 1, 1, 1, (Color) new Color(0, 0, 0)));
 		scrollPrinter.setBounds(454, 60, 84, 80);
 		contentPane.add(scrollPrinter);
-		Timer timer2 = new Timer(10, new ActionListener() {
-			public void actionPerformed(ActionEvent evt) {
-				if (testChronoTimer.printerIsOn()) {
-					txtrPrinterarea.setText(printerString);
-				}
-			}
-		});
-		timer2.start();
+		// Timer timer2 = new Timer(10, new ActionListener() {
+		// public void actionPerformed(ActionEvent evt) {
+		// if (testChronoTimer.printerIsOn()) {
+		// txtrPrinterarea.setText(printerString);
+		// }
+		// }
+		// });
+		// timer2.start();
 	}
 
 	public void setupChannelDropdowns() {
@@ -622,6 +622,11 @@ public class GUISimulator extends JFrame {
 			funDisplay.setText("New Run Started.");
 		} else if (functionSelection.equals("2")) {
 			testChronoTimer.endRun();
+			if (testChronoTimer.printerIsOn()) {
+				printerString += testChronoTimer.printCurrentRun() + "\n";
+				txtrPrinterarea.setText(printerString);
+			}
+			// TODO only update the printer here
 			funDisplay.setText("Current Run Ended.");
 		} else if (functionSelection.equals("3")) {
 			getRunNum = true;
